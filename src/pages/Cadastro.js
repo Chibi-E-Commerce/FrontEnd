@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import '../styles/Cadastro.css';
 
 const Cadastro = () => {
@@ -9,7 +10,7 @@ const Cadastro = () => {
         cpf: '',
         dataNascimento: ''
     });
-
+    
     const [errors, setErrors] = useState({
         nome: '',
         email: '',
@@ -17,6 +18,12 @@ const Cadastro = () => {
         cpf: '',
         dataNascimento: ''
     });
+    
+    const [showPassword, setShowPassword] = useState(false);
+
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -61,7 +68,6 @@ const Cadastro = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
         if (validateForm()) {
             console.log('Formulário enviado:', form);
         }
@@ -69,6 +75,8 @@ const Cadastro = () => {
 
     return (
         <>
+            <div className="top-left-image"></div>
+            <div className="bottom-right-image"></div>
             <div className="cadastro-card">
                 <h2>Cadastro</h2>
                 <form onSubmit={handleSubmit} className="cadastro-form">
@@ -96,15 +104,20 @@ const Cadastro = () => {
                         {errors.email && <span className="error">{errors.email}</span>}
                     </div>
 
-                    <div className="input-group">
+                    <div className="input-group password-group">
                         <label htmlFor="senha">Senha</label>
-                        <input
-                            type="password"
-                            id="senha"
-                            name="senha"
-                            value={form.senha}
-                            onChange={handleChange}
-                        />
+                        <div className="password-group">
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                id="senha"
+                                name="senha"
+                                value={form.senha}
+                                onChange={handleChange}
+                            />
+                            <button type="button" className="eye-button" onClick={togglePasswordVisibility}>
+                                {showPassword ? <FaEyeSlash /> : <FaEye />}
+                            </button>
+                        </div>
                         {errors.senha && <span className="error">{errors.senha}</span>}
                     </div>
 
@@ -135,8 +148,7 @@ const Cadastro = () => {
                         </div>
                     </div>
                     <button type="submit" className="submit-btn">CADASTRAR</button>
-                    
-                    {/* Link para login */}
+
                     <div className="login-link">
                         <a href="/login">Já tem conta?</a>
                     </div>

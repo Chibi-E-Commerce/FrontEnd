@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import { getDados } from './api';
 import HomePage from './pages/Cadastro';
-import Teste from './components/Navbar'
 import NavBar from './components/Navbar';
 
 function App() {
@@ -47,9 +46,6 @@ function App() {
                             </ul>
                         </div>
                     } />
-
-                    <Route path="/shop" element={<Shopping />} />
-
                 </Routes>
             </div>
         </Router>
