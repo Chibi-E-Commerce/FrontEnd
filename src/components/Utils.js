@@ -13,4 +13,8 @@ function Link({text, to, ...props}) {
     return <Rota to={to} {...props}>{text}</Rota>;
 }
 
-export {Imagem, Link};
+function Button({text, onClick}) {
+    return <button onClick={onClick}>{text}</button>
+}
+
+export {Imagem, Link, Button};

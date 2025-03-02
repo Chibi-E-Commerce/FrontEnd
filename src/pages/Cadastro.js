@@ -148,6 +148,7 @@ const Cadastro = () => {
                         </div>
                     </div>
                     <button type="submit" className="submit-btn">CADASTRAR</button>
+
                     <div className="login-link">
                         <a href="/login">Já tem conta?</a>
                     </div>

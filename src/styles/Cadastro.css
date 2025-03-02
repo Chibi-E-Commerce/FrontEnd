@@ -88,6 +88,18 @@
     width: 48%;
 }
 
+.cpf-dob-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+    width: 95%;
+    margin-bottom: 20px;
+}
+
+.cpf-dob-container .input-group {
+    width: 48%;
+}
+
 .submit-btn {
     margin: 10px auto;
     padding: 10px;
