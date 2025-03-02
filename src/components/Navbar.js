@@ -1,7 +1,6 @@
 import {Imagem, Link} from "./Utils"
 import logo from "../assets/images/Logo.svg"
-import css from "../styles/components/Navbar.css"
-
+import "../styles/components/Navbar.css"
 
 const NavBar = () =>{
     return(
