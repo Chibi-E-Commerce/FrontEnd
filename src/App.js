@@ -2,7 +2,9 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import { getDados } from './api';
-import HomePage from './Cadastro';
+import HomePage from './pages/Cadastro';
+import Teste from './components/Navbar'
+import NavBar from './components/Navbar';
 
 function App() {
     const [dados, setDados] = useState([]);
@@ -23,11 +25,8 @@ function App() {
     return (
         <Router>
             <div>
-                {/* Link para a página inicial */}
-                <nav>
-                    <Link to="/">Página Inicial</Link> | 
-                    <Link to="/dados"> Dados da API</Link>
-                </nav>
+                {/* Navbar recebe nos texts os textos dos links das rotas e  */}
+                <NavBar/>
 
                 <Routes>
                     {/* Página inicial */}
@@ -48,6 +47,9 @@ function App() {
                             </ul>
                         </div>
                     } />
+
+                    <Route path="/shop" element={<Shopping />} />
+
                 </Routes>
             </div>
         </Router>
