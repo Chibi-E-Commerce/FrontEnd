@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import axios from 'axios';  // Importando o axios para comunicação com a API
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import '../styles/Cadastro.css';
 
 const Cadastro = () => {
+    const navigate = useNavigate();
     const [form, setForm] = useState({
         nome: '',
         email: '',
@@ -11,7 +13,7 @@ const Cadastro = () => {
         cpf: '',
         dataNascimento: ''
     });
-    
+
     const [errors, setErrors] = useState({
         nome: '',
         email: '',
@@ -19,10 +21,11 @@ const Cadastro = () => {
         cpf: '',
         dataNascimento: ''
     });
-    
+
     const [showPassword, setShowPassword] = useState(false);
-    const [errorMessage, setErrorMessage] = useState(''); // Para armazenar a mensagem de erro
-    const [showErrorPopup, setShowErrorPopup] = useState(false); // Controla a exibição do pop-up de erro
+    const [errorMessage, setErrorMessage] = useState('');
+    const [showErrorPopup, setShowErrorPopup] = useState(false);
+    const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
@@ -73,14 +76,11 @@ const Cadastro = () => {
         e.preventDefault();
         if (validateForm()) {
             try {
-                // Realizando a requisição para a API
-                const response = await axios.post('http://localhost:8080/users', form);
+                const response = await axios.post('http://localhost:8080/cliente', form);
                 console.log('Formulário enviado:', response.data);
-                alert('Usuário criado com sucesso!');
-                // Redirecionar ou limpar o formulário conforme necessário
+                setShowSuccessPopup(true);
             } catch (error) {
                 if (error.response) {
-                    // Se o erro for causado pela validação de dados já existentes
                     setErrorMessage(error.response.data);
                     setShowErrorPopup(true);
                 } else {
@@ -89,6 +89,11 @@ const Cadastro = () => {
                 }
             }
         }
+    };
+
+    const handleSuccessPopupClose = () => {
+        setShowSuccessPopup(false);
+        navigate('/shop');
     };
 
     return (
@@ -177,6 +182,15 @@ const Cadastro = () => {
                         <div className="error-popup-content">
                             <p>{errorMessage}</p>
                             <button onClick={() => setShowErrorPopup(false)}>Fechar</button>
+                        </div>
+                    </div>
+                )}
+
+                {showSuccessPopup && (
+                    <div className="success-popup">
+                        <div className="success-popup-content">
+                            <p>Cadastro realizado com sucesso!</p>
+                            <button onClick={handleSuccessPopupClose}>Ok</button>
                         </div>
                     </div>
                 )}
