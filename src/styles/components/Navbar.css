@@ -19,3 +19,8 @@ header div{
     height: 100%;
     margin: 0 10% 0 10%;
 }
+.links-NavBar{
+    display: flex;
+    text-align: center;
+    justify-content: space-around;
+}

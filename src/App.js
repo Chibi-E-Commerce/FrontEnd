@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import { getDados } from './api';
 import HomePage from './pages/Cadastro';
 import NavBar from './components/Navbar';
+import Login from './pages/Login';
 import Pagamento from './pages/Pagamento';
 
 function App() {
@@ -50,7 +51,7 @@ function App() {
 
                     {/* <Route path="/shop" element={<Shopping />} /> */}
                     <Route path="/pay" element={<Pagamento />} />
-
+                    <Route path="/Login" element={<Login />} />
                 </Routes>
             </div>
         </Router>
