@@ -1,0 +1,29 @@
+#filter-bar{
+    position: absolute;
+    top: 175px;
+    left: 400px;
+    min-width: 150px;
+    display: flex;
+    flex-flow: column wrap;
+    gap: 5px;
+    padding: 10px 8px 10px 5px;
+    border-radius: 6px;
+    background-color: #DCD3CF;
+}
+
+#filter-bar button{
+    width: 95%;
+    height: 40px;
+    border: 2px solid #d66545;
+    border-radius: 6px;
+    margin: 5px;
+    color: #FFFFFF;
+    font-weight: bold;
+    background-color: #d66545;
+}
+
+#filter-bar button:hover{
+    color: #000000;
+    background-color: transparent;
+    transition: all 0.3s ease;
+}

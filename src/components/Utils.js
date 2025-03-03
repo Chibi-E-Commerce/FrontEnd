@@ -5,8 +5,8 @@ import {Link as Rota} from 'react-router-dom';
     Esse arquivo serve para criar componentes pequenos e muito usados.
 */
 
-function Imagem({ src, alt}) {
-    return <img src={src} alt={alt} />;
+function Imagem({ src, alt, onClick}) {
+    return <img src={src} alt={alt} onClick={onClick} />;
 }
 
 function Link({text, to, ...props}) {
