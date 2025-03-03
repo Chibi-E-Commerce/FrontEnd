@@ -1,15 +1,13 @@
-// src/App.js
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import { getDados } from './api';
 import HomePage from './pages/Cadastro';
-import Teste from './components/Navbar'
 import NavBar from './components/Navbar';
+import Shopping from './pages/Shopping';
 
 function App() {
     const [dados, setDados] = useState([]);
 
-    // Função para pegar os dados da API
     useEffect(() => {
         async function fetchData() {
             try {
@@ -24,35 +22,38 @@ function App() {
 
     return (
         <Router>
-            <div>
-                {/* Navbar recebe nos texts os textos dos links das rotas e  */}
-                <NavBar/>
-
-                <Routes>
-                    {/* Página inicial */}
-                    <Route path="/" element={<HomePage />} />
-
-                    {/* Página dos dados */}
-                    <Route path="/dados" element={
-                        <div>
-                            <h1>Dados da API</h1>
-                            <ul>
-                                {dados.length === 0 ? (
-                                    <li>Carregando...</li>
-                                ) : (
-                                    dados.map((item, index) => (
-                                        <li key={index}>{item.nome}</li>
-                                    ))
-                                )}
-                            </ul>
-                        </div>
-                    } />
-
-                    <Route path="/shop" element={<Shopping />} />
-
-                </Routes>
-            </div>
+            <AppContent dados={dados} />
         </Router>
+    );
+}
+
+function AppContent({ dados }) {
+    const location = useLocation();
+    console.log("Rota atual:", location.pathname);
+
+    return (
+        <div>
+            <NavBar carrinho={location.pathname === "/shop"} />
+
+            <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/dados" element={
+                    <div>
+                        <h1>Dados da API</h1>
+                        <ul>
+                            {dados.length === 0 ? (
+                                <li>Carregando...</li>
+                            ) : (
+                                dados.map((item, index) => (
+                                    <li key={index}>{item.nome}</li>
+                                ))
+                            )}
+                        </ul>
+                    </div>
+                } />
+                <Route path="/shop" element={<Shopping products={dados} />} />
+            </Routes>
+        </div>
     );
 }
 
