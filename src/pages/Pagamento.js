@@ -56,6 +56,7 @@ const Pagamento = ({valor_total, total_itens}) => {
                                     type="text"
                                     id="rua"
                                     name="rua"
+                                    placeholder='Rua Maria Joaquim'
                                     value={form.rua}
                                     onChange={handleChange}
                                 />
@@ -123,6 +124,7 @@ const Pagamento = ({valor_total, total_itens}) => {
                                     type="text"
                                     id="nome_completo"
                                     name="nome_completo"
+                                    placeholder='João José Joaquim Jeremias'
                                     value={form.nome_completo}
                                     onChange={handleChange}
                                 />
@@ -134,7 +136,7 @@ const Pagamento = ({valor_total, total_itens}) => {
                                         type="text"
                                         id="numero_cartao"
                                         name="numero_cartao"
-                                        placeholder='00000-000'
+                                        placeholder='000000000000000'
                                         value={form.numero_cartao}
                                         onChange={handleChange}
                                     />
