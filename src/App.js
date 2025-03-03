@@ -53,8 +53,8 @@ function AppContent({ dados }) {
                     </div>
                 } />
                 <Route path="/shop" element={<Shopping products={dados} />} />
-                <Route path="/pay" element={<Pagamento />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/pay" element={<Pagamento valor_total={1000} total_itens={49} />} />
             </Routes>
         </div>
     );
