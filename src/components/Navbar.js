@@ -10,8 +10,9 @@ const NavBar = ({carrinho}) =>{
             <div id="logo">
                 <Imagem src={logo} alt="Chibi"/>
             </div>
-            <div>
-                <Link text="Página Inicial" to="/"/>
+            <div className="links-NavBar">
+                <Link text="Cadastrar" to="/"/>
+                <Link text="Login" to="/login"/>
                 <Link text="Dados" to="/dados"/>
                 <Link text="Shopping" to="/shop"/>
                  <Link text="Pay" to="/pay"/>
