@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import Cartoes from '../components/Cartao';
 import "../styles/Pagamento.css";
-import { Imagem } from '../components/Utils';
 import Gato from '../assets/images/cafe_fofura_felicidade.svg'
 
-const Pagamento = () => {
+const Pagamento = ({valor_total, total_itens}) => {
     const [form, setForm] = useState({
         rua: '',
         estado: '',
@@ -14,7 +13,9 @@ const Pagamento = () => {
         cod_seguranca: '',
         bandeira: '',
         cartao_validade: '',
-        nome_completo: ''
+        nome_completo: '',
+        valor_total: valor_total,
+        total_itens: total_itens,
     });
 
     const [errors, setErrors] = useState({
@@ -115,7 +116,17 @@ const Pagamento = () => {
                             </div>
                         </div>
                         <Cartoes numeros={[123, 456, 789]}></Cartoes>
-                        <div className='informacoesCartao'>
+                        <div className='informacoes-cartao'>
+                            <div className="pagamento-input-group nome_completo">
+                                <label htmlFor="cod_seguranca">Nome completo</label>
+                                <input
+                                    type="text"
+                                    id="nome_completo"
+                                    name="nome_completo"
+                                    value={form.nome_completo}
+                                    onChange={handleChange}
+                                />
+                            </div>
                             <div className='num-cartao-grupo'>
                                 <div className="pagamento-input-group">
                                     <label htmlFor="numero_cartao">Número do Cartão</label>
@@ -172,18 +183,20 @@ const Pagamento = () => {
                                     {errors.cartao_validade && <span className="error">{errors.cartao_validade}</span>}
                                 </div>
                             </div>
-                            <div className="pagamento-input-group nome_completo">
-                                <label htmlFor="cod_seguranca">Nome completo</label>
-                                <input
-                                    type="text"
-                                    id="nome_completo"
-                                    name="nome_completo"
-                                    value={form.nome_completo}
-                                    onChange={handleChange}
-                                />
+                        </div>
+                        
+                        <div className='form-enviar'>
+                            <div className='btn-pagar-row'>
+                                <div className="info-pagamento">
+                                    <span id='valor-total'>R$ {valor_total.toFixed(2)}</span>
+                                    <span id='qnt-itens'>Total de itens: {total_itens}</span>
+                                </div>
+                                <input class="btn-pagar" type="button" value="COMPRAR" />
+
                             </div>
                         </div>
                     </form>
+
                 </div>
                 <img src={Gato} alt="Gato fofo!!" className='img-cat'/>
             </div>
