@@ -1,0 +1,208 @@
+*{
+    font-family: "Poppins", sans-serif;
+}
+
+main{
+    display: flex;
+    width: 100%;
+    height: auto;
+}
+
+section{
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: auto;
+    row-gap: 20px;
+    width: 75%;
+    background-color: #FFEBDF;
+    padding-top: 30px;
+}
+
+section .product{
+    background-color: #E6AD76;
+    width: 80%;
+    border-radius: 11px;
+    margin: auto;
+    padding: 5px 5px 20px 5px;
+    text-align: center;
+}
+
+section .product div{
+    width: 80%;
+    height: 60%;
+    border-radius: 11px;
+    background-color: #FFDEBB;
+    margin: 20px auto 0 auto;
+}
+
+section .product img{
+    width: 90%;
+    height: auto;
+}
+
+section .product h3{
+    font-size: 26px;
+    margin: 5px 0;
+}
+
+section .product p{
+    margin: -3px auto 0 auto;
+}
+
+section .product button{
+    width: 70%;
+    height: 40px;
+    font-family: "Leckerli One", sans-serif;
+    margin-top: 15px;
+    font-size: 18px;
+    border-radius: 6px;
+    background-color: #FFDEBB;
+    border-color: transparent;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+#filtro{
+    display: block;
+    width: 25%;
+    background-color: #E4E0E1;
+}
+
+#filtro form{
+    width: 80%;
+    margin: auto;
+}
+
+#filtro form #search-filtro{
+    display: flex;
+    width: 100%;
+    border: none;
+    background-color: transparent;
+}
+
+#filtro form #search-filtro input{
+    width: 100%;
+    height: 45px;
+    border-radius: 6px 0 0 6px;
+    border: none;
+    outline: none;
+    margin: 0 0 30px 0;
+    padding: 0 15px 0;
+    background-color: #B1C29E;
+}
+
+#filtro form #search-filtro input::placeholder{
+    color: #000000;
+}
+
+#filtro form #search-filtro input:focus{
+    box-shadow: 
+    0 0 0 2px rgba(0, 0, 0),
+    -2px 0 0 0 rgba(0, 0, 0), 
+    1px -2px 0 0 rgba(0, 0, 0); 
+    color: #000000;
+}
+
+#filtro form #search-filtro input:focus + div{
+    box-shadow: 
+    0 2px 0 0 rgba(0, 0, 0), /* Top */
+    2px 0 0 0 rgba(0, 0, 0),   /* Left */
+    0 -2px 0 0 rgba(0, 0, 0); 
+}
+
+#filtro form #search-filtro div{
+    background-color: #B1C29E;
+    height: 45px;
+    width: auto;
+    border-radius: 0 6px 6px 0;
+    padding: auto;
+}
+
+#filtro form #search-filtro div img{
+    height: 35px;
+    width: auto;
+    margin: 4px 10px 0 0;
+}
+
+#filtro form div{
+    border: 6px solid #493628;
+    border-radius: 6px;
+    background-color: #DCD3CF;
+    div{
+        border: none;
+    }
+}
+
+#filtro form #header-filtro{
+    display: flex;
+    justify-content: space-between;
+    width: 90%;
+    align-items: center;
+    background-color: #C1B6B1;
+    padding: 0 5% 0 5%;
+    border-radius: 0;
+
+    h3{
+        font-size: 26px;
+        opacity: 60%;
+        margin: 10px 0 10px 0;
+    }
+}
+
+#filtro form #header-icons{
+    margin: 10px 0 10px 0;
+    border: none;
+    background-color: transparent;
+    img{
+        margin: 5px 8px 5px;
+    }
+}
+
+#filtro form ul{
+    width: 100%;
+    min-height: 300px;
+    list-style: none;
+    padding-left: 20px;
+}
+
+#filtro form ul li{
+    display: flex;
+    width: 80%;
+    height: 35px;
+    align-items: center;
+    margin: 10px 0 2px 0;
+    text-align: center;
+    border-radius: 6px;
+
+    p, label{
+        margin: 0 0 0 10px;
+        font-weight: bold;
+    }
+
+    input{
+        width: 50%;
+        background-color: transparent;
+        font-size: 1em;
+        font-weight: bold;
+        padding-left: 5px;
+        color: #1E1E1E;
+        border: none;
+        outline: none;
+    }
+
+    input::placeholder{
+        color: #1E1E1E;
+    }
+
+    .image-remove{
+        background-color: #1E1E1E;
+        padding: 0 2px 0 2px;
+        width: 35px;
+        height: 100%;
+        img{
+            width: 80%;
+            height: auto;
+            margin: auto;
+        }
+    }
+}
+

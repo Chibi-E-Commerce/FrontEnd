@@ -1,0 +1,47 @@
+#sidebar-product{
+    position: absolute;
+    max-width: 20%;
+    min-height: calc(100vh - 50px);
+    top: 50px;
+    right: 0;
+    border-radius: 0;
+    background-color: #E6AD76;
+
+    #image-sidebar-product{
+        height: 40%;
+
+        img{
+            width: 100%;
+            height: auto;
+        }
+    }
+
+    h3{
+        font-size: 30px;
+    }
+
+    form{
+        display: flex;
+        width: 80%;
+        margin: auto;
+
+        button{
+            width: 30%;
+        }
+
+        input{
+            width: 35%;
+            margin: 0 2.5% 0 2.5%;
+            border: none;
+            outline: none;
+            background-color: #9E6031;
+        }
+
+        /* input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        } */
+
+    }
+}
