@@ -4,6 +4,7 @@ import { getDados } from './api';
 import HomePage from './pages/Cadastro';
 import NavBar from './components/Navbar';
 import Shopping from './pages/Shopping';
+import Pagamento from './pages/Pagamento';
 
 function App() {
     const [dados, setDados] = useState([]);
@@ -29,7 +30,6 @@ function App() {
 
 function AppContent({ dados }) {
     const location = useLocation();
-    console.log("Rota atual:", location.pathname);
 
     return (
         <div>
@@ -52,6 +52,7 @@ function AppContent({ dados }) {
                     </div>
                 } />
                 <Route path="/shop" element={<Shopping products={dados} />} />
+                <Route path="/pay" element={<Pagamento />} />
             </Routes>
         </div>
     );
