@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import axios from 'axios';  // Importando o axios para comunicação com a API
 import '../styles/Cadastro.css';
 
 const Cadastro = () => {
@@ -20,6 +21,8 @@ const Cadastro = () => {
     });
     
     const [showPassword, setShowPassword] = useState(false);
+    const [errorMessage, setErrorMessage] = useState(''); // Para armazenar a mensagem de erro
+    const [showErrorPopup, setShowErrorPopup] = useState(false); // Controla a exibição do pop-up de erro
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
@@ -66,10 +69,25 @@ const Cadastro = () => {
         return valid;
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (validateForm()) {
-            console.log('Formulário enviado:', form);
+            try {
+                // Realizando a requisição para a API
+                const response = await axios.post('http://localhost:8080/users', form);
+                console.log('Formulário enviado:', response.data);
+                alert('Usuário criado com sucesso!');
+                // Redirecionar ou limpar o formulário conforme necessário
+            } catch (error) {
+                if (error.response) {
+                    // Se o erro for causado pela validação de dados já existentes
+                    setErrorMessage(error.response.data);
+                    setShowErrorPopup(true);
+                } else {
+                    setErrorMessage('Erro ao conectar com o servidor');
+                    setShowErrorPopup(true);
+                }
+            }
         }
     };
 
@@ -153,6 +171,15 @@ const Cadastro = () => {
                         <a href="/login">Já tem conta?</a>
                     </div>
                 </form>
+
+                {showErrorPopup && (
+                    <div className="error-popup">
+                        <div className="error-popup-content">
+                            <p>{errorMessage}</p>
+                            <button onClick={() => setShowErrorPopup(false)}>Fechar</button>
+                        </div>
+                    </div>
+                )}
             </div>
         </>
     );

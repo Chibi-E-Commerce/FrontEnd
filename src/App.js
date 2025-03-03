@@ -5,6 +5,7 @@ import HomePage from './pages/Cadastro';
 import NavBar from './components/Navbar';
 import Shopping from './pages/Shopping';
 import Pagamento from './pages/Pagamento';
+import Login from './pages/Login';
 
 function App() {
     const [dados, setDados] = useState([]);
@@ -53,6 +54,7 @@ function AppContent({ dados }) {
                 } />
                 <Route path="/shop" element={<Shopping products={dados} />} />
                 <Route path="/pay" element={<Pagamento />} />
+                <Route path="/login" element={<Login />} />
             </Routes>
         </div>
     );
