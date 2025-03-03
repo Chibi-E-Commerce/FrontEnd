@@ -1,0 +1,35 @@
+.pagamento {
+    padding: 30px;
+}
+.pagamento-side {
+    width: 60vw;
+    background-color: #D6C0B3;
+    padding: 10px;
+    border-radius: 20px;
+}
+
+.endereco {
+    display: grid;
+    margin: 0;
+    grid-template-columns: 4fr 0.5fr 1fr;
+    width: 100%;
+    padding: 0;
+    gap: 40px;
+}
+
+
+.pagamento-input-group {
+    display: flex;
+    flex-direction: column;
+    
+}
+
+.pagamento-input-group input {
+    padding: 0;
+    height: 40px;
+    width: 100%;
+    background-color: #D9D9D9;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 1rem;
+}

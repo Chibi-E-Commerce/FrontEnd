@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Cartoes from '../components/Cartao';
+import "../styles/Pagamento.css";
 
 const Pagamento = () => {
     const [form, setForm] = useState({
@@ -30,6 +31,11 @@ const Pagamento = () => {
         });
     };
 
+    const enviarFormulario = (e) => {
+        e.preventDefault();
+        console.log("hello");
+    }
+
     return (
         <>
             <div className='pagamento'>
@@ -38,34 +44,35 @@ const Pagamento = () => {
                     <form className='pagamento-form'>
                         <h2>Endereço</h2>
                         <div className="endereco">
-                            <div className="input-group">
-                                <label htmlFor="nome">Rua</label>
+                            <div className="pagamento-input-group">
+                                <label htmlFor="rua">Rua</label>
                                 <input
                                     type="text"
-                                    id="nome"
-                                    name="nome"
+                                    id="rua"
+                                    name="rua"
                                     value={form.rua}
                                     onChange={handleChange}
                                 />
                                 {errors.rua && <span className="error">{errors.rua}</span>}
                             </div>
-                            <div className="input-group">
-                                <label htmlFor="nome">Estado</label>
+                            <div className="pagamento-input-group">
+                                <label htmlFor="estado">Estado</label>
                                 <input
                                     type="text"
-                                    id="nome"
-                                    name="nome"
+                                    id="estado"
+                                    name="estado"
                                     value={form.estado}
                                     onChange={handleChange}
                                 />
                                 {errors.estado && <span className="error">{errors.estado}</span>}
                             </div>
-                            <div className="input-group">
-                                <label htmlFor="nome">CEP</label>
+                            <div className="pagamento-input-group">
+                                <label htmlFor="cep">CEP</label>
                                 <input
                                     type="text"
-                                    id="nome"
-                                    name="nome"
+                                    id="cep"
+                                    name="cep"
+                                    pattern='\d{5}-\d{3}'
                                     value={form.cep}
                                     onChange={handleChange}
                                 />
@@ -73,6 +80,7 @@ const Pagamento = () => {
                             </div>
                         </div>
                         <Cartoes numeros={[123, 456, 789]}></Cartoes>
+                        
                     </form>
                 </div>
             </div>

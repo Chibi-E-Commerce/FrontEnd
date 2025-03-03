@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import { getDados } from './api';
 import HomePage from './pages/Cadastro';
-import Teste from './components/Navbar'
 import NavBar from './components/Navbar';
+import Pagamento from './pages/Pagamento';
 
 function App() {
     const [dados, setDados] = useState([]);
@@ -48,7 +48,8 @@ function App() {
                         </div>
                     } />
 
-                    <Route path="/shop" element={<Shopping />} />
+                    {/* <Route path="/shop" element={<Shopping />} /> */}
+                    <Route path="/pay" element={<Pagamento />} />
 
                 </Routes>
             </div>

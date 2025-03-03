@@ -1,7 +1,7 @@
 import '../styles/components/Cartao.css';
 
 
-const Cartao = ({numero}) => {
+const Cartao = ({key, numero}) => {
     return (
         <div className="cartao">
             <p className="center">{numero}</p>
@@ -15,7 +15,7 @@ const Cartoes = ({numeros}) => {
             <h2>Cartões</h2>
             <div className='cartao-container'>
                 {numeros.map(
-                    (num) => <Cartao numero={num}></Cartao>
+                    (num, i) => <Cartao key={i} numero={num}></Cartao>
                 )}
             </div>
         </div>
