@@ -7,6 +7,7 @@ import Shopping from './pages/Shopping';
 import Pagamento from './pages/Pagamento';
 import { OrderProvider } from './OrderContext';
 import { ModalProvider } from './ModalContext';
+import Login from './pages/Login';
 
 function App() {
   const [dados, setDados] = useState([]);
@@ -40,7 +41,6 @@ function AppContent({ dados }) {
   return (
     <div>
       <NavBar carrinho={location.pathname === "/shop"} />
-
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/dados" element={
@@ -60,8 +60,12 @@ function AppContent({ dados }) {
         <Route path="/shop" element={
             <Shopping products={dados} />
         } />
+        <Route path="/login" element={
+          <Login />
+          } 
+        />
         <Route path="/pay" element={
-            <Pagamento />
+            <Pagamento valor_total={1000} total_itens={49} id_cliente={"67bde97cbad2e60660df4810"} />
         } />
       </Routes>
     </div>

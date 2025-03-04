@@ -48,7 +48,7 @@ function CarSide({ closeShowSide }) {
 
     return (
         <div id="car-side">
-            <div id="header-car-side">
+            <div id="header-car-side" className="header-div">
                 <h3>Carrinho de Compras</h3>
                 <div id="carrinho-icon" onClick={closeShowSide}>
                     <Imagem src={carrinhoIcon} alt="Carrinho" />

@@ -20,15 +20,13 @@ function Button({text, onClick, id}) {
 
 function Checkbox({ name, onChange }) {
     const addClassChecked = (e) => {
-        const span = e.target.closest("span");
-        const input = span.querySelector("input");
-
-        if (input.checked) {
-            span.classList.remove("checked");
-            input.checked = false;
-        } else {
-            span.classList.add("checked");
-            input.checked = true;
+        const span = e.target.parentElement.parentElement
+        if (e.target.checked) {
+            span.classList.remove("unchecked")
+            span.classList.add("checked")
+        }else {
+            span.classList.remove("checked")
+            span.classList.add("unchecked")
         }
 
         if (onChange) {
@@ -37,11 +35,13 @@ function Checkbox({ name, onChange }) {
     };
 
     return (
-        <span onClick={addClassChecked}>
-            <div className="checkmark">
-                <input type="checkbox" name={name} className="checkbox" onChange={addClassChecked}/>
+        <>
+            <div className="unchecked">
+                <div className="checkmark">
+                    <input type="checkbox" name={name} onChange={addClassChecked} className="checkbox"/>
+                </div>
             </div>
-        </span>
+        </>
     )
 }
 
@@ -49,11 +49,11 @@ function Checkbox({ name, onChange }) {
 
 function CheckboxManual({ name, checked, onChange }) {
     return (
-        <span className={checked ? "checked" : ""} onClick={onChange}>
+        <div className={checked ? "checked" : "unchecked"} onClick={onChange}>
             <div className="checkmark">
                 <input type="checkbox" name={name} checked={checked} className="checkbox" readOnly />
             </div>
-        </span>
+        </div>
     );
 }
 
