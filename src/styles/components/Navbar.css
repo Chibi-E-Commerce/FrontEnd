@@ -6,7 +6,7 @@ header{
     height: 70px;
 }
 
-header div{
+header .header-div {
     width: 75%;
     background-color: #9E6031;
 }

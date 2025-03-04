@@ -21,7 +21,7 @@ const NavBar = ({ carrinho }) => {
       <div id="logo">
         <Imagem src={logo} alt="Chibi" />
       </div>
-      <div>
+      <div className="header-div">
         <Link text="Página Inicial" to="/" />
         <Link text="Dados" to="/dados" />
         <Link text="Login" to="/login"/>
