@@ -3,9 +3,9 @@ import '../styles/components/Cartao.css';
 
 const Cartao = ({key, numero}) => {
     return (
-        <div className="cartao">
+        <button className="cartao" onClick={(e) => e.preventDefault()}>
             <p className="center">{numero}</p>
-        </div>
+        </button>
     )
 }
 

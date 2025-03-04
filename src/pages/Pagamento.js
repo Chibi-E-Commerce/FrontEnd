@@ -48,6 +48,17 @@ const Pagamento = ({valor_total, total_itens, id_cliente}) => {
         fetchData();
     }, []);
 
+    useEffect(() => {
+        if (cliente.endereco) {
+            setForm((prevForm) => ({
+                ...prevForm,
+                rua: cliente.endereco.rua || '',
+                estado: cliente.endereco.estado || '',
+                cep: cliente.endereco.cep || '',
+            }));
+        }
+    }, [cliente]);    
+
 
     const fetchNumeroCartoes = () => {
         return cartoes.map((c) => c["saldo"])
@@ -140,7 +151,7 @@ const Pagamento = ({valor_total, total_itens, id_cliente}) => {
                                 {errors.cep && <span className="error">{errors.cep}</span>}
                             </div>
                         </div>
-                        <Cartoes numeros={fetchNumeroCartoes()}></Cartoes>
+                        <Cartoes numeros={[100, 200, 300]}></Cartoes>
                         <div className='informacoes-cartao'>
                             <div className="pagamento-input-group nome_completo">
                                 <label htmlFor="cod_seguranca">Nome completo</label>
