@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Cartoes from '../components/Cartao';
 import "../styles/Pagamento.css";
 import Gato from '../assets/images/cafe_fofura_felicidade.svg'
+import api from '../api';
 
-const Pagamento = ({valor_total, total_itens}) => {
+const Pagamento = ({valor_total, total_itens, id_cliente}) => {
     const [form, setForm] = useState({
         rua: '',
         estado: '',
@@ -28,6 +29,29 @@ const Pagamento = ({valor_total, total_itens}) => {
         dataNascimento: '',
         cod_seguranca: ''
     });
+
+    const [cliente, setCliente] = useState({});
+    const [cartoes, setCartoes] = useState([]);
+
+
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                const local_cl = await api.get(`http://localhost:8080/cliente?id=${id_cliente}`);
+
+                setCliente(local_cl.data);
+                setCartoes(local_cl.data["cartao"]);
+            } catch {
+                console.error('erro');
+            }
+        }
+        fetchData();
+    }, []);
+
+
+    const fetchNumeroCartoes = () => {
+        return cartoes.map((c) => c["saldo"])
+    }
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -116,7 +140,7 @@ const Pagamento = ({valor_total, total_itens}) => {
                                 {errors.cep && <span className="error">{errors.cep}</span>}
                             </div>
                         </div>
-                        <Cartoes numeros={[123, 456, 789]}></Cartoes>
+                        <Cartoes numeros={fetchNumeroCartoes()}></Cartoes>
                         <div className='informacoes-cartao'>
                             <div className="pagamento-input-group nome_completo">
                                 <label htmlFor="cod_seguranca">Nome completo</label>

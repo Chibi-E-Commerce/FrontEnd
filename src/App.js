@@ -54,7 +54,7 @@ function AppContent({ dados }) {
                 } />
                 <Route path="/shop" element={<Shopping products={dados} />} />
                 <Route path="/login" element={<Login />} />
-                <Route path="/pay" element={<Pagamento valor_total={1000} total_itens={49} />} />
+                <Route path="/pay" element={<Pagamento valor_total={1000} total_itens={49} id_cliente={"67bde97cbad2e60660df4810"} />} />
             </Routes>
         </div>
     );
