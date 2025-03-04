@@ -1,23 +1,49 @@
+import { useState, useContext } from "react"
 import {Imagem, Button} from "./Utils"
 import add from "../assets/images/filtroAdd.svg"
-import remove from "../assets/images/filtroRetirar.svg"
-import carrinhoIcon from "../assets/images/CarIcon.svg"
+import remove from "../assets/images/MenosQuantidade.svg"
+import car from "../assets/images/CarIconWhite.svg"
 import "../styles/components/SideBarProduct.css"
+import { OrderContext } from "../OrderContext"
 
-function SideBarProduct({product}) {
+function SideBarProduct({product, closeSideBar}) {
+
+    const [order, setOrder] = useState([product, 1])
+    const { addOrder } = useContext(OrderContext)
+
+    const handleClick = (e) => {
+        e.stopPropagation()
+    }
+
+    const updateAmount = (e, qnt) => {
+        setOrder((prevOrder) => {
+            let newAmount = e ? Number(e.target.value) : prevOrder[1] + qnt
+            if (newAmount < 1) newAmount = 1
+            return [prevOrder[0], newAmount]
+        })
+    }
+
+    const addProductCar = () => {
+
+        addOrder(order)
+        closeSideBar()
+    }
+
+
     return(
-        <div id="sidebar-product">
+        <div id="sidebar-product" onClick={handleClick}>
             <div id="image-sidebar-product">
                 <Imagem src={product.urlImagem} alt={product.nome}/>
             </div>
             <h3>{product.nome}</h3>
-            <p>{product.marca}</p>
+            <h5>{product.marca}</h5>
+            <p>{product.descricao}</p>
             <form onSubmit={(e) => e.preventDefault()}>
-                <Button text={<Imagem src={remove}/>} onClick=""/>
-                <input type="number"/>
-                <Button text={<Imagem src={add}/>} onClick=""/>
+                <Button text={<Imagem src={remove}/>} onClick={() => updateAmount(undefined, -1)}/>
+                <input type="number" name="qnt" value={order[1]} onChange={updateAmount}/>
+                <Button id="btn-right" text={<Imagem src={add}/>} onClick={() => updateAmount(undefined, 1)}/>
             </form>
-            <Button text={<><Imagem src={carrinhoIcon}/><p>Adicionar ao Carrinho</p></>} onClick=""/>
+            <Button id="btn-add" text={<><Imagem src={car} /><p>Adicionar ao Carrinho</p></>} onClick={() => {addProductCar()}}/>
         </div>
     )
 }

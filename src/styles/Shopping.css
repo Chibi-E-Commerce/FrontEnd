@@ -19,7 +19,7 @@ section{
 }
 
 section .product{
-    background-color: #E6AD76;
+    background-color: #F7BF88;
     width: 80%;
     border-radius: 11px;
     margin: auto;
@@ -68,6 +68,8 @@ section .product button{
 }
 
 #filtro form{
+    position: sticky;
+    top: 100px;
     width: 80%;
     margin: auto;
 }
@@ -195,7 +197,7 @@ section .product button{
 
     .image-remove{
         background-color: #1E1E1E;
-        padding: 0 2px 0 2px;
+        padding: 3px 2px 0 2px;
         width: 35px;
         height: 100%;
         img{

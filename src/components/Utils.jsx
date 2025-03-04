@@ -18,17 +18,21 @@ function Button({text, onClick, id}) {
     return <button id={id} onClick={onClick}>{text}</button>
 }
 
-function Checkbox({name}) {
+function Checkbox({ name, onChange }) {
     const addClassChecked = (e) => {
         const span = e.target.parentElement.parentElement
         if (e.target.checked) {
             span.classList.remove("unchecked")
             span.classList.add("checked")
-        }else{
+        }else {
             span.classList.remove("checked")
             span.classList.add("uncheked")
         }
-    }
+
+        if (onChange) {
+            onChange(e)
+        }
+    };
 
     return (
         <>
@@ -41,4 +45,18 @@ function Checkbox({name}) {
     )
 }
 
-export {Imagem, Link, Button, Checkbox};
+/* A diferença desse Checkbox é que o controle de checked ou unchecked é manual */
+
+function CheckboxManual({ name, checked, onChange }) {
+    return (
+        <span className={checked ? "checked" : ""} onClick={onChange}>
+            <div className="checkmark">
+                <input type="checkbox" name={name} checked={checked} className="checkbox" readOnly />
+            </div>
+        </span>
+    );
+}
+
+
+
+export {Imagem, Link, Button, Checkbox, CheckboxManual};
