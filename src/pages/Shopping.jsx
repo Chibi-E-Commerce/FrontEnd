@@ -10,6 +10,7 @@ import SideBarProduct from "../components/SideBarProduct"
 import { useModal } from "../ModalContext"
 
 function Shopping({ products }) {
+    const [showSideProduct, setShowSideProduct] = useState(null)
   const { open, close, openModal } = useModal()
   const [filters, setFilters] = useState([])
 
@@ -62,6 +63,11 @@ function Shopping({ products }) {
   }
 
   const openSideProduct = (ind) => {
+    if (showSideProduct === ind) {
+        setShowSideProduct(null)
+    } else {
+        setShowSideProduct(ind)
+    }
     open("sideBarProduct")
   }
 
@@ -158,7 +164,7 @@ function Shopping({ products }) {
             <p>{product.marca}</p>
 
             <Button text={"R$: " + product.preco.toFixed(2)} />
-            {openModal === "sideBarProduct" && (
+            {openModal === "sideBarProduct" && showSideProduct === ind && (
               <SideBarProduct
                 product={product}
                 closeSideBar={() => {
