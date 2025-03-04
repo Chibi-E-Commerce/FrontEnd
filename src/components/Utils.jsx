@@ -26,7 +26,7 @@ function Checkbox({ name, onChange }) {
             span.classList.add("checked")
         }else {
             span.classList.remove("checked")
-            span.classList.add("uncheked")
+            span.classList.add("unchecked")
         }
 
         if (onChange) {
@@ -49,11 +49,11 @@ function Checkbox({ name, onChange }) {
 
 function CheckboxManual({ name, checked, onChange }) {
     return (
-        <span className={checked ? "checked" : ""} onClick={onChange}>
+        <div className={checked ? "checked" : "unchecked"} onClick={onChange}>
             <div className="checkmark">
                 <input type="checkbox" name={name} checked={checked} className="checkbox" readOnly />
             </div>
-        </span>
+        </div>
     );
 }
 

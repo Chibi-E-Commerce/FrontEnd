@@ -34,7 +34,7 @@
         margin-bottom: 0;
         overflow-y: scroll;
 
-        li{
+        li {
             display: grid;
             grid-template-columns: 0.5fr 1fr 1fr 1fr 1fr 0.5fr;
             align-items: center;

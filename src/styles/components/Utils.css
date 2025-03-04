@@ -5,7 +5,7 @@
 
 /* CheckBox */
 
-.checkbox{
+.checkbox {
     width: 25px;
     height: 25px;
     margin: 0;
@@ -22,18 +22,12 @@
     max-height: 25px;
 }
 
-.checked {
+.checked, .unchecked {
     min-width: 25px;
     min-height: 25px;
     max-width: 25px;
     max-height: 25px;
-}
-
-.unchecked {
-    min-width: 25px;
-    min-height: 25px;
-    max-width: 25px;
-    max-height: 25px;  
+    margin: auto;
 }
 
 .checked:after{
