@@ -1,4 +1,4 @@
-import {Imagem, Button} from "../components/Utils"
+import {Imagem, Button} from "./Utils"
 import add from "../assets/images/filtroAdd.svg"
 import remove from "../assets/images/filtroRetirar.svg"
 import carrinhoIcon from "../assets/images/CarIcon.svg"
