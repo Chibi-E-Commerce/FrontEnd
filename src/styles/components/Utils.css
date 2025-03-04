@@ -17,14 +17,23 @@
     border: 1px solid black;
     border-radius: 6px;
     min-width: 25px;
+    min-height: 25px;
+    max-width: 25px;
     max-height: 25px;
 }
 
-.checked{
-    min-width: 30px;
-    min-height: 30px;
-    max-width: 30px;
-    max-height: 30px;
+.checked {
+    min-width: 25px;
+    min-height: 25px;
+    max-width: 25px;
+    max-height: 25px;
+}
+
+.unchecked {
+    min-width: 25px;
+    min-height: 25px;
+    max-width: 25px;
+    max-height: 25px;  
 }
 
 .checked:after{

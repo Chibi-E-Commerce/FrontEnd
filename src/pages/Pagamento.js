@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Cartoes from '../components/Cartao';
+import { Checkbox } from '../components/Utils';
 import "../styles/Pagamento.css";
 import Gato from '../assets/images/cafe_fofura_felicidade.svg'
 import api from '../api';
@@ -223,6 +224,7 @@ const Pagamento = ({valor_total, total_itens, id_cliente}) => {
                         </div>
                         
                         <div className='form-enviar'>
+                            <Checkbox name={"87"}/>
                             <div className='btn-pagar-row'>
                                 <div className="info-pagamento">
                                     <span id='valor-total'>R$ {valor_total.toFixed(2)}</span>

@@ -22,19 +22,21 @@ function Checkbox({name}) {
     const addClassChecked = (e) => {
         const span = e.target.parentElement.parentElement
         if (e.target.checked) {
+            span.classList.remove("unchecked")
             span.classList.add("checked")
         }else{
             span.classList.remove("checked")
+            span.classList.add("uncheked")
         }
     }
 
     return (
         <>
-            <span>
+            <div className="unchecked">
                 <div className="checkmark">
                     <input type="checkbox" name={name} onChange={addClassChecked} className="checkbox"/>
                 </div>
-            </span>
+            </div>
         </>
     )
 }
