@@ -1,11 +1,46 @@
 .pagamento {
-    padding: 30px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 30px;
+    padding-right: 30px;
+    display: flex;
+    gap: 10%;
 }
+
+/* Pagamento side */
 .pagamento-side {
-    width: 60vw;
+    width: 50%;
     background-color: #D6C0B3;
-    padding: 10px;
+    padding: 20px;
     border-radius: 20px;
+}
+
+.pagamento-title {
+    margin-bottom: 6px;
+    margin-top: 6px;
+}
+
+
+.pagamento-input-group {
+    display: flex;
+    flex-direction: column;
+
+}
+
+.pagamento-input-group label {
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+
+}
+
+.pagamento-input-group input, select {
+    padding: 0;
+    height: 40px;
+    width: 100%;
+    background-color: #D9D9D9;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 1rem;
 }
 
 .endereco {
@@ -17,19 +52,55 @@
     gap: 40px;
 }
 
-
-.pagamento-input-group {
-    display: flex;
-    flex-direction: column;
-    
+.num-cartao-grupo {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 5%;
 }
 
-.pagamento-input-group input {
-    padding: 0;
-    height: 40px;
-    width: 100%;
-    background-color: #D9D9D9;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    font-size: 1rem;
+.cod-seguranca-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 5%;
+    justify-content: start;
+}
+
+
+/* Gato left */
+
+.img-cat {
+    width: 30%;
+}
+
+/* Enviar */
+.btn-pagar-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.info-pagamento {
+    display: flex;
+    flex-direction: column;
+}
+
+#valor-total {
+    font-weight: bold;
+    font-size: 180%;
+}
+
+.btn-pagar-row input[type="button"] {
+    background-color: #B62929;
+    border-style: none;
+    border-radius: 11px;
+    width: 45%;
+
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    font-size: 145%;
+    letter-spacing: 5px;
+    text-align: center;
+    color: white;
+    text-transform: capitalize;
 }

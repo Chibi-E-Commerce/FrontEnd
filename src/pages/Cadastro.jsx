@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import '../styles/Cadastro.css';
 
 const Cadastro = () => {
+    const navigate = useNavigate();
     const [form, setForm] = useState({
         nome: '',
         email: '',
@@ -10,7 +13,7 @@ const Cadastro = () => {
         cpf: '',
         dataNascimento: ''
     });
-    
+
     const [errors, setErrors] = useState({
         nome: '',
         email: '',
@@ -18,8 +21,11 @@ const Cadastro = () => {
         cpf: '',
         dataNascimento: ''
     });
-    
+
     const [showPassword, setShowPassword] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
+    const [showErrorPopup, setShowErrorPopup] = useState(false);
+    const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
@@ -66,11 +72,28 @@ const Cadastro = () => {
         return valid;
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (validateForm()) {
-            console.log('Formulário enviado:', form);
+            try {
+                const response = await axios.post('http://localhost:8080/cliente', form);
+                console.log('Formulário enviado:', response.data);
+                setShowSuccessPopup(true);
+            } catch (error) {
+                if (error.response) {
+                    setErrorMessage(error.response.data);
+                    setShowErrorPopup(true);
+                } else {
+                    setErrorMessage('Erro ao conectar com o servidor');
+                    setShowErrorPopup(true);
+                }
+            }
         }
+    };
+
+    const handleSuccessPopupClose = () => {
+        setShowSuccessPopup(false);
+        navigate('/shop');
     };
 
     return (
@@ -153,6 +176,24 @@ const Cadastro = () => {
                         <a href="/login">Já tem conta?</a>
                     </div>
                 </form>
+
+                {showErrorPopup && (
+                    <div className="error-popup">
+                        <div className="error-popup-content">
+                            <p>{errorMessage}</p>
+                            <button onClick={() => setShowErrorPopup(false)}>Fechar</button>
+                        </div>
+                    </div>
+                )}
+
+                {showSuccessPopup && (
+                    <div className="success-popup">
+                        <div className="success-popup-content">
+                            <p>Cadastro realizado com sucesso!</p>
+                            <button onClick={handleSuccessPopupClose}>Ok</button>
+                        </div>
+                    </div>
+                )}
             </div>
         </>
     );

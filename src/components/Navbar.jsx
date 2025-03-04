@@ -24,6 +24,7 @@ const NavBar = ({ carrinho }) => {
       <div>
         <Link text="Página Inicial" to="/" />
         <Link text="Dados" to="/dados" />
+        <Link text="Login" to="/login"/>
         <Link text="Shopping" to="/shop" />
         <Link text="Pay" to="/pay" />
         {carrinho ? (
