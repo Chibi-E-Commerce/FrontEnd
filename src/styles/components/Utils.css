@@ -1,0 +1,49 @@
+/*
+    Estilização dos elementos comuns
+*/
+
+
+/* CheckBox */
+
+.checkbox{
+    width: 25px;
+    height: 25px;
+    margin: 0;
+    opacity: 0;
+}
+
+.checkmark{
+    background-color: transparent;
+    border: 1px solid black;
+    border-radius: 6px;
+    min-width: 25px;
+    max-height: 25px;
+}
+
+.checked{
+    min-width: 30px;
+    min-height: 30px;
+    max-width: 30px;
+    max-height: 30px;
+}
+
+.checked:after{
+    content: "";
+    display: block;
+    width: 10px;
+    height: 20px;
+    border: solid white;
+    border-width: 0 5px 5px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+    position: relative;
+    top: -32px;
+    left: 12px;
+}
+
+.checked .checkmark{
+    background-color: red;
+    border-color: red;
+}
+
