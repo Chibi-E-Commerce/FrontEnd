@@ -1,7 +1,7 @@
 #filter-bar{
-    position: absolute;
-    top: 175px;
+    position: fixed;
     left: 400px;
+    top: 175px;
     min-width: 150px;
     display: flex;
     flex-flow: column wrap;
@@ -12,11 +12,11 @@
 }
 
 #filter-bar button{
-    width: 95%;
+    width: 95% !important;
     height: 40px;
     border: 2px solid #d66545;
     border-radius: 6px;
-    margin: 5px;
+    margin: 5px !important;
     color: #FFFFFF;
     font-weight: bold;
     background-color: #d66545;

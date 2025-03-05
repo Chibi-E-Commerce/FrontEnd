@@ -4,13 +4,14 @@ import { Imagem, CheckboxManual, Checkbox, Button } from "./Utils"
 import "../styles/components/CarSide.css"
 import { useContext, useState} from "react"
 import { OrderContext } from "../OrderContext"
-import { useModal } from "../ModalContext"
+import { useNavigate } from "react-router-dom"
 
 function CarSide({ closeShowSide }) {
     const orders = useContext(OrderContext).orders
-    const {deleteOrder} = useContext(OrderContext)
+    const {deleteOrder, setOrdersPay} = useContext(OrderContext)
     const [ordersCheckeds, setOrdersCheckeds] = useState([])
     const [checkMain, setCheckMain] = useState(false)
+    const nagivate = useNavigate()
 
     const updateOrdersCheckeds = (order) => {
         let updatedOrders
@@ -21,6 +22,13 @@ function CarSide({ closeShowSide }) {
         }
 
         setOrdersCheckeds(updatedOrders)
+    }
+
+    const removeOrder = (order) => {
+        if (ordersCheckeds.includes(order)){
+            setOrdersCheckeds(ordersCheckeds.filter((cat) => cat !== order))
+        }
+        deleteOrder(order)
     }
 
     const updateAllOrdersCheckeds = () => {
@@ -46,6 +54,16 @@ function CarSide({ closeShowSide }) {
         return [total, quant]
     }
 
+    const continuePay = () => {
+        if (ordersCheckeds.length > 0){
+            setOrdersPay(ordersCheckeds)
+            closeShowSide()
+            nagivate('/pay')
+        }else{
+            window.alert("É preciso ter algo no carrinho.")
+        }
+    }
+
     return (
         <div id="car-side">
             <div id="header-car-side" className="header-div">
@@ -59,8 +77,9 @@ function CarSide({ closeShowSide }) {
                 <li id="header-list">
                     <Checkbox name="all" onChange={updateCheckMain} />
                     <h3>Produtos</h3>
-                    <h3>Preço Único</h3>
-                    <h3>Quantidade</h3>
+                    <h3>Nome</h3>
+                    <h3>P.Ú</h3>
+                    <h3>Qntd</h3>
                     <h3>Total</h3>
                 </li>
 
@@ -74,10 +93,13 @@ function CarSide({ closeShowSide }) {
                         <div className="image-car-side">
                             <Imagem src={order[0].urlImagem} />
                         </div>
+                        <h3> {order[0].nome} 
+                            <h4> {order[0].marca}</h4>
+                        </h3>
                         <h3>{"R$ " + order[0].preco.toFixed(2)}</h3>
                         <h3>{order[1]}</h3>
                         <h3>{"R$ " + (order[0].preco * order[1]).toFixed(2)}</h3>
-                        <Imagem src={deleteP} alt="Deletar item do carrinho" onClick={() => deleteOrder(order)}/>
+                        <Imagem src={deleteP} alt="Deletar item do carrinho" onClick={() => removeOrder(order)}/>
                     </li>
                 ))}
             </ul>
@@ -88,7 +110,7 @@ function CarSide({ closeShowSide }) {
                     <h4>{"Total de itens: " + sumOrders()[1]}</h4>
                 </div>
 
-                <Button text={<h3>CONTINUAR</h3>} />
+                <Button text={<h3>CONTINUAR</h3>} onClick={() => continuePay()}/>
             </div>
         </div>
     )

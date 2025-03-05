@@ -36,7 +36,7 @@
 
         li {
             display: grid;
-            grid-template-columns: 0.5fr 1fr 1fr 1fr 1fr 0.5fr;
+            grid-template-columns: 0.5fr 1.5fr 1fr 1fr 0.5fr 1fr 0.5fr;
             align-items: center;
             text-align: center;
             background-color: #AB886D;
@@ -45,6 +45,7 @@
             margin: auto;
             margin-bottom: 20px;
             border-radius: 8px;
+            color: white;
 
             span{
                 margin: auto;
@@ -52,6 +53,14 @@
 
             h3{
                 margin: 0;
+
+                h4{
+                    font-size: 16px;
+                    font-weight: normal;
+                    line-height: 50%;
+                    letter-spacing: 1px;
+                    margin: 0;
+                }
             }
 
             .image-car-side{
@@ -74,21 +83,21 @@
     }
 
     ul::-webkit-scrollbar {
-        width: 20px; /* Largura da barra */
+        width: 20px;
     }
     
     ul::-webkit-scrollbar-track {
-        background: #ab886db3; /* Cor do fundo da barra */
+        background: #ab886db3;
         border-radius: 4px;
     }
     
     ul::-webkit-scrollbar-thumb {
-        background: #8b6f55; /* Cor da barra */
+        background: #8b6f55; 
         border-radius: 4px;
     }
     
     ul::-webkit-scrollbar-thumb:hover {
-        background: #D6C0B3; /* Cor ao passar o mouse */
+        background: #D6C0B3;
     }
 
     #header-list{

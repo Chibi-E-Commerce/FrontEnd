@@ -36,7 +36,7 @@ function Checkbox({ name, onChange }) {
 
     return (
         <>
-            <div className="unchecked">
+            <div className="unchecked" onChange={addClassChecked}>
                 <div className="checkmark">
                     <input type="checkbox" name={name} onChange={addClassChecked} className="checkbox"/>
                 </div>
@@ -57,6 +57,10 @@ function CheckboxManual({ name, checked, onChange }) {
     );
 }
 
+
+/*
+    É necessário criar os Pop-ups de Sucess e Failed
+*/
 
 
 export {Imagem, Link, Button, Checkbox, CheckboxManual};

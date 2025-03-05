@@ -24,7 +24,7 @@ function SideBarProduct({product, closeSideBar}) {
     }
 
     const addProductCar = () => {
-
+        window.alert("Produto adiciondo")
         addOrder(order)
         closeSideBar()
     }
