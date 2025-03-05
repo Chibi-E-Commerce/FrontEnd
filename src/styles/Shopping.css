@@ -1,10 +1,12 @@
 *{
     font-family: "Poppins", sans-serif;
+    user-select: none;
 }
 
 main{
     display: flex;
     width: 100%;
+    min-height: calc(100vh - 70px);
     height: auto;
 }
 
@@ -72,6 +74,32 @@ section .product button{
     top: 100px;
     width: 80%;
     margin: auto;
+
+
+    button{
+        width: 80%;
+        height: 40px;
+        margin: 0  0 20px 30px;
+        background-color: #9c6a46;
+        border: none;
+        border-radius: 6px;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
+        h3{
+            color: white;
+            letter-spacing: 1px;
+            margin: 0;
+        }
+    }
+
+    button:hover{
+        background-color: transparent;
+        transition: all 0.3s ease;
+
+        h3{
+            color: #000000;
+        }
+    }
 }
 
 #filtro form #search-filtro{
@@ -120,9 +148,9 @@ section .product button{
 }
 
 #filtro form #search-filtro div img{
-    height: 35px;
+    height: 30px;
     width: auto;
-    margin: 4px 10px 0 0;
+    margin: 7px 10px 0 0;
 }
 
 #filtro form div{
@@ -166,6 +194,26 @@ section .product button{
     padding-left: 20px;
 }
 
+#categorias{
+    display: flex;
+    justify-content: start;
+    flex-flow: column;
+    height: auto !important;
+
+    label{
+        display: flex;
+        align-items: center;
+        justify-content: start;
+        text-align: start;
+        width: 85%;
+        padding-left: 15%;
+
+        .checked, .unchecked{
+            margin: 3px 10px 3px 0;
+        }
+    }
+}
+
 #filtro form ul li{
     display: flex;
     width: 80%;
@@ -173,11 +221,36 @@ section .product button{
     align-items: center;
     margin: 10px 0 2px 0;
     text-align: center;
-    border-radius: 6px;
+
+    .image-remove{
+        background-color: #1E1E1E;
+        width: 35px;
+        height: 100%;
+        img{
+            width: 80%;
+            height: auto;
+            margin-bottom: -3px;
+        }
+    }
+}
+
+#filtro form ul li .div-filter{
+    display: flex;
+    width: 80%;
+    height: 100%;
+    align-items: center;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
 
     p, label{
         margin: 0 0 0 10px;
         font-weight: bold;
+    }
+
+    .p-valor{
+        max-width: 60%;
+        overflow-x: hidden;
+        text-align: start;
     }
 
     input{
@@ -195,16 +268,9 @@ section .product button{
         color: #1E1E1E;
     }
 
-    .image-remove{
-        background-color: #1E1E1E;
-        padding: 3px 2px 0 2px;
-        width: 35px;
-        height: 100%;
-        img{
-            width: 80%;
-            height: auto;
-            margin: auto;
-        }
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
     }
 }
-

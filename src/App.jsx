@@ -58,7 +58,7 @@ function AppContent({ dados }) {
           </div>
         } />
         <Route path="/shop" element={
-            <Shopping products={dados} />
+            <Shopping productsBase={dados} />
         } />
         <Route path="/login" element={
           <Login />

@@ -16,4 +16,14 @@ export const getDados = async () => {
     }
 };
 
+export const getDataFiltered = async (filter) => {
+    try {
+        const response = await api.post('/produto/search', filter);
+        return response.data;
+    } catch (error) {
+        console.error('Erro ao buscar dados', error);
+        return null;
+    }
+}
+
 export default api;
