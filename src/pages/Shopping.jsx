@@ -4,16 +4,24 @@ import filtroAdd from "../assets/images/filtroAdd.svg"
 import filtroRetirar from "../assets/images/filtroRetirar.svg"
 import filtroSearch from "../assets/images/filtroSearch.svg"
 import "../styles/Shopping.css"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import FilterBar from "../components/FilterBar"
 import SideBarProduct from "../components/SideBarProduct"
 import { useModal } from "../ModalContext"
+import { getDataFiltered, getDados } from "../api"
 
-function Shopping({ products }) {
+function Shopping({ productsBase }) {
 
     const [showSideProduct, setShowSideProduct] = useState(null)
+    const [products, setProducts] = useState(productsBase)
     const { open, close, openModal } = useModal()
     const [filter, setFilter] = useState({})
+
+    useEffect(() => {
+        if (productsBase && productsBase.length > 0) {
+            setProducts(productsBase);
+        }
+    }, [productsBase]);
 
     const addFilter = (filterNew) => {
         if (filter[filterNew["tipo"]] === undefined || filter[filterNew["tipo"]] === null) {
@@ -100,6 +108,34 @@ function Shopping({ products }) {
             }
         })
     }
+
+
+    const sendFilter = async () => {
+        const filterSanitizeModel = {
+            pesquisa : "",
+            precoMin : 0,
+            precoMax : 0,
+            inDesconto : 0,
+            categoria : [],
+            marca : ""
+        }
+        console.log(filter)
+        let filterSanitize = {...filterSanitizeModel, ...filter}
+        delete filterSanitize.showDrop
+        Object.keys(filterSanitize).forEach((key) => {
+            if (filterSanitize[key] === null){
+                filterSanitize[key] = filterSanitizeModel[key]
+            }
+        })
+        console.log(JSON.stringify(filterSanitizeModel) === JSON.stringify(filterSanitize))
+        console.log(filterSanitize)
+        const newProducts = JSON.stringify(filterSanitizeModel) === JSON.stringify(filterSanitize)
+        ? await getDados()
+        : await getDataFiltered(filterSanitize);
+        
+        setProducts(newProducts || []);
+    }
+
     
 
     const openFilters = (name) => {
@@ -221,7 +257,7 @@ function Shopping({ products }) {
                                     ? "Em Desconto"
                                     : "Nome:"}
                                 </p>
-                                <p className="p-valor">{ tipo !== "categoria" ? filter[tipo] : <></>}</p>
+                                <p className="p-valor">{ (tipo !== "categoria" && tipo !== "inDesconto") ? filter[tipo] : <></>}</p>
                                 </>
                             )}
                             </div>
@@ -256,7 +292,7 @@ function Shopping({ products }) {
                     </ul>
 
 
-                <Button text={<h3>Pesquisar</h3>}/>
+                <Button text={<h3>Pesquisar</h3>} onClick={() => sendFilter()}/>
             </div>
 
             {openModal === "filterBar" && <FilterBar addFilter={addFilter} />}
