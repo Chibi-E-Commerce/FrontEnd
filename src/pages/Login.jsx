@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import '../styles/Login.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { UserContext } from "../UserContext"
 
 const Login = () => {
     const [form, setForm] = useState({ email: '', senha: '' });
@@ -10,6 +11,7 @@ const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const [showErrorPopup, setShowErrorPopup] = useState(false);
+    const { setUser } = useContext(UserContext)
     const navigate = useNavigate();
 
     const togglePasswordVisibility = () => setShowPassword(!showPassword);
@@ -43,6 +45,7 @@ const Login = () => {
                 const response = await axios.post('http://localhost:8080/auth/login', form);
                 setErrorMessage('');
                 setShowErrorPopup(false);
+                setUser(response.data)
                 navigate('/shop');
 
             } catch (error) {

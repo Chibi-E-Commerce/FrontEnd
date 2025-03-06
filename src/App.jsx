@@ -7,6 +7,7 @@ import Shopping from './pages/Shopping';
 import Pagamento from './pages/Pagamento';
 import { OrderProvider } from './OrderContext';
 import { ModalProvider } from './ModalContext';
+import { UserProvider } from './UserContext';
 import Login from './pages/Login';
 
 function App() {
@@ -26,11 +27,13 @@ function App() {
 
   return (
     <Router>
-      <ModalProvider>
-        <OrderProvider>
-            <AppContent dados={dados}/>
-        </OrderProvider>
-      </ModalProvider>
+      <UserProvider>
+        <ModalProvider>
+          <OrderProvider>
+              <AppContent dados={dados}/>
+          </OrderProvider>
+        </ModalProvider>
+      </UserProvider>
     </Router>
   );
 }

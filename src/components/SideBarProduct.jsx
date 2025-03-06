@@ -35,15 +35,19 @@ function SideBarProduct({product, closeSideBar}) {
             <div id="image-sidebar-product">
                 <Imagem src={product.urlImagem} alt={product.nome}/>
             </div>
-            <h3>{product.nome}</h3>
-            <h5>{product.marca}</h5>
-            <p>{product.descricao}</p>
-            <form onSubmit={(e) => e.preventDefault()}>
-                <Button text={<Imagem src={remove}/>} onClick={() => updateAmount(undefined, -1)}/>
-                <input type="number" name="qnt" value={order[1]} onChange={updateAmount}/>
-                <Button id="btn-right" text={<Imagem src={add}/>} onClick={() => updateAmount(undefined, 1)}/>
-            </form>
-            <Button id="btn-add" text={<><Imagem src={car} /><p>Adicionar ao Carrinho</p></>} onClick={() => {addProductCar()}}/>
+            <div id="text">
+                <h3>{product.nome}</h3>
+                <h5>{product.marca}</h5>
+                <p>{product.descricao}</p>
+            </div>
+            <div>
+                <form onSubmit={(e) => e.preventDefault()}>
+                    <Button text={<Imagem src={remove}/>} onClick={() => updateAmount(undefined, -1)}/>
+                    <input type="number" name="qnt" value={order[1]} onChange={updateAmount}/>
+                    <Button id="btn-right" text={<Imagem src={add}/>} onClick={() => updateAmount(undefined, 1)}/>
+                </form>
+                <Button id="btn-add" text={<><Imagem src={car} /><p>Adicionar ao Carrinho</p></>} onClick={() => {addProductCar()}}/>
+            </div>
         </div>
     )
 }
