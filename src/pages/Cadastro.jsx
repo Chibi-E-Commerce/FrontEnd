@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { UserContext } from "../UserContext"
 import '../styles/Cadastro.css';
 
 const Cadastro = () => {
@@ -26,6 +27,7 @@ const Cadastro = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const [showErrorPopup, setShowErrorPopup] = useState(false);
     const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+    const { setUser } = useContext(UserContext)
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
@@ -78,6 +80,7 @@ const Cadastro = () => {
             try {
                 const response = await axios.post('http://localhost:8080/cliente', form);
                 console.log('Formulário enviado:', response.data);
+                setUser(response.data)
                 setShowSuccessPopup(true);
             } catch (error) {
                 if (error.response) {

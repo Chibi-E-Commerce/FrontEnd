@@ -301,7 +301,7 @@ function Shopping({ productsBase }) {
         <section>
             {products.map((product, ind) => (
             <div key={ind} className="product" onClick={() => openSideProduct(ind)}>
-                <div>
+                <div className="image-product">
                 <Imagem src={product.urlImagem} alt={product.nome} />
                 </div>
                 <h3>{product.nome}</h3>
