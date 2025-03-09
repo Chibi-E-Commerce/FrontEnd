@@ -77,8 +77,37 @@ const Pagamento = ({valor_total, total_itens, id_cliente}) => {
 
     const enviarFormulario = (e) => {
         e.preventDefault();
-        console.log("hello");
     }
+
+    const baixarExtrato = async () => {
+        try {
+            const nomeUsuario = user.nome ?? form.nome_completo;
+            const cpfUsuario = user.cpf ?? '';
+            const response = await fetch(
+                `http://localhost:8080/pdf/extrato?nome=${nomeUsuario}&cpf=${cpfUsuario}&valor=${valor_total}`,
+                {
+                    method: "GET",
+                    headers: { "Content-Type": "application/pdf" },
+                }
+            );
+        
+            if (!response.ok) {
+                throw new Error("Erro ao gerar o PDF");
+            }
+        
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = url;
+            link.setAttribute("download", "comprovante_chibi.pdf");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        } catch (error) {
+            console.error("Erro ao baixar extrato:", error);
+        }
+    };
+      
 
     return (
         <>
@@ -228,19 +257,18 @@ const Pagamento = ({valor_total, total_itens, id_cliente}) => {
                         <div className='form-enviar'>
                             <Checkbox name={"87"}/>
                             <div className='btn-pagar-row'>
-                                <div className="info-pagamento">
-                                    <span id='valor-total'>R$ {valor_total.toFixed(2)}</span>
-                                    <span id='qnt-itens'>Total de itens: {total_itens}</span>
-                                </div>
-                                <input class="btn-pagar" type="button" value="COMPRAR" />
-
+                            <div className="info-pagamento">
+                                <span id='valor-total'>R$ {valor_total.toFixed(2)}</span>
+                                <span id='qnt-itens'>Total de itens: {total_itens}</span>
                             </div>
+                            <input className="btn-pagar" type="button" value="COMPRAR" />
+                        </div>
                         </div>
                     </form>
-
                 </div>
                 <img src={Gato} alt="Gato fofo!!" className='img-cat'/>
             </div>
+            <button className="btn-extrato" onClick={baixarExtrato}>Baixar Extrato</button>
         </>
     )
 }
