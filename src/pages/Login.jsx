@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import '../styles/Login.css';
 import axios from 'axios';
+import { getUser } from '../api';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from "../UserContext"
 
@@ -42,10 +43,16 @@ const Login = () => {
 
         if (validateForm()) {
             try {
+                // Validar auth com a api
                 const response = await axios.post('http://localhost:8080/auth/login', form);
-                setErrorMessage('');
+
+                // Pegar dado do usuário para o contexto
+                const user_complete = await getUser(form.email);
+
+                setUser(user_complete);
+
+                setErrorMessage(response.data);
                 setShowErrorPopup(false);
-                setUser(response.data)
                 navigate('/shop');
 
             } catch (error) {

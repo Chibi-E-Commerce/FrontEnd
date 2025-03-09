@@ -26,4 +26,19 @@ export const getDataFiltered = async (filter) => {
     }
 }
 
+export const getUser = async (email) => {
+    try {
+        const response = await api.get('/cliente/get-user', {
+            params: {
+                email: email
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Erro ao buscar cliente', error);
+        return null;
+    }
+}
+
+
 export default api;

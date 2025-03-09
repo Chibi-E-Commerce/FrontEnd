@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import Cartoes from '../components/Cartao';
 import { Checkbox } from '../components/Utils';
 import "../styles/Pagamento.css";
 import Gato from '../assets/images/cafe_fofura_felicidade.svg'
 import api from '../api';
+import { UserContext } from '../UserContext';
 
 const Pagamento = ({valor_total, total_itens, id_cliente}) => {
     const [form, setForm] = useState({
@@ -34,6 +35,8 @@ const Pagamento = ({valor_total, total_itens, id_cliente}) => {
     const [cliente, setCliente] = useState({});
     const [cartoes, setCartoes] = useState([]);
 
+    const { user } = useContext(UserContext);
+    
 
     useEffect(() => {
         async function fetchData() {
@@ -58,8 +61,7 @@ const Pagamento = ({valor_total, total_itens, id_cliente}) => {
                 cep: cliente.endereco.cep || '',
             }));
         }
-    }, [cliente]);    
-
+    }, [cliente]);
 
     const fetchNumeroCartoes = () => {
         return cartoes.map((c) => c["saldo"])
@@ -152,7 +154,7 @@ const Pagamento = ({valor_total, total_itens, id_cliente}) => {
                                 {errors.cep && <span className="error">{errors.cep}</span>}
                             </div>
                         </div>
-                        <Cartoes numeros={[100, 200, 300]}></Cartoes>
+                        <Cartoes numeros={user.cartoes ?? []}></Cartoes>
                         <div className='informacoes-cartao'>
                             <div className="pagamento-input-group nome_completo">
                                 <label htmlFor="cod_seguranca">Nome completo</label>

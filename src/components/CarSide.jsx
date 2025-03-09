@@ -5,6 +5,7 @@ import "../styles/components/CarSide.css"
 import { useContext, useState} from "react"
 import { OrderContext } from "../OrderContext"
 import { useNavigate } from "react-router-dom"
+import { UserContext } from "../UserContext"
 
 function CarSide({ closeShowSide }) {
     const orders = useContext(OrderContext).orders
@@ -13,6 +14,7 @@ function CarSide({ closeShowSide }) {
     const [checkMain, setCheckMain] = useState(false)
     const nagivate = useNavigate()
 
+    
     const updateOrdersCheckeds = (order) => {
         let updatedOrders
         if (ordersCheckeds.includes(order)) {
