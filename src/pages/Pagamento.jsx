@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import Cartoes from '../components/Cartao';
-import { Checkbox } from '../components/Utils';
+import { Checkbox, Imagem } from '../components/Utils';
 import "../styles/Pagamento.css";
 import Gato from '../assets/images/cafe_fofura_felicidade.svg'
 import { UserContext } from '../UserContext';
@@ -126,7 +126,7 @@ const Pagamento = ({  }) => {
             const nomeUsuario = user.nome ?? form.nome_completo;
             const cpfUsuario = user.cpf ?? '';
             const response = await fetch(
-                `http://localhost:8080/pdf/extrato?nome=${nomeUsuario}&cpf=${cpfUsuario}&valor=${valor_total}`,
+                `http://localhost:8080/pdf/extrato?nome=${nomeUsuario}&cpf=${cpfUsuario}&valor=${sumOrders()[0]}`,
                 {
                     method: "GET",
                     headers: { "Content-Type": "application/pdf" },
@@ -309,14 +309,12 @@ const Pagamento = ({  }) => {
                                 </div>
                                 <input className="btn-pagar" type="button" value="COMPRAR" />
                             </div>
-                            <input className="btn-pagar" type="button" value="COMPRAR" />
-                        </div>
                         </div>
                     </form>
                 </div>
-                <img src={Gato} alt="Gato fofo!!" className='img-cat'/>
-            </div>
-            <button className="btn-extrato" onClick={baixarExtrato}>Baixar Extrato</button>
+            <Imagem src={Gato} alt="Gato fofo!!" className='img-cat'/>
+        </div>
+        <button className="btn-extrato" onClick={baixarExtrato}>Baixar Extrato</button>
         </>
     )
 }
