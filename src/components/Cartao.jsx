@@ -7,7 +7,7 @@ import amex from "../assets/images/Amex.svg"
 import { useState } from 'react';
 
 
-const Cartao = ({ cartao }) => {
+const Cartao = ({ cartao, onClick }) => {
 
     const [checked, setChecked] = useState(false)
 
@@ -46,6 +46,8 @@ const Cartao = ({ cartao }) => {
             button.classList.remove("cartao-checked")
         }
         setChecked(!checked)
+
+        onClick(cartao)
     }
 
     return (
@@ -62,13 +64,13 @@ const Cartao = ({ cartao }) => {
     )
 }
 
-const Cartoes = ({ cartoes }) => {
+const Cartoes = ({ cartoes, onClick }) => {
     return (
         <div className='cartao-box'>
             <h2 className='pagamento-title'>Cartões</h2>
             <div className='cartao-container'>
                 {cartoes.map(
-                    (cartao, i) => <Cartao key={i} cartao={cartao}></Cartao>
+                    (cartao, i) => <Cartao key={i} cartao={cartao} onClick={onClick}></Cartao>
                 )}
             </div>
         </div>
