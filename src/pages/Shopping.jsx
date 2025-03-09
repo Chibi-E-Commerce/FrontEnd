@@ -4,24 +4,36 @@ import filtroAdd from "../assets/images/filtroAdd.svg"
 import filtroRetirar from "../assets/images/filtroRetirar.svg"
 import filtroSearch from "../assets/images/filtroSearch.svg"
 import "../styles/Shopping.css"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useContext } from "react"
 import FilterBar from "../components/FilterBar"
 import SideBarProduct from "../components/SideBarProduct"
 import { useModal } from "../ModalContext"
 import { getDataFiltered, getDados } from "../api"
+import { UserContext } from "../UserContext"
+import { OrderContext } from "../OrderContext"
 
 function Shopping({ productsBase }) {
 
     const [showSideProduct, setShowSideProduct] = useState(null)
     const [products, setProducts] = useState(productsBase)
     const { open, close, openModal } = useModal()
-    const [filter, setFilter] = useState({})
+    const [ filter, setFilter] = useState({})
+    const { user } = useContext(UserContext);
+    const { setOrders } = useContext(OrderContext);
 
     useEffect(() => {
         if (productsBase && productsBase.length > 0) {
             setProducts(productsBase);
         }
     }, [productsBase]);
+
+    useEffect(() => {
+        console.log(user === null ? "Não tem usuário" : "Encontrei usuário")
+        if (user !== null) {
+            console.log(user);
+            setOrders(user.carrinho )
+        }
+    })
 
     const addFilter = (filterNew) => {
         if (filter[filterNew["tipo"]] === undefined || filter[filterNew["tipo"]] === null) {

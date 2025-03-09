@@ -1,4 +1,6 @@
-import React, { createContext, useState } from 'react'
+import axios from 'axios'
+import React, { createContext, useState, useContext, useEffect } from 'react'
+import { UserContext } from './UserContext'
 
 export const OrderContext = createContext()
 
@@ -11,24 +13,49 @@ export const OrderContext = createContext()
 */
 
 export const OrderProvider = ({ children }) => {
-  const [orders, setOrders] = useState([])
+  const { user } = useContext(UserContext);
+  const [orders, setOrders] = useState([]);
+
   const [ordersPay, setOrdersPay] = useState([])
+
+  const sSendOrder = async () => {      
+    console.log(user)
+    let e = await axios.put('http://localhost:8080/cliente', user, {
+      params: {
+        email: user.email
+      }
+    });
+  } 
+
+  const updateOrderWithApi = () => {
+    try {
+      user.carrinho = orders;
+      console.log(user);
+      sSendOrder()
+    } catch (e) {
+      console.log('Não conseguiu atualizar carrinho.');
+    }
+  }
 
   const addOrder = (order) => {
     let cont = 0;
     orders.forEach((prevOrder) => {
-      if (JSON.stringify(prevOrder[0]) === JSON.stringify(order[0])){
-        prevOrder[1] += order[1]
+      if (JSON.stringify(prevOrder.produto) === JSON.stringify(order.produto)){
+        prevOrder.quantidade += order.quantidade
         cont++
       }
     })
     if (cont === 0){
       setOrders([...orders, order])
     }
+
+    updateOrderWithApi();
   }
 
   const deleteOrder = (order) => {
     setOrders(orders.filter((cat) => cat !== order))
+
+    updateOrderWithApi();
   }
 
 
@@ -42,7 +69,7 @@ export const OrderProvider = ({ children }) => {
   }
 
   return (
-    <OrderContext.Provider value={{ orders, addOrder, deleteOrder, ordersPay, setOrdersPay }}>
+    <OrderContext.Provider value={{ orders, setOrders, addOrder, deleteOrder, ordersPay, setOrdersPay }}>
       {children}
     </OrderContext.Provider>
   )

@@ -8,7 +8,10 @@ import { OrderContext } from "../OrderContext"
 
 function SideBarProduct({product, closeSideBar}) {
 
-    const [order, setOrder] = useState([product, 1])
+    const [order, setOrder] = useState({
+        produto: product,
+        quantidade: 1
+    })
     const { addOrder } = useContext(OrderContext)
 
     const handleClick = (e) => {
@@ -17,9 +20,12 @@ function SideBarProduct({product, closeSideBar}) {
 
     const updateAmount = (e, qnt) => {
         setOrder((prevOrder) => {
-            let newAmount = e ? Number(e.target.value) : prevOrder[1] + qnt
+            let newAmount = e ? Number(e.target.value) : prevOrder.quantidade + qnt
             if (newAmount < 1) newAmount = 1
-            return [prevOrder[0], newAmount]
+            return {
+                produto: prevOrder.produto, 
+                quantidade: newAmount
+            }
         })
     }
 
@@ -43,7 +49,7 @@ function SideBarProduct({product, closeSideBar}) {
             <div>
                 <form onSubmit={(e) => e.preventDefault()}>
                     <Button text={<Imagem src={remove}/>} onClick={() => updateAmount(undefined, -1)}/>
-                    <input type="number" name="qnt" value={order[1]} onChange={updateAmount}/>
+                    <input type="number" name="qnt" value={order.quantidade} onChange={updateAmount}/>
                     <Button id="btn-right" text={<Imagem src={add}/>} onClick={() => updateAmount(undefined, 1)}/>
                 </form>
                 <Button id="btn-add" text={<><Imagem src={car} /><p>Adicionar ao Carrinho</p></>} onClick={() => {addProductCar()}}/>
