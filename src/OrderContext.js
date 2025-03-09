@@ -2,14 +2,6 @@ import React, { createContext, useState } from 'react'
 
 export const OrderContext = createContext()
 
-/*
-  ** IMPORTANTE **
-  É preciso conectar esse Conetxto com a Api, para pegar o que está no carrinho do usuário no banco de dados
-
-  PRECISA ANTES:
-   - USER CONTEXT - para conseguir informações do usuário e depois mandar para a API
-*/
-
 export const OrderProvider = ({ children }) => {
   const [orders, setOrders] = useState([])
   const [ordersPay, setOrdersPay] = useState([])
