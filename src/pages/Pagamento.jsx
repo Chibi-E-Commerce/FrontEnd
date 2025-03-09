@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import Cartoes from '../components/Cartao';
-import { Checkbox } from '../components/Utils';
+import { Checkbox, Imagem } from '../components/Utils';
 import "../styles/Pagamento.css";
 import Gato from '../assets/images/cafe_fofura_felicidade.svg'
 import { UserContext } from '../UserContext';
@@ -8,11 +8,44 @@ import { OrderContext } from "../OrderContext"
 import { getDados, getUser } from '../api';
 
 const Pagamento = ({  }) => {
+
+    const estados = {
+        "Acre": "AC",
+        "Alagoas": "AL",
+        "Amapá": "AP",
+        "Amazonas": "AM",
+        "Bahia": "BA",
+        "Ceará": "CE",
+        "Distrito Federal": "DF",
+        "Espírito Santo": "ES",
+        "Goiás": "GO",
+        "Maranhão": "MA",
+        "Mato Grosso": "MT",
+        "Mato Grosso do Sul": "MS",
+        "Minas Gerais": "MG",
+        "Pará": "PA",
+        "Paraíba": "PB",
+        "Paraná": "PR",
+        "Pernambuco": "PE",
+        "Piauí": "PI",
+        "Rio de Janeiro": "RJ",
+        "Rio Grande do Norte": "RN",
+        "Rio Grande do Sul": "RS",
+        "Rondônia": "RO",
+        "Roraima": "RR",
+        "Santa Catarina": "SC",
+        "São Paulo": "SP",
+        "Sergipe": "SE",
+        "Tocantins": "TO"
+    }
+
+
+
+    const { ordersPay } = useContext(OrderContext)
     const [form, setForm] = useState({
         rua: '',
         estado: '',
         cep: '',
-        cartao_index: '',
         numero_cartao: '',
         cod_seguranca: '',
         bandeira: '',
@@ -31,10 +64,6 @@ const Pagamento = ({  }) => {
         cod_seguranca: ''
     });
 
-    const { ordersPay } = useContext(OrderContext)
-    const [cliente, setCliente] = useState({});
-    const [cartoes, setCartoes] = useState([]);
-
     // const { user } = useContext(UserContext);
 
     const [user, setUser] = useState(null)
@@ -42,25 +71,21 @@ const Pagamento = ({  }) => {
         const fetchUser = async () => {
             const response = await getUser("ricardo.mendes@email.com")
             setUser(response)
+            setForm((prevForm) => ({
+                ...prevForm,
+                rua: response.endereco.rua, 
+                estado: estados[response.endereco.estado],
+                cep: response.endereco.cep,
+            }))
         }
         fetchUser()
     }, [])
     useEffect(() => {
         if (user){
         console.log("User atualizado:", user)
+        console.log("Endereco atualizado:", form)
         }
     }, [user])
-    
-    useEffect(() => {
-        if (cliente.endereco) {
-            setForm((prevForm) => ({
-                ...prevForm,
-                rua: cliente.endereco.rua || '',
-                estado: cliente.endereco.estado || '',
-                cep: cliente.endereco.cep || '',
-            }));
-        }
-    }, [cliente]);
 
     const sumOrders = () => {
         let sum = 0
@@ -72,12 +97,20 @@ const Pagamento = ({  }) => {
         return [sum, qntd]
     }
 
-    const fetchNumeroCartoes = () => {
-        return cartoes.map((c) => c["saldo"])
+    const completeInputs = (cartao) => {
+        setForm((prevForm) => ({
+            ...prevForm,
+            numero_cartao: cartao.numero,
+            cod_seguranca: cartao.cvv,
+            bandeira: cartao.bandeira,
+            nome_completo: cartao.titular,
+            cartao_validade:"20" + cartao.validade.ano + "-" + cartao.validade.mes
+        }))
     }
 
     const handleChange = (e) => {
         const { name, value } = e.target;
+        console.log(value)
         setForm({
             ...form,
             [name]: value
@@ -93,7 +126,7 @@ const Pagamento = ({  }) => {
             const nomeUsuario = user.nome ?? form.nome_completo;
             const cpfUsuario = user.cpf ?? '';
             const response = await fetch(
-                `http://localhost:8080/pdf/extrato?nome=${nomeUsuario}&cpf=${cpfUsuario}&valor=${valor_total}`,
+                `http://localhost:8080/pdf/extrato?nome=${nomeUsuario}&cpf=${cpfUsuario}&valor=${sumOrders()[0]}`,
                 {
                     method: "GET",
                     headers: { "Content-Type": "application/pdf" },
@@ -141,6 +174,12 @@ const Pagamento = ({  }) => {
                             <div className="pagamento-input-group">
                                 <label htmlFor="estado">Estado</label>
                                 <select name="estado" id="estado" onChange={handleChange}>
+                                    { form.estado === "" ? (
+                                                <option value="Hidden" hidden>XX</option>
+                                            ) : (
+                                                <option value={form.estado} hidden>{form.estado}</option>
+                                            )
+                                        }
                                     <option value="AC">AC</option>
                                     <option value="AL">AL</option>
                                     <option value="AP">AP</option>
@@ -192,7 +231,7 @@ const Pagamento = ({  }) => {
                                 {errors.cep && <span className="error">{errors.cep}</span>}
                             </div>
                         </div>
-                        <Cartoes cartoes={user ?  user.cartao : []}></Cartoes>
+                        <Cartoes cartoes={user ?  user.cartao : []} onClick={completeInputs}></Cartoes>
                         <div className='informacoes-cartao'>
                             <div className="pagamento-input-group nome_completo">
                                 <label htmlFor="cod_seguranca">Nome completo</label>
@@ -200,7 +239,7 @@ const Pagamento = ({  }) => {
                                     type="text"
                                     id="nome_completo"
                                     name="nome_completo"
-                                    placeholder='João José Joaquim Jeremias'
+                                    placeholder='Nome do Titular'
                                     value={form.nome_completo}
                                     onChange={handleChange}
                                 />
@@ -212,7 +251,7 @@ const Pagamento = ({  }) => {
                                         type="text"
                                         id="numero_cartao"
                                         name="numero_cartao"
-                                        placeholder='000000000000000'
+                                        placeholder='XXXX XXXX XXXX XXXX'
                                         value={form.numero_cartao}
                                         onChange={handleChange}
                                     />
@@ -220,22 +259,18 @@ const Pagamento = ({  }) => {
                                 </div>
                                 <div className="pagamento-input-group">
                                     <label htmlFor="bandeira">Bandeira</label>
-                                    <select name="estado" id="estado" onChange={handleChange}>
-                                        <option value="Hidden" hidden>Selecione uma opção</option>
-                                        <option value="Mastercard">Mastercard</option>
+                                    <select name="bandeira" id="bandeira" value={form.bandeira} onChange={handleChange}>
+                                        { form.bandeira === "" ? (
+                                                <option value="Hidden" hidden>Selecione uma opção</option>
+                                            ) : (
+                                                <option value={form.bandeira} hidden>{form.bandeira}</option>
+                                            )
+                                        }
+                                        <option value="MasterCard">MasterCard</option>
                                         <option value="Elo">Elo</option>
                                         <option value="Visa">Visa</option>
-                                        <option value="American Express">American Express</option>
-
+                                        <option value="Amex">Amex</option>
                                     </select>
-                                    <input
-                                        type="text"
-                                        id="bandeira"
-                                        name="bandeira"
-                                        hidden="true"
-                                        value={form.bandeira}
-                                        onChange={handleChange}
-                                    />
                                 </div>
                             </div>
                             <div className='cod-seguranca-row'>
@@ -245,6 +280,7 @@ const Pagamento = ({  }) => {
                                         type="text"
                                         id="cod_seguranca"
                                         name="cod_seguranca"
+                                        placeholder='XXX'
                                         value={form.cod_seguranca}
                                         onChange={handleChange}
                                     />
@@ -273,14 +309,12 @@ const Pagamento = ({  }) => {
                                 </div>
                                 <input className="btn-pagar" type="button" value="COMPRAR" />
                             </div>
-                            <input className="btn-pagar" type="button" value="COMPRAR" />
-                        </div>
                         </div>
                     </form>
                 </div>
-                <img src={Gato} alt="Gato fofo!!" className='img-cat'/>
-            </div>
-            <button className="btn-extrato" onClick={baixarExtrato}>Baixar Extrato</button>
+            <Imagem src={Gato} alt="Gato fofo!!" className='img-cat'/>
+        </div>
+        <button className="btn-extrato" onClick={baixarExtrato}>Baixar Extrato</button>
         </>
     )
 }
