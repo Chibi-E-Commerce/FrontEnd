@@ -4,14 +4,6 @@ import { UserContext } from './UserContext'
 
 export const OrderContext = createContext()
 
-/*
-  ** IMPORTANTE **
-  É preciso conectar esse Conetxto com a Api, para pegar o que está no carrinho do usuário no banco de dados
-
-  PRECISA ANTES:
-   - USER CONTEXT - para conseguir informações do usuário e depois mandar para a API
-*/
-
 export const OrderProvider = ({ children }) => {
   const { user } = useContext(UserContext);
   const [orders, setOrders] = useState([]);

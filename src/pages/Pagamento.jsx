@@ -3,10 +3,11 @@ import Cartoes from '../components/Cartao';
 import { Checkbox } from '../components/Utils';
 import "../styles/Pagamento.css";
 import Gato from '../assets/images/cafe_fofura_felicidade.svg'
-import api from '../api';
 import { UserContext } from '../UserContext';
+import { OrderContext } from "../OrderContext"
+import { getDados, getUser } from '../api';
 
-const Pagamento = ({valor_total, total_itens, id_cliente}) => {
+const Pagamento = ({  }) => {
     const [form, setForm] = useState({
         rua: '',
         estado: '',
@@ -17,8 +18,6 @@ const Pagamento = ({valor_total, total_itens, id_cliente}) => {
         bandeira: '',
         cartao_validade: '',
         nome_completo: '',
-        valor_total: valor_total,
-        total_itens: total_itens,
     });
 
     const [errors, setErrors] = useState({
@@ -32,26 +31,26 @@ const Pagamento = ({valor_total, total_itens, id_cliente}) => {
         cod_seguranca: ''
     });
 
+    const { ordersPay } = useContext(OrderContext)
     const [cliente, setCliente] = useState({});
     const [cartoes, setCartoes] = useState([]);
 
-    const { user } = useContext(UserContext);
-    
+    // const { user } = useContext(UserContext);
 
+    const [user, setUser] = useState(null)
     useEffect(() => {
-        async function fetchData() {
-            try {
-                const local_cl = await api.get(`http://localhost:8080/cliente?id=${id_cliente}`);
-
-                setCliente(local_cl.data);
-                setCartoes(local_cl.data["cartao"]);
-            } catch {
-                console.error('erro');
-            }
+        const fetchUser = async () => {
+            const response = await getUser("ricardo.mendes@email.com")
+            setUser(response)
         }
-        fetchData();
-    }, []);
-
+        fetchUser()
+    }, [])
+    useEffect(() => {
+        if (user){
+        console.log("User atualizado:", user)
+        }
+    }, [user])
+    
     useEffect(() => {
         if (cliente.endereco) {
             setForm((prevForm) => ({
@@ -62,6 +61,16 @@ const Pagamento = ({valor_total, total_itens, id_cliente}) => {
             }));
         }
     }, [cliente]);
+
+    const sumOrders = () => {
+        let sum = 0
+        let qntd = 0
+        ordersPay.map((orderPay) => {
+            sum += orderPay[0].preco * orderPay[1]
+            qntd += orderPay[1]
+        })
+        return [sum, qntd]
+    }
 
     const fetchNumeroCartoes = () => {
         return cartoes.map((c) => c["saldo"])
@@ -77,8 +86,37 @@ const Pagamento = ({valor_total, total_itens, id_cliente}) => {
 
     const enviarFormulario = (e) => {
         e.preventDefault();
-        console.log("hello");
     }
+
+    const baixarExtrato = async () => {
+        try {
+            const nomeUsuario = user.nome ?? form.nome_completo;
+            const cpfUsuario = user.cpf ?? '';
+            const response = await fetch(
+                `http://localhost:8080/pdf/extrato?nome=${nomeUsuario}&cpf=${cpfUsuario}&valor=${valor_total}`,
+                {
+                    method: "GET",
+                    headers: { "Content-Type": "application/pdf" },
+                }
+            );
+        
+            if (!response.ok) {
+                throw new Error("Erro ao gerar o PDF");
+            }
+        
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = url;
+            link.setAttribute("download", "comprovante_chibi.pdf");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        } catch (error) {
+            console.error("Erro ao baixar extrato:", error);
+        }
+    };
+      
 
     return (
         <>
@@ -154,7 +192,7 @@ const Pagamento = ({valor_total, total_itens, id_cliente}) => {
                                 {errors.cep && <span className="error">{errors.cep}</span>}
                             </div>
                         </div>
-                        <Cartoes numeros={user.cartoes ?? []}></Cartoes>
+                        <Cartoes cartoes={user ?  user.cartao : []}></Cartoes>
                         <div className='informacoes-cartao'>
                             <div className="pagamento-input-group nome_completo">
                                 <label htmlFor="cod_seguranca">Nome completo</label>
@@ -183,6 +221,7 @@ const Pagamento = ({valor_total, total_itens, id_cliente}) => {
                                 <div className="pagamento-input-group">
                                     <label htmlFor="bandeira">Bandeira</label>
                                     <select name="estado" id="estado" onChange={handleChange}>
+                                        <option value="Hidden" hidden>Selecione uma opção</option>
                                         <option value="Mastercard">Mastercard</option>
                                         <option value="Elo">Elo</option>
                                         <option value="Visa">Visa</option>
@@ -229,18 +268,19 @@ const Pagamento = ({valor_total, total_itens, id_cliente}) => {
                             <Checkbox name={"87"}/>
                             <div className='btn-pagar-row'>
                                 <div className="info-pagamento">
-                                    <span id='valor-total'>R$ {valor_total.toFixed(2)}</span>
-                                    <span id='qnt-itens'>Total de itens: {total_itens}</span>
+                                    <span id='valor-total'>R$ { sumOrders()[0] }</span>
+                                    <span id='qnt-itens'>Total de itens: { sumOrders()[1] }</span>
                                 </div>
-                                <input class="btn-pagar" type="button" value="COMPRAR" />
-
+                                <input className="btn-pagar" type="button" value="COMPRAR" />
                             </div>
+                            <input className="btn-pagar" type="button" value="COMPRAR" />
+                        </div>
                         </div>
                     </form>
-
                 </div>
                 <img src={Gato} alt="Gato fofo!!" className='img-cat'/>
             </div>
+            <button className="btn-extrato" onClick={baixarExtrato}>Baixar Extrato</button>
         </>
     )
 }
