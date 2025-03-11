@@ -65,8 +65,8 @@ const Cadastro = () => {
             valid = false;
         }
 
-        if (!form.dataNascimento) {
-            newErrors.dataNascimento = 'Data de nascimento é obrigatória';
+        if (!form.dataNascimento || new Date(form.dataNascimento) >= new Date(new Date().setFullYear(new Date().getFullYear() - 18))) {
+            newErrors.dataNascimento = 'A Data informada é menor do que 18';
             valid = false;
         }
 
