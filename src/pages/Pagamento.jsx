@@ -39,8 +39,6 @@ const Pagamento = ({  }) => {
         "Tocantins": "TO"
     }
 
-
-
     const { ordersPay } = useContext(OrderContext)
     const [form, setForm] = useState({
         rua: '',
@@ -87,8 +85,8 @@ const Pagamento = ({  }) => {
         let sum = 0
         let qntd = 0
         ordersPay.map((orderPay) => {
-            sum += orderPay[0].preco * orderPay[1]
-            qntd += orderPay[1]
+            sum += orderPay.produto.preco * ordersPay.quantidade
+            qntd += ordersPay.quantidade
         })
         return [sum, qntd]
     }
