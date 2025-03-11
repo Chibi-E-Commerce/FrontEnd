@@ -46,7 +46,7 @@
 .endereco {
     display: grid;
     margin: 0;
-    grid-template-columns: 4fr 0.5fr 1fr;
+    grid-template-columns: 4fr 2fr 1fr;
     width: 100%;
     padding: 0;
     gap: 40px;
