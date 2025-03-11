@@ -40,5 +40,19 @@ export const getUser = async (email) => {
     }
 }
 
+export const updateUser = async (user) => {
+    try {
+        const response = await api.put('/cliente',user, {
+            params: {
+                email: user.email
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Erro ao Atualizar cliente', error);
+        return null;
+    }
+}
+
 
 export default api;

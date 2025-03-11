@@ -1,30 +1,45 @@
-import React, { createContext, useState } from 'react'
+import React, { createContext, useState, useEffect, useContext } from 'react';
+import { getUser, updateUser } from "./api";
+import { UserContext } from "./UserContext";
 
-export const OrderContext = createContext()
+export const OrderContext = createContext();
 
 export const OrderProvider = ({ children }) => {
-  const [orders, setOrders] = useState([])
+  const { user, setUser } = useContext(UserContext);
+  const [orders, setOrders] = useState([]);
   const [ordersPay, setOrdersPay] = useState([])
 
-  const addOrder = (order) => {
-    let cont = 0;
-    orders.forEach((prevOrder) => {
-      if (JSON.stringify(prevOrder[0]) === JSON.stringify(order[0])){
-        prevOrder[1] += order[1]
-        cont++
-      }
-    })
-    if (cont === 0){
-      setOrders([...orders, order])
+  useEffect(() => {
+    if (user?.carrinho) {
+      setOrders(user.carrinho);
     }
-  }
+  }, [user]);
+
+  const syncOrders = async (newOrders) => {
+    setOrders(newOrders);
+    if (user) {
+      const updatedUser = { ...user, carrinho: newOrders };
+      setUser(updatedUser);
+      await updateUser(updatedUser);
+    }
+  };
+
+  const addOrder = (order) => {
+    let updatedOrders = [...orders];
+    const index = updatedOrders.findIndex(o => JSON.stringify(o.produto) === JSON.stringify(order.produto));
+    if (index !== -1) {
+      updatedOrders[index].quantidade += order.quantidade;
+    } else {
+      updatedOrders.push(order);
+    }
+    syncOrders(updatedOrders);
+  };
 
   const deleteOrder = (order) => {
-    setOrders(orders.filter((cat) => cat !== order))
-  }
+    const updatedOrders = orders.filter(o => JSON.stringify(o.produto) !== JSON.stringify(order.produto));
+    syncOrders(updatedOrders);
+  };
 
-
-  // Essa Função serve para retirar do carrinho os produtos pagos.
   const removeIntersection = () => {
     ordersPay.forEach((prevOrder) => {
       if (orders.includes(prevOrder)){
@@ -37,5 +52,5 @@ export const OrderProvider = ({ children }) => {
     <OrderContext.Provider value={{ orders, addOrder, deleteOrder, ordersPay, setOrdersPay }}>
       {children}
     </OrderContext.Provider>
-  )
-}
+  );
+};

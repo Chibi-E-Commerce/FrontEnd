@@ -1,27 +1,35 @@
-import { Imagem, Button, CheckboxManual } from "../components/Utils"
-import filtroDelete from "../assets/images/filtroDelete.svg"
-import filtroAdd from "../assets/images/filtroAdd.svg"
-import filtroRetirar from "../assets/images/filtroRetirar.svg"
-import filtroSearch from "../assets/images/filtroSearch.svg"
-import "../styles/Shopping.css"
-import { useState, useEffect } from "react"
-import FilterBar from "../components/FilterBar"
-import SideBarProduct from "../components/SideBarProduct"
-import { useModal } from "../ModalContext"
-import { getDataFiltered, getDados } from "../api"
-
+import { Imagem, Button, CheckboxManual } from "../components/Utils";
+import filtroDelete from "../assets/images/filtroDelete.svg";
+import filtroAdd from "../assets/images/filtroAdd.svg";
+import filtroRetirar from "../assets/images/filtroRetirar.svg";
+import filtroSearch from "../assets/images/filtroSearch.svg";
+import "../styles/Shopping.css";
+import { useState, useEffect, useContext } from "react";
+import FilterBar from "../components/FilterBar";
+import SideBarProduct from "../components/SideBarProduct";
+import { useModal } from "../ModalContext";
+import { OrderContext } from "../OrderContext";
+import { getDataFiltered, getDados } from "../api";
+import { UserContext } from "../UserContext"
+ 
 function Shopping({ productsBase }) {
-
-    const [showSideProduct, setShowSideProduct] = useState(null)
-    const [products, setProducts] = useState(productsBase)
-    const { open, close, openModal } = useModal()
-    const [filter, setFilter] = useState({})
+    const { orders } = useContext(OrderContext);
+    const [showSideProduct, setShowSideProduct] = useState(null);
+    const [products, setProducts] = useState(productsBase);
+    const { open, close, openModal } = useModal();
+    const [filter, setFilter] = useState({});
+    const { user } = useContext(UserContext)
 
     useEffect(() => {
         if (productsBase && productsBase.length > 0) {
             setProducts(productsBase);
         }
     }, [productsBase]);
+
+    useEffect(() => {
+        console.log("Carrinho Atualizado: ", orders);
+        console.log(user)
+    }, [orders]);
 
     const addFilter = (filterNew) => {
         if (filter[filterNew["tipo"]] === undefined || filter[filterNew["tipo"]] === null) {
@@ -119,7 +127,6 @@ function Shopping({ productsBase }) {
             categoria : [],
             marca : ""
         }
-        console.log(filter)
         let filterSanitize = {...filterSanitizeModel, ...filter}
         delete filterSanitize.showDrop
         Object.keys(filterSanitize).forEach((key) => {
@@ -127,8 +134,7 @@ function Shopping({ productsBase }) {
                 filterSanitize[key] = filterSanitizeModel[key]
             }
         })
-        console.log(JSON.stringify(filterSanitizeModel) === JSON.stringify(filterSanitize))
-        console.log(filterSanitize)
+
         const newProducts = JSON.stringify(filterSanitizeModel) === JSON.stringify(filterSanitize)
         ? await getDados()
         : await getDataFiltered(filterSanitize);
@@ -323,4 +329,4 @@ function Shopping({ productsBase }) {
     )
 }
 
-export default Shopping
+export default Shopping;

@@ -5,7 +5,6 @@ import "../styles/components/CarSide.css"
 import { useContext, useState} from "react"
 import { OrderContext } from "../OrderContext"
 import { useNavigate } from "react-router-dom"
-import { UserContext } from "../UserContext"
 
 function CarSide({ closeShowSide }) {
     const orders = useContext(OrderContext).orders
@@ -50,8 +49,8 @@ function CarSide({ closeShowSide }) {
         let total = 0
         let quant = 0
         ordersCheckeds.forEach((order) => {
-            total += order[0].preco * order[1]
-            quant += order[1]
+            total += order.produto.preco * order.quantidade
+            quant += order.quantidade
         })
         return [total, quant]
     }
@@ -65,6 +64,7 @@ function CarSide({ closeShowSide }) {
             window.alert("É preciso ter algo no carrinho.")
         }
     }
+
 
     return (
         <div id="car-side">
@@ -86,21 +86,22 @@ function CarSide({ closeShowSide }) {
                 </li>
 
                 {orders.map((order, ind) => (
+                
                     <li key={ind}>
                         <CheckboxManual
-                            name={order[0].nome}
+                            name={order.produto.nome}
                             checked={ordersCheckeds.includes(order)}
                             onChange={() => updateOrdersCheckeds(order)}
                         />
                         <div className="image-car-side">
-                            <Imagem src={order[0].urlImagem} />
+                            <Imagem src={order.produto.urlImagem} />
                         </div>
-                        <h3> {order[0].nome} 
-                            <h4> {order[0].marca}</h4>
+                        <h3> {order.produto.nome} 
+                            <h4> {order.produto.marca}</h4>
                         </h3>
-                        <h3>{"R$ " + order[0].preco.toFixed(2)}</h3>
-                        <h3>{order[1]}</h3>
-                        <h3>{"R$ " + (order[0].preco * order[1]).toFixed(2)}</h3>
+                        <h3>{"R$ " + order.produto.preco.toFixed(2)}</h3>
+                        <h3>{order.quantidade}</h3>
+                        <h3>{"R$ " + (order.produto.preco * order.quantidade).toFixed(2)}</h3>
                         <Imagem src={deleteP} alt="Deletar item do carrinho" onClick={() => removeOrder(order)}/>
                     </li>
                 ))}
