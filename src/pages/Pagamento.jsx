@@ -54,10 +54,6 @@ const Pagamento = ({  }) => {
     });
 
     const [errors, setErrors] = useState({
-        nome: '',
-        email: '',
-        senha: '',
-        cpf: '',
         cep: '',
         numero_cartao: '',
         dataNascimento: '',
@@ -69,7 +65,7 @@ const Pagamento = ({  }) => {
     const [user, setUser] = useState(null)
     useEffect(() => {
         const fetchUser = async () => {
-            const response = await getUser("ricardo.mendes@email.com")
+            const response = await getUser("carlos.lima@email.com")
             setUser(response)
             setForm((prevForm) => ({
                 ...prevForm,
@@ -119,6 +115,11 @@ const Pagamento = ({  }) => {
 
     const enviarFormulario = (e) => {
         e.preventDefault();
+        if (validateForm()) {
+            console.log("Bonito.");
+        } else {
+            console.log("feio")
+        }
     }
 
     const baixarExtrato = async () => {
@@ -148,6 +149,26 @@ const Pagamento = ({  }) => {
         } catch (error) {
             console.error("Erro ao baixar extrato:", error);
         }
+    };
+
+    
+    const validateForm = () => {
+        let valid = true;
+        let newErrors = {
+            cep: '',
+            numero_cartao: '',
+            dataNascimento: '',
+            cod_seguranca: ''
+        };
+
+        if (!RegExp(/\d{5}-\d{3}/).test(form.cep)) {
+            valid = false;
+            newErrors.cep = "CEP Inválido, digite no formato 00000-000"
+        }
+
+
+        setErrors(newErrors);
+        return valid;
     };
       
 
@@ -180,33 +201,9 @@ const Pagamento = ({  }) => {
                                                 <option value={form.estado} hidden>{form.estado}</option>
                                             )
                                         }
-                                    <option value="AC">AC</option>
-                                    <option value="AL">AL</option>
-                                    <option value="AP">AP</option>
-                                    <option value="AM">AM</option>
-                                    <option value="BA">BA</option>
-                                    <option value="CE">CE</option>
-                                    <option value="DF">DF</option>
-                                    <option value="ES">ES</option>
-                                    <option value="GO">GO</option>
-                                    <option value="MA">MA</option>
-                                    <option value="MT">MT</option>
-                                    <option value="MS">MS</option>
-                                    <option value="MG">MG</option>
-                                    <option value="PA">PA</option>
-                                    <option value="PB">PB</option>
-                                    <option value="PR">PR</option>
-                                    <option value="PE">PE</option>
-                                    <option value="PI">PI</option>
-                                    <option value="RJ">RJ</option>
-                                    <option value="RN">RN</option>
-                                    <option value="RS">RS</option>
-                                    <option value="RO">RO</option>
-                                    <option value="RR">RR</option>
-                                    <option value="SC">SC</option>
-                                    <option value="SP">SP</option>
-                                    <option value="SE">SE</option>
-                                    <option value="TO">TO</option>
+                                    {Object.entries(estados).map(([key, value]) => (
+                                        <option key={value} value={value}>{key}</option>
+                                    ))}
                                 </select>
                                 <input
                                     type="text"
@@ -231,7 +228,7 @@ const Pagamento = ({  }) => {
                                 {errors.cep && <span className="error">{errors.cep}</span>}
                             </div>
                         </div>
-                        <Cartoes cartoes={user ?  user.cartao : []} onClick={completeInputs}></Cartoes>
+                        <Cartoes cartoes={user ? user.cartao : []} onClick={completeInputs}></Cartoes>
                         <div className='informacoes-cartao'>
                             <div className="pagamento-input-group nome_completo">
                                 <label htmlFor="cod_seguranca">Nome completo</label>
@@ -307,7 +304,7 @@ const Pagamento = ({  }) => {
                                     <span id='valor-total'>R$ { sumOrders()[0] }</span>
                                     <span id='qnt-itens'>Total de itens: { sumOrders()[1] }</span>
                                 </div>
-                                <input className="btn-pagar" type="button" value="COMPRAR" />
+                                <input className="btn-pagar" type="button" value="COMPRAR" onClick={enviarFormulario}/>
                             </div>
                         </div>
                     </form>
