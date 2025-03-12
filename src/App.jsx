@@ -46,20 +46,6 @@ function AppContent({ dados }) {
       <NavBar carrinho={location.pathname === "/shop"} />
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/dados" element={
-          <div>
-            <h1>Dados da API</h1>
-            <ul>
-              {dados.length === 0 ? (
-                <li>Carregando...</li>
-              ) : (
-                dados.map((item, index) => (
-                  <li key={index}>{item.nome}</li>
-                ))
-              )}
-            </ul>
-          </div>
-        } />
         <Route path="/shop" element={
             <Shopping productsBase={dados} />
         } />
