@@ -7,7 +7,7 @@ import { UserContext } from '../UserContext';
 import { OrderContext } from "../OrderContext"
 import { getDados, getUser } from '../api';
 
-const Pagamento = ({  }) => {
+const Pagamento = ({}) => {
 
     const estados = {
         "Acre": "AC",
@@ -39,6 +39,7 @@ const Pagamento = ({  }) => {
         "Tocantins": "TO"
     }
 
+    const { user } = useContext(UserContext);
     const { ordersPay } = useContext(OrderContext)
     const [form, setForm] = useState({
         rua: '',
@@ -50,38 +51,24 @@ const Pagamento = ({  }) => {
         cartao_validade: '',
         nome_completo: '',
     });
-
-    // const { user } = useContext(UserContext);
-
-    const [user, setUser] = useState(null)
+  
     useEffect(() => {
-        const fetchUser = async () => {
-            const response = await getUser("carlos.lima@email.com")
-            setUser(response)
-            setForm((prevForm) => ({
-                ...prevForm,
-                rua: response.endereco.rua, 
-                estado: estados[response.endereco.estado],
-                cep: response.endereco.cep,
-            }))
-        }
-        fetchUser()
+        setForm((prevForm) => ({
+            ...prevForm,
+            rua: user.endereco.rua,
+            estado: user.endereco.estado,
+            cep: user.endereco.cep,
+        }))
     }, [])
-    useEffect(() => {
-        if (user){
-        console.log("User atualizado:", user)
-        console.log("Endereco atualizado:", form)
-        }
-    }, [user])
 
     const sumOrders = () => {
         let sum = 0
         let qntd = 0
         ordersPay.map((orderPay) => {
-            sum += orderPay.produto.preco * ordersPay.quantidade
-            qntd += ordersPay.quantidade
+            sum += Number(orderPay.produto.preco) * Number(orderPay.quantidade)
+            qntd += Number(orderPay.quantidade)
         })
-        return [sum, qntd]
+        return [sum.toFixed(2), qntd]
     }
 
     const completeInputs = (cartao) => {
@@ -273,7 +260,7 @@ const Pagamento = ({  }) => {
                                 {errors.cep && <span className="error">{errors.cep}</span>}
                             </div>
                         </div>
-                        <Cartoes cartoes={user ? user.cartao : []} onClick={completeInputs}></Cartoes>
+                        <Cartoes cartoes={user.cartao ? user.cartao : []} onClick={completeInputs}></Cartoes>
                         <div className='informacoes-cartao'>
                             <div className="pagamento-input-group nome_completo">
                                 <label htmlFor="nome_completo">Nome completo</label>
