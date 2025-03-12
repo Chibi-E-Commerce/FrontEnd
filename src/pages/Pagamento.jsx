@@ -51,14 +51,7 @@ const Pagamento = ({}) => {
         cartao_validade: '',
         nome_completo: '',
     });
-
-    const [errors, setErrors] = useState({
-        cep: '',
-        numero_cartao: '',
-        dataNascimento: '',
-        cod_seguranca: ''
-    });
-
+  
     useEffect(() => {
         setForm((prevForm) => ({
             ...prevForm,
@@ -136,19 +129,70 @@ const Pagamento = ({}) => {
         }
     };
 
+    const [errors, setErrors] = useState({
+        rua: '',
+        estado: '',
+        cep: '',
+        numero_cartao: '',
+        cod_seguranca: '',
+        bandeira: '',
+        cartao_validade: '',
+        nome_completo: '',
+    });
+
     
     const validateForm = () => {
         let valid = true;
         let newErrors = {
+            rua: '',
+            estado: '',
+            cep: '',    
             cep: '',
             numero_cartao: '',
-            dataNascimento: '',
             cod_seguranca: ''
         };
 
-        if (!RegExp(/\d{5}-\d{3}/).test(form.cep)) {
+        if (!form.rua) {
+            newErrors.rua = 'Rua é obrigatória';
+            valid = false;
+        }
+
+        if (!form.estado) {
+            newErrors.rua = 'Estado é obrigatório';
+            valid = false;
+        }
+
+        if (!form.nome_completo) {
+            newErrors.nome_completo = 'Nome completo é obrigatório';
+            valid = false;
+        }
+
+        if (!form.bandeira) {
+            newErrors.bandeira = 'Bandeira é obrigatória';
+            valid = false;
+        }
+
+        if (!form.cartao_validade) {
+            newErrors.cartao_validade = 'Validade do cartão é obrigatória';
+            valid = false;
+        }
+
+
+        
+
+        if (!RegExp(/^\d{5}-\d{3}$/).test(form.cep)) {
             valid = false;
             newErrors.cep = "CEP Inválido, digite no formato 00000-000"
+        }
+
+        if (!RegExp(/^\d{4} \d{4} \d{4} \d{4}$/).test(form.numero_cartao)) {
+            valid = false;
+            newErrors.numero_cartao = 'Número de cartão inválido, digite no formato XXXX XXXX XXXX XXXX'
+        }
+
+        if (!RegExp(/^\d{3}$/).test(form.cod_seguranca)) {
+            valid = false;
+            newErrors.cod_seguranca = 'Código de segurança inválido'
         }
 
 
@@ -174,12 +218,13 @@ const Pagamento = ({}) => {
                                     placeholder='Rua Maria Joaquim'
                                     value={form.rua}
                                     onChange={handleChange}
+                                    required
                                 />
                                 {errors.rua && <span className="error">{errors.rua}</span>}
                             </div>
                             <div className="pagamento-input-group">
                                 <label htmlFor="estado">Estado</label>
-                                <select name="estado" id="estado" onChange={handleChange}>
+                                <select name="estado" id="estado" onChange={handleChange} required>
                                     { form.estado === "" ? (
                                                 <option value="Hidden" hidden>XX</option>
                                             ) : (
@@ -196,6 +241,7 @@ const Pagamento = ({}) => {
                                     name="estado"
                                     hidden="true"
                                     value={form.estado}
+                                    required
                                     onChange={handleChange}
                                 />
                                 {errors.estado && <span className="error">{errors.estado}</span>}
@@ -209,6 +255,7 @@ const Pagamento = ({}) => {
                                     placeholder='00000-000'
                                     value={form.cep}
                                     onChange={handleChange}
+                                    required
                                 />
                                 {errors.cep && <span className="error">{errors.cep}</span>}
                             </div>
@@ -216,7 +263,7 @@ const Pagamento = ({}) => {
                         <Cartoes cartoes={user.cartao ? user.cartao : []} onClick={completeInputs}></Cartoes>
                         <div className='informacoes-cartao'>
                             <div className="pagamento-input-group nome_completo">
-                                <label htmlFor="cod_seguranca">Nome completo</label>
+                                <label htmlFor="nome_completo">Nome completo</label>
                                 <input
                                     type="text"
                                     id="nome_completo"
@@ -224,7 +271,9 @@ const Pagamento = ({}) => {
                                     placeholder='Nome do Titular'
                                     value={form.nome_completo}
                                     onChange={handleChange}
+                                    required
                                 />
+                                {errors.nome_completo && <span className="error">{errors.nome_completo}</span>}
                             </div>
                             <div className='num-cartao-grupo'>
                                 <div className="pagamento-input-group">
@@ -236,12 +285,13 @@ const Pagamento = ({}) => {
                                         placeholder='XXXX XXXX XXXX XXXX'
                                         value={form.numero_cartao}
                                         onChange={handleChange}
+                                        required
                                     />
                                     {errors.numero_cartao && <span className="error">{errors.numero_cartao}</span>}
                                 </div>
                                 <div className="pagamento-input-group">
                                     <label htmlFor="bandeira">Bandeira</label>
-                                    <select name="bandeira" id="bandeira" value={form.bandeira} onChange={handleChange}>
+                                    <select name="bandeira" id="bandeira" value={form.bandeira} onChange={handleChange} required>
                                         { form.bandeira === "" ? (
                                                 <option value="Hidden" hidden>Selecione uma opção</option>
                                             ) : (
@@ -253,6 +303,8 @@ const Pagamento = ({}) => {
                                         <option value="Visa">Visa</option>
                                         <option value="Amex">Amex</option>
                                     </select>
+                                    {errors.bandeira && <span className="error">{errors.bandeira}</span>}
+
                                 </div>
                             </div>
                             <div className='cod-seguranca-row'>
@@ -265,17 +317,19 @@ const Pagamento = ({}) => {
                                         placeholder='XXX'
                                         value={form.cod_seguranca}
                                         onChange={handleChange}
+                                        required
                                     />
                                     {errors.cod_seguranca && <span className="error">{errors.cod_seguranca}</span>}
                                 </div>
                                 <div className="pagamento-input-group">
-                                    <label htmlFor="cartao_validade">Validade</label>
+                                    <label htmlFor="cartao_validade">Validade (mês/ano)</label>
                                     <input
                                         type="month"
                                         id="cartao_validade"
                                         name="cartao_validade"
                                         value={form.cartao_validade}
                                         onChange={handleChange}
+                                        required
                                     />
                                     {errors.cartao_validade && <span className="error">{errors.cartao_validade}</span>}
                                 </div>
