@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import Cartoes from '../components/Cartao';
-import { Checkbox, Imagem } from '../components/Utils';
+import { Checkbox, CheckboxManual, Imagem } from '../components/Utils';
 import "../styles/Pagamento.css";
 import Gato from '../assets/images/cafe_fofura_felicidade.svg'
 import { UserContext } from '../UserContext';
@@ -49,6 +49,7 @@ const Pagamento = ({  }) => {
         bandeira: '',
         cartao_validade: '',
         nome_completo: '',
+        cadastrar_cartao: false,
     });
 
     // const { user } = useContext(UserContext);
@@ -104,12 +105,31 @@ const Pagamento = ({  }) => {
         });
     };
 
+    useEffect(() => {
+        console.log(user)
+    })
+
     const enviarFormulario = (e) => {
         e.preventDefault();
         if (validateForm()) {
-            console.log("Bonito.");
-        } else {
-            console.log("feio")
+            try {
+                user.endereco.rua = form.rua.trim();
+                user.endereco.estado = form.estado.trim();
+                user.endereco.cep = form.cep.trim();
+                
+                const response = axios.put('http://localhost:8080/cliente', form);
+                console.log('Formulário enviado:', response.data);
+                setShowSuccessPopup(true);
+                console.log("Bonito")
+            } catch (error) {
+                if (error.response) {
+                    setErrorMessage(error.response.data);
+                    setShowErrorPopup(true);
+                } else {
+                    setErrorMessage('Erro ao conectar com o servidor');
+                    setShowErrorPopup(true);
+                }
+            }
         }
     }
 
@@ -212,7 +232,7 @@ const Pagamento = ({  }) => {
         setErrors(newErrors);
         return valid;
     };
-      
+
 
     return (
         <>
@@ -350,7 +370,7 @@ const Pagamento = ({  }) => {
                         </div>
                         
                         <div className='form-enviar'>
-                            <Checkbox name={"87"}/>
+                            <CheckboxManual name={"87"}/>
                             <div className='btn-pagar-row'>
                                 <div className="info-pagamento">
                                     <span id='valor-total'>R$ { sumOrders()[0] }</span>
