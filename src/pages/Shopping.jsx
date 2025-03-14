@@ -311,25 +311,32 @@ function Shopping({ productsBase }) {
         <section>
             {products.map((product, ind) => (
             <div key={ind} className="product" onClick={() => openSideProduct(ind)}>
-                { product.desconto > 0 ? (<Imagem className="desconto" src={Desconto}/>) : (<></>)}
+                {
+                    product.desconto > 0 ? (
+                        <Imagem className="img-desconto" src={Desconto}/>
+                    )
+                    : 
+                    ( <></> )
+                }
                 <div className="image-product">
                 <Imagem src={product.urlImagem} alt={product.nome} />
                 </div>
                 <h3>{product.nome}</h3>
-                <p>{product.marca}</p>
+                <p className={product.desconto > 0 ? "p-desconto" : ""}>{product.marca}</p>
 
-                { product.desconto > 0 ? (
-                    <>
-                        <div className="preco-riscado">
-                            <p>{"R$: " + product.preco.toFixed(2)} <span></span></p>
-                        </div>
-                        <Button className="btn-desconto" text={"R$: " + (product.preco * ((100 - product.desconto)/100)).toFixed(2)} />
-                    </>
-                ) 
-                : 
-                (
-                    <Button text={"R$: " + product.preco.toFixed(2)} />
-                )}
+                {
+                    product.desconto > 0 ? (
+                        <>
+                            <div className="preco-desconto"> 
+                                <span></span>
+                                <p>{"R$: " + product.preco.toFixed(2)}</p>
+                            </div>
+                            <Button className="btn-desconto" text={"R$: " + (product.preco * ((100 - product.desconto)/100)).toFixed(2)} />
+                        </>
+                    )
+                    : 
+                    ( <Button text={"R$: " + product.preco.toFixed(2)} /> )
+                }
                 {openModal === "sideBarProduct" && showSideProduct === ind && (
                 <SideBarProduct
                     product={product}

@@ -58,6 +58,10 @@ section .product p{
     margin: -5px auto 10px auto;
 }
 
+section .product .p-desconto{
+    margin: -10px auto 2px auto;
+}
+
 section .product button{
     width: 70%;
     height: 40px;
@@ -70,35 +74,36 @@ section .product button{
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
-section .product .btn-desconto{
-    background-color: #B62929;
-    color: white;
+section .product .img-desconto{
+    position: absolute;
+    width: 140px;
+    transform: translateX(-22%) translateY(-5%);
 }
 
-section .product .preco-riscado{
+section .product .preco-desconto{
+    width: 100%;
+    margin: 0;
 
     p{
-        position: absolute;
-        margin: 0;
-        transform: translateX(100%) translateY(-30%);
-
-        span{
-            display: block;
-            width: 75px;
-            height: 3px;
-            position: absolute;
-            background-color: #B62929;
-            transform: translateY(-450%) translateX(55%);
-        }
+        width: 100%;
+        font-size: 15px;
+    }
+    
+    span{
+        display: block;
+        position: relative;
+        top: 10px;
+        left: 60px;
+        width: 40%;
+        height: 2px;
+        background-color: #B62929;
     }
 }
 
-
-section .product .desconto{
-    width: 140px;
-
-    position: absolute;
-    transform: translateX(-35%) translateY(-5%);
+section .product .btn-desconto{
+    background-color: #B62929;
+    color: white;
+    margin-top: 0;
 }
 
 #filtro{
@@ -112,6 +117,7 @@ section .product .desconto{
     top: 0px;
     width: 80%;
     margin: auto;
+    z-index: 100;
 
 
     button{

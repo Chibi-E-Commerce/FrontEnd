@@ -9,6 +9,7 @@
     padding: 10px 8px 10px 5px;
     border-radius: 6px;
     background-color: #DCD3CF;
+    z-index: 100;
 }
 
 #filter-bar button{
