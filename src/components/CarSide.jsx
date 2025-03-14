@@ -49,7 +49,7 @@ function CarSide({ closeShowSide }) {
         let total = 0
         let quant = 0
         ordersCheckeds.forEach((order) => {
-            total += ((order.produto.preco * ((100 - order.produto.desconto)/100)) * order.quantidade).toFixed(2)
+            total += (order.produto.preco * ((100 - order.produto.desconto)/100)) * order.quantidade
             quant += order.quantidade
         })
         return [total, quant]

@@ -1,11 +1,11 @@
 import React, { useEffect, useState, useContext } from 'react';
 import Cartoes from '../components/Cartao';
-import { Checkbox, CheckboxManual, Imagem } from '../components/Utils';
+import { CheckboxManual, Imagem } from '../components/Utils';
 import "../styles/Pagamento.css";
 import Gato from '../assets/images/cafe_fofura_felicidade.svg'
 import { UserContext } from '../UserContext';
 import { OrderContext } from "../OrderContext"
-import { getDados, getUser } from '../api';
+import { updateUser } from '../api';
 
 const Pagamento = ({}) => {
 
@@ -41,6 +41,9 @@ const Pagamento = ({}) => {
 
     const { user } = useContext(UserContext);
     const { ordersPay } = useContext(OrderContext)
+    const [errorMessage, setErrorMessage] = useState('');
+    const [showErrorPopup, setShowErrorPopup] = useState(false);
+    const [showSuccessPopup, setShowSuccessPopup] = useState(false);
     const [form, setForm] = useState({
         rua: '',
         estado: '',
@@ -68,7 +71,7 @@ const Pagamento = ({}) => {
         let sum = 0
         let qntd = 0
         ordersPay.map((orderPay) => {
-            sum += Number(((orderPay.produto.preco * ((100 - orderPay.produto.desconto)/100)).toFixed(2))) * Number(orderPay.quantidade)
+            sum += Number(((orderPay.produto.preco * ((100 - orderPay.produto.desconto)/100)))) * Number(orderPay.quantidade)
             qntd += Number(orderPay.quantidade)
         })
         return [sum.toFixed(2), qntd]
@@ -87,26 +90,55 @@ const Pagamento = ({}) => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        console.log(value)
         setForm({
             ...form,
             [name]: value
         });
     };
 
-    useEffect(() => {
-        console.log(user)
-    })
-
     const enviarFormulario = (e) => {
         e.preventDefault();
         if (validateForm()) {
             try {
+                let cartaoCreated = {
+                    numero_cartao: '',
+                    cod_seguranca: '',
+                    bandeira: '',
+                    cartao_validade: '',
+                    nome_completo: ''
+                }
                 user.endereco.rua = form.rua.trim();
                 user.endereco.estado = form.estado.trim();
                 user.endereco.cep = form.cep.trim();
+                cartaoCreated.numero_cartao =  form.numero_cartao
+                cartaoCreated.cod_seguranca =  form.cod_seguranca
+                cartaoCreated.bandeira =  form.bandeira
+                cartaoCreated.cartao_validade =  form.cartao_validade
+                cartaoCreated.nome_completo =  form.nome_completo
+                if (form.cadastrar_cartao && (user.cartao == null || !user.cartao.some(doc => JSON.stringify(doc) === JSON.stringify(cartaoCreated)))) {
+                    if (user.cartao === null){
+                        user.cartao = []
+                        console.log(user.cartao)
+                    }
+                    user.cartao[user.cartao.length] = {
+                        numero: '',
+                        cvv: '',
+                        bandeira: '',
+                        validade: '',
+                        titular: ''
+                    }
+                    user.cartao[user.cartao.length-1].numero =  form.numero_cartao
+                    user.cartao[user.cartao.length-1].cvv =  form.cod_seguranca
+                    user.cartao[user.cartao.length-1].bandeira =  form.bandeira
+                    user.cartao[user.cartao.length-1].validade =  form.cartao_validade
+                    user.cartao[user.cartao.length-1].titular =  form.nome_completo
+                    user.cartao[user.cartao.length-1].tipoPagamento =  "Crédito"
+                    user.cartao[user.cartao.length-1].saldo =  1000 
+                    user.cartao[user.cartao.length-1].limite =  1000
+                }
+                console.log(user)
                 
-                const response = axios.put('http://localhost:8080/cliente', form);
+                const response = updateUser(user);
                 console.log('Formulário enviado:', response.data);
                 setShowSuccessPopup(true);
                 console.log("Bonito")
@@ -222,6 +254,12 @@ const Pagamento = ({}) => {
         return valid;
     };
 
+    const cadastrarCartao = () => {
+        setForm((prevForm) => ({
+            ...prevForm,
+            cadastrar_cartao: !prevForm.cadastrar_cartao
+        }))
+    }
 
     return (
         <>
@@ -359,7 +397,7 @@ const Pagamento = ({}) => {
                         </div>
                         
                         <div className='form-enviar'>
-                            <CheckboxManual name={"87"}/>
+                            <CheckboxManual name={"saveCard"} checked={form.cadastrar_cartao} onChange={() => cadastrarCartao()}/>
                             <div className='btn-pagar-row'>
                                 <div className="info-pagamento">
                                     <span id='valor-total'>R$ { sumOrders()[0] }</span>

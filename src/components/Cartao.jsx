@@ -69,9 +69,9 @@ const Cartoes = ({ cartoes, onClick }) => {
         <div className='cartao-box'>
             <h2 className='pagamento-title'>Cartões</h2>
             <div className='cartao-container'>
-                {cartoes.map(
+                {cartoes.length > 0 ? cartoes.map(
                     (cartao, i) => <Cartao key={i} cartao={cartao} onClick={onClick}></Cartao>
-                )}
+                ) : (<></>)}
             </div>
         </div>
     )
