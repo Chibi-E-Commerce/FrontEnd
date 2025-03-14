@@ -3,6 +3,7 @@ import filtroDelete from "../assets/images/filtroDelete.svg";
 import filtroAdd from "../assets/images/filtroAdd.svg";
 import filtroRetirar from "../assets/images/filtroRetirar.svg";
 import filtroSearch from "../assets/images/filtroSearch.svg";
+import Desconto from "../assets/images/Desconto.svg";
 import "../styles/Shopping.css";
 import { useState, useEffect, useContext, use } from "react";
 import FilterBar from "../components/FilterBar";
@@ -119,6 +120,9 @@ function Shopping({ productsBase }) {
 
 
     const sendFilter = async () => {
+        if (openModal === "filterBar"){
+            close()
+        }
         const filterSanitizeModel = {
             pesquisa : "",
             precoMin : 0,
@@ -307,13 +311,25 @@ function Shopping({ productsBase }) {
         <section>
             {products.map((product, ind) => (
             <div key={ind} className="product" onClick={() => openSideProduct(ind)}>
+                { product.desconto > 0 ? (<Imagem className="desconto" src={Desconto}/>) : (<></>)}
                 <div className="image-product">
                 <Imagem src={product.urlImagem} alt={product.nome} />
                 </div>
                 <h3>{product.nome}</h3>
                 <p>{product.marca}</p>
 
-                <Button text={"R$: " + product.preco.toFixed(2)} />
+                { product.desconto > 0 ? (
+                    <>
+                        <div className="preco-riscado">
+                            <p>{"R$: " + product.preco.toFixed(2)} <span></span></p>
+                        </div>
+                        <Button className="btn-desconto" text={"R$: " + (product.preco * ((100 - product.desconto)/100)).toFixed(2)} />
+                    </>
+                ) 
+                : 
+                (
+                    <Button text={"R$: " + product.preco.toFixed(2)} />
+                )}
                 {openModal === "sideBarProduct" && showSideProduct === ind && (
                 <SideBarProduct
                     product={product}

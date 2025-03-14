@@ -49,7 +49,7 @@ function CarSide({ closeShowSide }) {
         let total = 0
         let quant = 0
         ordersCheckeds.forEach((order) => {
-            total += order.produto.preco * order.quantidade
+            total += ((order.produto.preco * ((100 - order.produto.desconto)/100)).toFixed(2)) * order.quantidade
             quant += order.quantidade
         })
         return [total, quant]
@@ -99,9 +99,9 @@ function CarSide({ closeShowSide }) {
                         <h3> {order.produto.nome} 
                             <h4> {order.produto.marca}</h4>
                         </h3>
-                        <h3>{"R$ " + order.produto.preco.toFixed(2)}</h3>
+                        <h3>{"R$ " + (order.produto.preco * ((100 - order.produto.desconto)/100)).toFixed(2)}</h3>
                         <h3>{order.quantidade}</h3>
-                        <h3>{"R$ " + (order.produto.preco * order.quantidade).toFixed(2)}</h3>
+                        <h3>{"R$ " + (((order.produto.preco * ((100 - order.produto.desconto)/100)).toFixed(2)) * order.quantidade).toFixed(2)}</h3>
                         <Imagem src={deleteP} alt="Deletar item do carrinho" onClick={() => removeOrder(order)}/>
                     </li>
                 ))}

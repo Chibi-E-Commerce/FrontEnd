@@ -53,19 +53,21 @@ const Pagamento = ({}) => {
     });
   
     useEffect(() => {
-        setForm((prevForm) => ({
-            ...prevForm,
-            rua: user.endereco.rua,
-            estado: user.endereco.estado,
-            cep: user.endereco.cep,
-        }))
+        if (user.endereco) {
+            setForm((prevForm) => ({
+                ...prevForm,
+                rua: user.endereco.rua,
+                estado: user.endereco.estado,
+                cep: user.endereco.cep,
+            }))
+        }
     }, [])
 
     const sumOrders = () => {
         let sum = 0
         let qntd = 0
         ordersPay.map((orderPay) => {
-            sum += Number(orderPay.produto.preco) * Number(orderPay.quantidade)
+            sum += Number(((orderPay.produto.preco * ((100 - orderPay.produto.desconto)/100)).toFixed(2))) * Number(orderPay.quantidade)
             qntd += Number(orderPay.quantidade)
         })
         return [sum.toFixed(2), qntd]
