@@ -4,7 +4,7 @@ import filtroAdd from "../assets/images/filtroAdd.svg";
 import filtroRetirar from "../assets/images/filtroRetirar.svg";
 import filtroSearch from "../assets/images/filtroSearch.svg";
 import "../styles/Shopping.css";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, use } from "react";
 import FilterBar from "../components/FilterBar";
 import SideBarProduct from "../components/SideBarProduct";
 import { useModal } from "../ModalContext";
@@ -19,7 +19,7 @@ function Shopping({ productsBase }) {
     const { open, close, openModal } = useModal();
     const [filter, setFilter] = useState({});
     const { user } = useContext(UserContext)
-
+    
     useEffect(() => {
         if (productsBase && productsBase.length > 0) {
             setProducts(productsBase);
