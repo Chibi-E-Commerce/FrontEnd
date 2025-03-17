@@ -12,7 +12,7 @@ const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const [showErrorPopup, setShowErrorPopup] = useState(false);
-    const { setUser } = useContext(UserContext)
+    const { addUser } = useContext(UserContext)
     const navigate = useNavigate();
 
     const togglePasswordVisibility = () => setShowPassword(!showPassword);
@@ -49,7 +49,7 @@ const Login = () => {
                 // Pegar dado do usuário para o contexto
                 const user_complete = await getUser(form.email);
 
-                setUser(user_complete);
+                addUser(user_complete);
 
                 setErrorMessage(response.data);
                 setShowErrorPopup(false);

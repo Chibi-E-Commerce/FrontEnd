@@ -27,11 +27,6 @@ function Shopping({ productsBase }) {
         }
     }, [productsBase]);
 
-    useEffect(() => {
-        console.log("Carrinho Atualizado: ", orders);
-        console.log(user)
-    }, [orders]);
-
     const addFilter = (filterNew) => {
         if (filter[filterNew["tipo"]] === undefined || filter[filterNew["tipo"]] === null) {
             if (filterNew["tipo"] === "categoria"){
