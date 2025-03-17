@@ -40,7 +40,6 @@ const Pagamento = ({}) => {
     }
 
     const { user } = useContext(UserContext);
-    const { ordersPay } = useContext(OrderContext)
     const [errorMessage, setErrorMessage] = useState('');
     const [showErrorPopup, setShowErrorPopup] = useState(false);
     const [showSuccessPopup, setShowSuccessPopup] = useState(false);
@@ -70,6 +69,7 @@ const Pagamento = ({}) => {
     const sumOrders = () => {
         let sum = 0
         let qntd = 0
+        const ordersPay = JSON.parse(localStorage.getItem("ordersPay"))
         ordersPay.map((orderPay) => {
             sum += Number(((orderPay.produto.preco * ((100 - orderPay.produto.desconto)/100)))) * Number(orderPay.quantidade)
             qntd += Number(orderPay.quantidade)
@@ -84,7 +84,7 @@ const Pagamento = ({}) => {
             cod_seguranca: cartao.cvv,
             bandeira: cartao.bandeira,
             nome_completo: cartao.titular,
-            cartao_validade:"20" + cartao.validade.ano + "-" + cartao.validade.mes
+            cartao_validade: cartao.validade.ano + "-" + cartao.validade.mes
         }))
     }
 
@@ -100,46 +100,40 @@ const Pagamento = ({}) => {
         e.preventDefault();
         if (validateForm()) {
             try {
-                let cartaoCreated = {
-                    numero_cartao: '',
-                    cod_seguranca: '',
-                    bandeira: '',
-                    cartao_validade: '',
-                    nome_completo: ''
-                }
                 user.endereco.rua = form.rua.trim();
                 user.endereco.estado = form.estado.trim();
                 user.endereco.cep = form.cep.trim();
-                cartaoCreated.numero_cartao =  form.numero_cartao
-                cartaoCreated.cod_seguranca =  form.cod_seguranca
-                cartaoCreated.bandeira =  form.bandeira
-                cartaoCreated.cartao_validade =  form.cartao_validade
-                cartaoCreated.nome_completo =  form.nome_completo
-                if (form.cadastrar_cartao && (user.cartao == null || !user.cartao.some(doc => JSON.stringify(doc) === JSON.stringify(cartaoCreated)))) {
+                if (user.cartao == null || !user.cartao.some(doc => doc.numero === form.numero_cartao)) {
                     if (user.cartao === null){
                         user.cartao = []
                         console.log(user.cartao)
                     }
-                    user.cartao[user.cartao.length] = {
-                        numero: '',
-                        cvv: '',
-                        bandeira: '',
-                        validade: '',
-                        titular: ''
-                    }
-                    user.cartao[user.cartao.length-1].numero =  form.numero_cartao
-                    user.cartao[user.cartao.length-1].cvv =  form.cod_seguranca
-                    user.cartao[user.cartao.length-1].bandeira =  form.bandeira
-                    user.cartao[user.cartao.length-1].validade =  form.cartao_validade
-                    user.cartao[user.cartao.length-1].titular =  form.nome_completo
-                    user.cartao[user.cartao.length-1].tipoPagamento =  "Crédito"
-                    user.cartao[user.cartao.length-1].saldo =  1000 
-                    user.cartao[user.cartao.length-1].limite =  1000
+                    user.cartao.push({
+                        numero: form.numero_cartao,
+                        cvv: form.cod_seguranca,
+                        bandeira: form.bandeira,
+                        validade: {
+                            mes: form.cartao_validade[5] + form.cartao_validade[6], 
+                            ano: form.cartao_validade.substring(0, 4)
+                        },
+                        titular: form.nome_completo,
+                        tipoPagamento: "Crédito",
+                        saldo : 1000 - sumOrders()[0] <= 0 ? 0 : 1000 - sumOrders()[0],
+                        limite: 1000 - sumOrders()[0] < 0 ? 1100 - sumOrders()[0] < 0 ? "erro" : 100 - (sumOrders()[0] - 1000) : 100
+                    })
+                }else{
+                    user.cartao.forEach((cartao) => {
+                        if (cartao.numero === form.numero_cartao){
+                            cartao.saldo = cartao.saldo - sumOrders()[0] <= 0 ? 0 : (cartao.saldo+cartao.limite)- sumOrders()[0]
+                            cartao.limite = cartao.saldo - sumOrders()[0] < 0 ? (cartao.saldo+cartao.limite) - sumOrders()[0] < 0 ? -1 : (cartao.saldo+cartao.limite) - sumOrders()[0] : cartao.limite
+                        }
+                    })
                 }
                 console.log(user)
                 
-                const response = updateUser(user);
-                console.log('Formulário enviado:', response.data);
+                const response = updateUser(user)
+                console.log(response)
+                console.log('Formulário enviado:', response);
                 setShowSuccessPopup(true);
                 console.log("Bonito")
             } catch (error) {
@@ -397,7 +391,6 @@ const Pagamento = ({}) => {
                         </div>
                         
                         <div className='form-enviar'>
-                            <CheckboxManual name={"saveCard"} checked={form.cadastrar_cartao} onChange={() => cadastrarCartao()}/>
                             <div className='btn-pagar-row'>
                                 <div className="info-pagamento">
                                     <span id='valor-total'>R$ { sumOrders()[0] }</span>
