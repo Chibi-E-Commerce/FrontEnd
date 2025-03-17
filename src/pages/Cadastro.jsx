@@ -27,7 +27,7 @@ const Cadastro = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const [showErrorPopup, setShowErrorPopup] = useState(false);
     const [showSuccessPopup, setShowSuccessPopup] = useState(false);
-    const { setUser } = useContext(UserContext)
+    const { addUser } = useContext(UserContext)
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
@@ -80,7 +80,7 @@ const Cadastro = () => {
             try {
                 const response = await axios.post('http://localhost:8080/cliente', form);
                 console.log('Formulário enviado:', response.data);
-                setUser(response.data)
+                addUser(response.data)
                 setShowSuccessPopup(true);
             } catch (error) {
                 if (error.response) {

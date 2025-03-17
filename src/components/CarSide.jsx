@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom"
 
 function CarSide({ closeShowSide }) {
     const orders = useContext(OrderContext).orders
-    const {deleteOrder, setOrdersPay} = useContext(OrderContext)
+    const {deleteOrder, addOrdersPay} = useContext(OrderContext)
     const [ordersCheckeds, setOrdersCheckeds] = useState([])
     const [checkMain, setCheckMain] = useState(false)
     const nagivate = useNavigate()
@@ -57,7 +57,7 @@ function CarSide({ closeShowSide }) {
 
     const continuePay = () => {
         if (ordersCheckeds.length > 0){
-            setOrdersPay(ordersCheckeds)
+            addOrdersPay(ordersCheckeds)
             closeShowSide()
             nagivate('/pay')
         }else{

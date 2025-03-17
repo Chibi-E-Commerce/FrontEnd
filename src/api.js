@@ -42,11 +42,8 @@ export const getUser = async (email) => {
 
 export const updateUser = async (user) => {
     try {
-        const response = await api.put('/cliente',user, {
-            params: {
-                email: user.email
-            }
-        });
+        const response = await api.put('/cliente',user);
+        localStorage.setItem("user", JSON.stringify(response.data))
         return response.data;
     } catch (error) {
         console.error('Erro ao Atualizar cliente', error);
