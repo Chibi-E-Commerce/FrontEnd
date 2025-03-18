@@ -5,6 +5,7 @@ import HomePage from './pages/Cadastro';
 import NavBar from './components/Navbar';
 import Shopping from './pages/Shopping';
 import Pagamento from './pages/Pagamento';
+import Area from './pages/Area';
 import { OrderProvider } from './OrderContext';
 import { ModalProvider } from './ModalContext';
 import { UserProvider } from './UserContext';
@@ -55,6 +56,9 @@ function AppContent({ dados }) {
         />
         <Route path="/pay" element={
             <Pagamento/>
+        } />
+        <Route path="/area" element={
+            <Area/>
         } />
       </Routes>
     </div>
