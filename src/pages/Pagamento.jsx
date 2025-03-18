@@ -6,6 +6,7 @@ import Gato from '../assets/images/cafe_fofura_felicidade.svg'
 import { UserContext } from '../UserContext';
 import { OrderContext } from "../OrderContext"
 import { getDados, getUser } from '../api';
+import axios from 'axios';
 
 const Pagamento = ({}) => {
 
@@ -41,6 +42,9 @@ const Pagamento = ({}) => {
 
     const { user } = useContext(UserContext);
     const { ordersPay } = useContext(OrderContext)
+    const [errorMessage, setErrorMessage] = useState('');
+    const [showErrorPopup, setShowErrorPopup] = useState(false);
+    const [showSuccessPopup, setShowSuccessPopup] = useState(false);
     const [form, setForm] = useState({
         rua: '',
         estado: '',
