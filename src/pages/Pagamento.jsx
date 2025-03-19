@@ -1,12 +1,13 @@
 import React, { useEffect, useState, useContext } from 'react';
 import Cartoes from '../components/Cartao';
-import { Checkbox, CheckboxManual, Imagem } from '../components/Utils';
+import { Button, Imagem } from '../components/Utils';
 import "../styles/Pagamento.css";
 import Gato from '../assets/images/cafe_fofura_felicidade.svg'
 import { UserContext } from '../UserContext';
-import { OrderContext } from "../OrderContext"
-import { getDados, getUser } from '../api';
-import axios from 'axios';
+import { OrderContext } from '../OrderContext';
+import { updateUser } from '../api';
+import { PopupSucess, PopupFailed } from '../components/Utils';
+import { useNavigate } from 'react-router-dom';
 
 const Pagamento = ({}) => {
 
@@ -40,11 +41,13 @@ const Pagamento = ({}) => {
         "Tocantins": "TO"
     }
 
+    const navigate = useNavigate()
     const { user } = useContext(UserContext);
-    const { ordersPay } = useContext(OrderContext)
+    const { removeIntersection } = useContext(OrderContext)
     const [errorMessage, setErrorMessage] = useState('');
     const [showErrorPopup, setShowErrorPopup] = useState(false);
     const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+    const [showExtratoPopup, setShowExtratoPopup] = useState(false);
     const [form, setForm] = useState({
         rua: '',
         estado: '',
@@ -54,23 +57,27 @@ const Pagamento = ({}) => {
         bandeira: '',
         cartao_validade: '',
         nome_completo: '',
+        tipo_pagamento: '',
         cadastrar_cartao: false,
     });
   
     useEffect(() => {
-        setForm((prevForm) => ({
-            ...prevForm,
-            rua: user.endereco.rua,
-            estado: user.endereco.estado,
-            cep: user.endereco.cep,
-        }))
+        if (user.endereco) {
+            setForm((prevForm) => ({
+                ...prevForm,
+                rua: user.endereco.rua,
+                estado: user.endereco.estado,
+                cep: user.endereco.cep,
+            }))
+        }
     }, [])
 
     const sumOrders = () => {
         let sum = 0
         let qntd = 0
+        const ordersPay = JSON.parse(localStorage.getItem("ordersPay"))
         ordersPay.map((orderPay) => {
-            sum += Number(orderPay.produto.preco) * Number(orderPay.quantidade)
+            sum += Number(((orderPay.produto.preco * ((100 - orderPay.produto.desconto)/100)))) * Number(orderPay.quantidade)
             qntd += Number(orderPay.quantidade)
         })
         return [sum.toFixed(2), qntd]
@@ -83,35 +90,80 @@ const Pagamento = ({}) => {
             cod_seguranca: cartao.cvv,
             bandeira: cartao.bandeira,
             nome_completo: cartao.titular,
-            cartao_validade:"20" + cartao.validade.ano + "-" + cartao.validade.mes
+            cartao_validade: cartao.validade.ano + "-" + cartao.validade.mes,
+            tipo_pagamento: cartao.tipoPagamento
         }))
     }
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        console.log(value)
         setForm({
             ...form,
             [name]: value
         });
     };
 
-    useEffect(() => {
-        console.log(user)
-    })
-
     const enviarFormulario = (e) => {
         e.preventDefault();
+        let continueProcess = true
         if (validateForm()) {
             try {
                 user.endereco.rua = form.rua.trim();
                 user.endereco.estado = form.estado.trim();
                 user.endereco.cep = form.cep.trim();
-                
-                const response = axios.put('http://localhost:8080/cliente', form);
-                console.log('Formulário enviado:', response.data);
-                setShowSuccessPopup(true);
-                console.log("Bonito")
+                console.log(user)
+                if (user.cartao == null || !user.cartao.some(doc => doc.numero === form.numero_cartao)) {
+                    if (user.cartao === null){
+                        user.cartao = []
+                        console.log(user.cartao)
+                    }
+                    let limite
+                    let saldo
+                    if (form.tipo_pagamento === "Crédito"){
+                        limite = (400 - sumOrders()[0]).toFixed(2)
+                    }else{
+                        saldo = (1000 - sumOrders()[0]).toFixed(2)
+                    }
+                    if (limite < 0 || saldo < 0){
+                        user.cartao.push({
+                            numero: form.numero_cartao,
+                            cvv: form.cod_seguranca,
+                            bandeira: form.bandeira,
+                            validade: {
+                                mes: form.cartao_validade[5] + form.cartao_validade[6], 
+                                ano: form.cartao_validade.substring(0, 4)
+                            },
+                            titular: form.nome_completo,
+                            saldo : saldo ? saldo : 0,
+                            limite: limite ? limite : 0
+                        })
+                    }else{
+                        continueProcess = false
+                    }
+                }else{
+                    user.cartao.forEach((cartao) => {
+                        if (cartao.numero === form.numero_cartao){
+                            const saldo = 1000 - sumOrders()[0] <= 0 ? 0 : (1000 - sumOrders()[0]).toFixed(2)
+                            const limite = 1000 - sumOrders()[0] < 0 ? 1100 - sumOrders()[0] < 0 ? -1 : (100 - (sumOrders()[0] - 1000)).toFixed(2) : 100
+                            console.log(limite)
+                            if (limite >= 0){
+                                cartao.saldo = saldo
+                                cartao.limite = limite
+                            }else{
+                                continueProcess = false
+                            }
+                        }
+                    })
+                }
+                if ( continueProcess ) {
+                    removeIntersection()
+                    
+                    updateUser(user)
+                    setShowSuccessPopup(true);
+                }else{
+                    setErrorMessage('Saldo Insuficiente');
+                    setShowErrorPopup(true);
+                }
             } catch (error) {
                 if (error.response) {
                     setErrorMessage(error.response.data);
@@ -162,6 +214,7 @@ const Pagamento = ({}) => {
         bandeira: '',
         cartao_validade: '',
         nome_completo: '',
+        tipo_pagamento: ''
     });
 
     
@@ -173,7 +226,8 @@ const Pagamento = ({}) => {
             cep: '',    
             cep: '',
             numero_cartao: '',
-            cod_seguranca: ''
+            cod_seguranca: '',
+            tipo_pagamento: ''
         };
 
         if (!form.rua) {
@@ -201,6 +255,11 @@ const Pagamento = ({}) => {
             valid = false;
         }
 
+        if (!form.tipo_pagamento) {
+            newErrors.tipo_pagamento = 'Forma de pagamento é obrigatória';
+            valid = false;
+        }
+
 
         
 
@@ -224,6 +283,17 @@ const Pagamento = ({}) => {
         return valid;
     };
 
+
+    const showPopupExtrato = () => {
+        setShowSuccessPopup(false)
+        setShowExtratoPopup(true)
+    }
+
+    const closePopupExtrato = () => {
+        setShowExtratoPopup(false)
+        baixarExtrato()
+        navigate("/shop")
+    }
 
     return (
         <>
@@ -332,7 +402,7 @@ const Pagamento = ({}) => {
                                 </div>
                             </div>
                             <div className='cod-seguranca-row'>
-                                <div className="pagamento-input-group">
+                                <div className="pagamento-input-group cvv-div">
                                     <label htmlFor="cod_seguranca">Cód. Segurança</label>
                                     <input
                                         type="text"
@@ -344,6 +414,20 @@ const Pagamento = ({}) => {
                                         required
                                     />
                                     {errors.cod_seguranca && <span className="error">{errors.cod_seguranca}</span>}
+                                </div>
+                                <div className="pagamento-input-group">
+                                    <label htmlFor="tipo_pagamento">Forma de Pagamento</label>
+                                    <select name="tipo_pagamento" id="tipo_pagamento" value={form.tipo_pagamento} onChange={handleChange} required>
+                                        { form.tipo_pagamento === "" ? (
+                                                <option value="Hidden" hidden>Selecione uma opção</option>
+                                            ) : (
+                                                <option value={form.tipo_pagamento} hidden>{form.tipo_pagamento}</option>
+                                            )
+                                        }
+                                        <option value="Débito">Débito</option>
+                                        <option value="Crédito">Crédito</option>
+                                    </select>
+                                    {errors.tipo_pagamento && <span className="error">{errors.tipo_pagamento}</span>}
                                 </div>
                                 <div className="pagamento-input-group">
                                     <label htmlFor="cartao_validade">Validade (mês/ano)</label>
@@ -361,7 +445,6 @@ const Pagamento = ({}) => {
                         </div>
                         
                         <div className='form-enviar'>
-                            <CheckboxManual name={"87"}/>
                             <div className='btn-pagar-row'>
                                 <div className="info-pagamento">
                                     <span id='valor-total'>R$ { sumOrders()[0] }</span>
@@ -374,7 +457,22 @@ const Pagamento = ({}) => {
                 </div>
             <Imagem src={Gato} alt="Gato fofo!!" className='img-cat'/>
         </div>
-        <button className="btn-extrato" onClick={baixarExtrato}>Baixar Extrato</button>
+        {showErrorPopup && (
+            <PopupFailed errorMessage={errorMessage} setShowErrorPopup={() => setShowErrorPopup()}/>
+        )}
+
+        {showSuccessPopup && (
+            <PopupSucess sucessMessage="Pagamento Concluído" setShowSucessPopup={showPopupExtrato}/>
+        )}
+
+        {showExtratoPopup && (
+            <div className="success-popup">
+                <div className="success-popup-content">
+                    <Button text="OK" onClick={() => setShowExtratoPopup(false)}/>
+                    <Button text="BAIXAR EXTRATO" onClick={closePopupExtrato}/>
+                </div>
+            </div>
+        )}
         </>
     )
 }

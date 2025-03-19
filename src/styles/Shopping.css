@@ -8,6 +8,7 @@ main{
     width: 100%;
     min-height: calc(100vh - 70px);
     height: auto;
+    overflow-x: hidden;
 }
 
 section{
@@ -54,7 +55,7 @@ section .product h3{
 }
 
 section .product p{
-    margin: -3px auto 0 auto;
+    margin: -5px auto 10px auto;
 }
 
 section .product .p-desconto{
@@ -113,7 +114,7 @@ section .product .btn-desconto{
 
 #filtro form{
     position: sticky;
-    top: 100px;
+    top: 0px;
     width: 80%;
     margin: auto;
     z-index: 100;

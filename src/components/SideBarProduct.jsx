@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { Imagem, Button } from "./Utils";
 import add from "../assets/images/filtroAdd.svg";
 import remove from "../assets/images/MenosQuantidade.svg";

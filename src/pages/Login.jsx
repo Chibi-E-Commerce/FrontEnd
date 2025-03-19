@@ -5,6 +5,7 @@ import axios from 'axios';
 import { getUser } from '../api';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from "../UserContext"
+import { PopupFailed } from '../components/Utils';
 
 const Login = () => {
     const [form, setForm] = useState({ email: '', senha: '' });
@@ -12,7 +13,7 @@ const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const [showErrorPopup, setShowErrorPopup] = useState(false);
-    const { setUser } = useContext(UserContext)
+    const { addUser } = useContext(UserContext)
     const navigate = useNavigate();
 
     const togglePasswordVisibility = () => setShowPassword(!showPassword);
@@ -49,7 +50,7 @@ const Login = () => {
                 // Pegar dado do usuário para o contexto
                 const user_complete = await getUser(form.email);
 
-                setUser(user_complete);
+                addUser(user_complete);
 
                 setErrorMessage(response.data);
                 setShowErrorPopup(false);
@@ -107,12 +108,7 @@ const Login = () => {
                     </div>
 
                     {showErrorPopup && (
-                        <div className="error-popup">
-                            <div className="error-popup-content">
-                                <p>{errorMessage}</p>
-                                <button onClick={() => setShowErrorPopup(false)}>Fechar</button>
-                            </div>
-                        </div>
+                        <PopupFailed errorMessage={errorMessage} setShowErrorPopup={() => setShowErrorPopup(false)}/>
                     )}
 
                     <button type="submit" className="submit-btn-login">ENTRAR</button>

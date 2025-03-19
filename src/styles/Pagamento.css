@@ -5,11 +5,14 @@
     padding-right: 30px;
     display: flex;
     gap: 10%;
+    height: calc(100vh - 100px);
 }
 
 /* Pagamento side */
 .pagamento-side {
     width: 50%;
+    min-height: 95%;
+    max-height: 95%;
     background-color: #D6C0B3;
     padding: 20px;
     border-radius: 20px;
@@ -24,7 +27,7 @@
 .pagamento-input-group {
     display: flex;
     flex-direction: column;
-
+    margin: 5px 0 5px 0;
 }
 
 .pagamento-input-group label {
@@ -59,10 +62,18 @@
 }
 
 .cod-seguranca-row {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
+    display: flex;
     gap: 5%;
     justify-content: start;
+    margin-bottom: 30px;
+
+    .cvv-div{
+        width: 20% !important;
+    }
+    
+    .pagamento-input-group{
+        width: 40%;
+    }
 }
 
 

@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from "../UserContext"
 import '../styles/Cadastro.css';
+import { PopupSucess, PopupFailed } from '../components/Utils';
 
 const Cadastro = () => {
     const navigate = useNavigate();
@@ -27,7 +28,7 @@ const Cadastro = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const [showErrorPopup, setShowErrorPopup] = useState(false);
     const [showSuccessPopup, setShowSuccessPopup] = useState(false);
-    const { setUser } = useContext(UserContext)
+    const { addUser } = useContext(UserContext)
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
@@ -80,7 +81,7 @@ const Cadastro = () => {
             try {
                 const response = await axios.post('http://localhost:8080/cliente', form);
                 console.log('Formulário enviado:', response.data);
-                setUser(response.data)
+                addUser(response.data)
                 setShowSuccessPopup(true);
             } catch (error) {
                 if (error.response) {
@@ -181,21 +182,11 @@ const Cadastro = () => {
                 </form>
 
                 {showErrorPopup && (
-                    <div className="error-popup">
-                        <div className="error-popup-content">
-                            <p>{errorMessage}</p>
-                            <button onClick={() => setShowErrorPopup(false)}>Fechar</button>
-                        </div>
-                    </div>
+                    <PopupFailed errorMessage={errorMessage} setShowErrorPopup={() => setShowErrorPopup(false)}/>
                 )}
 
                 {showSuccessPopup && (
-                    <div className="success-popup">
-                        <div className="success-popup-content">
-                            <p>Cadastro realizado com sucesso!</p>
-                            <button onClick={handleSuccessPopupClose}>Ok</button>
-                        </div>
-                    </div>
+                    <PopupSucess sucessMessage="Cadastro realizado com sucesso!" setShowSucessPopup={handleSuccessPopupClose}/>
                 )}
             </div>
         </>
