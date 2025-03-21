@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom"
 
 function CarSide({ closeShowSide }) {
     const orders = useContext(OrderContext).orders
-    const {deleteOrder, setOrdersPay} = useContext(OrderContext)
+    const {deleteOrder, addOrdersPay} = useContext(OrderContext)
     const [ordersCheckeds, setOrdersCheckeds] = useState([])
     const [checkMain, setCheckMain] = useState(false)
     const nagivate = useNavigate()
@@ -49,7 +49,7 @@ function CarSide({ closeShowSide }) {
         let total = 0
         let quant = 0
         ordersCheckeds.forEach((order) => {
-            total += ((order.produto.preco * ((100 - order.produto.desconto)/100)) * order.quantidade).toFixed(2)
+            total += (order.produto.preco * ((100 - order.produto.desconto)/100)) * order.quantidade
             quant += order.quantidade
         })
         return [total, quant]
@@ -57,7 +57,7 @@ function CarSide({ closeShowSide }) {
 
     const continuePay = () => {
         if (ordersCheckeds.length > 0){
-            setOrdersPay(ordersCheckeds)
+            addOrdersPay(ordersCheckeds)
             closeShowSide()
             nagivate('/pay')
         }else{

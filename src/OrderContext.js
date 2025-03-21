@@ -1,13 +1,12 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
-import { getUser, updateUser } from "./api";
+import { updateUser } from "./api";
 import { UserContext } from "./UserContext";
 
 export const OrderContext = createContext();
 
 export const OrderProvider = ({ children }) => {
-  const { user, setUser } = useContext(UserContext);
+  const { user, addUser } = useContext(UserContext);
   const [orders, setOrders] = useState([]);
-  const [ordersPay, setOrdersPay] = useState([])
 
   useEffect(() => {
     if (user?.carrinho) {
@@ -19,7 +18,7 @@ export const OrderProvider = ({ children }) => {
     setOrders(newOrders);
     if (user) {
       const updatedUser = { ...user, carrinho: newOrders };
-      setUser(updatedUser);
+      addUser(updatedUser);
       await updateUser(updatedUser);
     }
   };
@@ -40,16 +39,25 @@ export const OrderProvider = ({ children }) => {
     syncOrders(updatedOrders);
   };
 
-  const removeIntersection = () => {
-    ordersPay.forEach((prevOrder) => {
-      if (orders.includes(prevOrder)){
-        deleteOrder(prevOrder)
-      }
-    })
+  const addOrdersPay = (orders) => {
+    localStorage.setItem("ordersPay", JSON.stringify(orders))
   }
 
+  const removeIntersection = () => {
+    const ordersPay = JSON.parse(localStorage.getItem("ordersPay")) || [];
+  
+    ordersPay.forEach((prevOrder) => {
+      if (orders.some(o => JSON.stringify(o) === JSON.stringify(prevOrder))) {
+        deleteOrder(prevOrder);
+      }
+    });
+  
+    localStorage.setItem("ordersPay", JSON.stringify([]));
+  };
+  
+
   return (
-    <OrderContext.Provider value={{ orders, addOrder, deleteOrder, ordersPay, setOrdersPay }}>
+    <OrderContext.Provider value={{ orders, addOrder, deleteOrder, addOrdersPay, removeIntersection }}>
       {children}
     </OrderContext.Provider>
   );

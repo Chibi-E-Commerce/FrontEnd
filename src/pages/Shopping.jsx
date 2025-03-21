@@ -27,11 +27,6 @@ function Shopping({ productsBase }) {
         }
     }, [productsBase]);
 
-    useEffect(() => {
-        console.log("Carrinho Atualizado: ", orders);
-        console.log(user)
-    }, [orders]);
-
     const addFilter = (filterNew) => {
         if (filter[filterNew["tipo"]] === undefined || filter[filterNew["tipo"]] === null) {
             if (filterNew["tipo"] === "categoria"){
@@ -120,6 +115,9 @@ function Shopping({ productsBase }) {
 
 
     const sendFilter = async () => {
+        if (openModal === "filterBar"){
+            close()
+        }
         const filterSanitizeModel = {
             pesquisa : "",
             precoMin : 0,
