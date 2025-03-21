@@ -1,5 +1,6 @@
 import { Imagem} from "./Utils"
 import logo from "../assets/images/Logo.svg"
+import cadeado from "../assets/images/Cadeado.svg"
 import carrinhoIcon from "../assets/images/CarIcon.svg"
 import "../styles/components/Navbar.css"
 import CarSide from "./CarSide"
@@ -31,20 +32,22 @@ const NavBar = ({ carrinho }) => {
         <Imagem src={logo} alt="Chibi" />
       </div>
       <div className="header-div">
-        {carrinho ? (
-          <div id="carrinho-icon" onClick={openSideCar}>
-            <Imagem src={carrinhoIcon} alt="Carrinho" />
-          </div>
-        ) : (
-          <></>
-        )}
-        {
-          user?.admin ? (
-            <div id="area-icon" onClick={openArea}>
+        <div id="icons-header">
+          {carrinho ? (
+            <div id="carrinho-icon" onClick={openSideCar}>
               <Imagem src={carrinhoIcon} alt="Carrinho" />
             </div>
-          ) : (<></>)
-        }
+          ) : (
+            <></>
+          )}
+          {
+            user?.adm ? (
+              <div id="area-icon" onClick={openArea}>
+                <Imagem src={cadeado} alt="Area-Restrita" />
+              </div>
+            ) : (<></>)
+          }
+        </div>
       </div>
       {openModal === "sideCar" && (
         <CarSide closeShowSide={closeShowSideCar} /> 

@@ -45,6 +45,8 @@ const Pagamento = ({}) => {
     const [errorMessage, setErrorMessage] = useState('');
     const [showErrorPopup, setShowErrorPopup] = useState(false);
     const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+    const [showExtratoPopup, setShowExtratoPopup] = useState(false);
+    const [totalPay, setTotalPay] = useState(0)
     const [form, setForm] = useState({
         rua: '',
         estado: '',
@@ -107,16 +109,66 @@ const Pagamento = ({}) => {
                 user.endereco.rua = form.rua.trim();
                 user.endereco.estado = form.estado.trim();
                 user.endereco.cep = form.cep.trim();
-                
-                const response = axios.put('http://localhost:8080/cliente', form);
-                console.log('Formulário enviado:', response.data);
-                setShowSuccessPopup(true);
-                console.log("Bonito")
+                if (user.cartao == null || !user.cartao.some(doc => doc.numero === form.numero_cartao)) {
+                    if (user.cartao === null){
+                        user.cartao = []
+                    }
+                    let limite
+                    let saldo
+                    if (form.tipo_pagamento === "Crédito"){
+                        limite = (400 - sumOrders()[0]).toFixed(2)
+                    }else{
+                        saldo = (1000 - sumOrders()[0]).toFixed(2)
+                    }
+                    console.log(user.cartao)
+                    if (limite >= 0 || saldo >= 0){
+                        user.cartao.push({
+                            numero: form.numero_cartao,
+                            cvv: form.cod_seguranca,
+                            bandeira: form.bandeira,
+                            validade: {
+                                mes: form.cartao_validade[5] + form.cartao_validade[6], 
+                                ano: form.cartao_validade.substring(0, 4)
+                            },
+                            titular: form.nome_completo,
+                            saldo : saldo ? Number(saldo) : 0,
+                            limite: limite ? Number(limite) : 0,
+                            tipoPagamento: form.tipo_pagamento
+                        })
+                    }else{
+                        continueProcess = false
+                    }
+                }else{
+                    user.cartao.forEach((cartao) => {
+                        if (cartao.numero === form.numero_cartao){
+                            const saldo = cartao.saldo - sumOrders()[0]
+                            const limite = cartao.limite - sumOrders()[0]
+                            if (limite >= 0  && cartao.tipoPagamento === "Crédito"){
+                                cartao.limite = limite < 0 ? 0 : limite
+                            }else if (saldo >= 0 && cartao.tipoPagamento === "Débito"){
+                                cartao.saldo = saldo < 0 ? 0 : saldo
+                            }else{
+                                continueProcess = false
+                            }
+                        }
+                    })
+                }
+                if ( continueProcess ) {
+                    setTotalPay(sumOrders()[0])
+                    removeIntersection()
+                    console.log(user)
+                    updateUser(user)
+                    setShowSuccessPopup(true);
+                }else{
+                    setErrorMessage('Saldo Insuficiente');
+                    setShowErrorPopup(true);
+                }
             } catch (error) {
                 if (error.response) {
                     setErrorMessage(error.response.data);
                     setShowErrorPopup(true);
                 } else {
+                    console.log(error)
                     setErrorMessage('Erro ao conectar com o servidor');
                     setShowErrorPopup(true);
                 }
@@ -129,7 +181,7 @@ const Pagamento = ({}) => {
             const nomeUsuario = user.nome ?? form.nome_completo;
             const cpfUsuario = user.cpf ?? '';
             const response = await fetch(
-                `http://localhost:8080/pdf/extrato?nome=${nomeUsuario}&cpf=${cpfUsuario}&valor=${sumOrders()[0]}`,
+                `http://localhost:8080/pdf/extrato?nome=${nomeUsuario}&cpf=${cpfUsuario}&valor=${totalPay}`,
                 {
                     method: "GET",
                     headers: { "Content-Type": "application/pdf" },
@@ -374,7 +426,22 @@ const Pagamento = ({}) => {
                 </div>
             <Imagem src={Gato} alt="Gato fofo!!" className='img-cat'/>
         </div>
-        <button className="btn-extrato" onClick={baixarExtrato}>Baixar Extrato</button>
+        {showErrorPopup && (
+            <PopupFailed errorMessage={errorMessage} setShowErrorPopup={() => setShowErrorPopup()}/>
+        )}
+
+        {showSuccessPopup && (
+            <PopupSucess sucessMessage="Pagamento Concluído" setShowSucessPopup={showPopupExtrato}/>
+        )}
+
+        {showExtratoPopup && (
+            <div className="success-popup">
+                <div className="success-popup-content">
+                    <Button text="OK" onClick={() => {setShowExtratoPopup(false); navigate("/shop")}}/>
+                    <Button text="BAIXAR EXTRATO" onClick={closePopupExtrato}/>
+                </div>
+            </div>
+        )}
         </>
     )
 }
