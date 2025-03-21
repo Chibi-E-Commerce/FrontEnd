@@ -92,7 +92,7 @@ section .product .preco-desconto{
     span{
         display: block;
         position: relative;
-        top: 10px;
+        top: 8px;
         left: 60px;
         width: 40%;
         height: 2px;
@@ -113,9 +113,10 @@ section .product .btn-desconto{
 }
 
 #filtro form{
-    position: sticky;
-    top: 0px;
-    width: 80%;
+    position: fixed;
+    top: 120px;
+    width: 20%;
+    left: 40px;
     margin: auto;
     z-index: 100;
 

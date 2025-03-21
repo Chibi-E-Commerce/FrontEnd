@@ -44,17 +44,20 @@ export const OrderProvider = ({ children }) => {
   }
 
   const removeIntersection = () => {
-    const ordersPay = localStorage.getItem("ordersPay")
+    const ordersPay = JSON.parse(localStorage.getItem("ordersPay")) || [];
+  
     ordersPay.forEach((prevOrder) => {
-      if (orders.includes(JSON.parse(prevOrder))){
-        deleteOrder(prevOrder)
+      if (orders.some(o => JSON.stringify(o) === JSON.stringify(prevOrder))) {
+        deleteOrder(prevOrder);
       }
-    })
-    localStorage.setItem("ordersPay", [])
-  }
+    });
+  
+    localStorage.setItem("ordersPay", JSON.stringify([]));
+  };
+  
 
   return (
-    <OrderContext.Provider value={{ orders, addOrder, deleteOrder, addOrdersPay }}>
+    <OrderContext.Provider value={{ orders, addOrder, deleteOrder, addOrdersPay, removeIntersection }}>
       {children}
     </OrderContext.Provider>
   );

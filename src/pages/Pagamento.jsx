@@ -48,6 +48,7 @@ const Pagamento = ({}) => {
     const [showErrorPopup, setShowErrorPopup] = useState(false);
     const [showSuccessPopup, setShowSuccessPopup] = useState(false);
     const [showExtratoPopup, setShowExtratoPopup] = useState(false);
+    const [totalPay, setTotalPay] = useState(0)
     const [form, setForm] = useState({
         rua: '',
         estado: '',
@@ -111,11 +112,9 @@ const Pagamento = ({}) => {
                 user.endereco.rua = form.rua.trim();
                 user.endereco.estado = form.estado.trim();
                 user.endereco.cep = form.cep.trim();
-                console.log(user)
                 if (user.cartao == null || !user.cartao.some(doc => doc.numero === form.numero_cartao)) {
                     if (user.cartao === null){
                         user.cartao = []
-                        console.log(user.cartao)
                     }
                     let limite
                     let saldo
@@ -124,7 +123,8 @@ const Pagamento = ({}) => {
                     }else{
                         saldo = (1000 - sumOrders()[0]).toFixed(2)
                     }
-                    if (limite < 0 || saldo < 0){
+                    console.log(user.cartao)
+                    if (limite >= 0 || saldo >= 0){
                         user.cartao.push({
                             numero: form.numero_cartao,
                             cvv: form.cod_seguranca,
@@ -134,8 +134,9 @@ const Pagamento = ({}) => {
                                 ano: form.cartao_validade.substring(0, 4)
                             },
                             titular: form.nome_completo,
-                            saldo : saldo ? saldo : 0,
-                            limite: limite ? limite : 0
+                            saldo : saldo ? Number(saldo) : 0,
+                            limite: limite ? Number(limite) : 0,
+                            tipoPagamento: form.tipo_pagamento
                         })
                     }else{
                         continueProcess = false
@@ -143,12 +144,12 @@ const Pagamento = ({}) => {
                 }else{
                     user.cartao.forEach((cartao) => {
                         if (cartao.numero === form.numero_cartao){
-                            const saldo = 1000 - sumOrders()[0] <= 0 ? 0 : (1000 - sumOrders()[0]).toFixed(2)
-                            const limite = 1000 - sumOrders()[0] < 0 ? 1100 - sumOrders()[0] < 0 ? -1 : (100 - (sumOrders()[0] - 1000)).toFixed(2) : 100
-                            console.log(limite)
-                            if (limite >= 0){
-                                cartao.saldo = saldo
-                                cartao.limite = limite
+                            const saldo = cartao.saldo - sumOrders()[0]
+                            const limite = cartao.limite - sumOrders()[0]
+                            if (limite >= 0  && cartao.tipoPagamento === "Crédito"){
+                                cartao.limite = limite < 0 ? 0 : limite
+                            }else if (saldo >= 0 && cartao.tipoPagamento === "Débito"){
+                                cartao.saldo = saldo < 0 ? 0 : saldo
                             }else{
                                 continueProcess = false
                             }
@@ -156,8 +157,9 @@ const Pagamento = ({}) => {
                     })
                 }
                 if ( continueProcess ) {
+                    setTotalPay(sumOrders()[0])
                     removeIntersection()
-                    
+                    console.log(user)
                     updateUser(user)
                     setShowSuccessPopup(true);
                 }else{
@@ -169,6 +171,7 @@ const Pagamento = ({}) => {
                     setErrorMessage(error.response.data);
                     setShowErrorPopup(true);
                 } else {
+                    console.log(error)
                     setErrorMessage('Erro ao conectar com o servidor');
                     setShowErrorPopup(true);
                 }
@@ -181,7 +184,7 @@ const Pagamento = ({}) => {
             const nomeUsuario = user.nome ?? form.nome_completo;
             const cpfUsuario = user.cpf ?? '';
             const response = await fetch(
-                `http://localhost:8080/pdf/extrato?nome=${nomeUsuario}&cpf=${cpfUsuario}&valor=${sumOrders()[0]}`,
+                `http://localhost:8080/pdf/extrato?nome=${nomeUsuario}&cpf=${cpfUsuario}&valor=${totalPay}`,
                 {
                     method: "GET",
                     headers: { "Content-Type": "application/pdf" },
@@ -468,7 +471,7 @@ const Pagamento = ({}) => {
         {showExtratoPopup && (
             <div className="success-popup">
                 <div className="success-popup-content">
-                    <Button text="OK" onClick={() => setShowExtratoPopup(false)}/>
+                    <Button text="OK" onClick={() => {setShowExtratoPopup(false); navigate("/shop")}}/>
                     <Button text="BAIXAR EXTRATO" onClick={closePopupExtrato}/>
                 </div>
             </div>
