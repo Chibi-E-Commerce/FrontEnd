@@ -32,14 +32,6 @@ const NavBar = ({ carrinho }) => {
         <Imagem src={logo} alt="Chibi" />
       </div>
       <div className="header-div">
-        <div id="icons-header">
-          {carrinho ? (
-            <div id="carrinho-icon" onClick={openSideCar}>
-              <Imagem src={carrinhoIcon} alt="Carrinho" />
-            </div>
-          ) : (
-            <></>
-          )}
           {
             user?.adm ? (
               <div id="area-icon" onClick={openArea}>
@@ -47,7 +39,13 @@ const NavBar = ({ carrinho }) => {
               </div>
             ) : (<></>)
           }
-        </div>
+          {carrinho ? (
+            <div id="carrinho-icon" onClick={openSideCar}>
+              <Imagem src={carrinhoIcon} alt="Carrinho" />
+            </div>
+          ) : (
+            <></>
+          )}
       </div>
       {openModal === "sideCar" && (
         <CarSide closeShowSide={closeShowSideCar} /> 
