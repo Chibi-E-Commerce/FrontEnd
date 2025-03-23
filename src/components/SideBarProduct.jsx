@@ -2,7 +2,7 @@ import { useState, useContext, useEffect } from "react";
 import { Imagem, Button } from "./Utils";
 import add from "../assets/images/filtroAdd.svg";
 import remove from "../assets/images/MenosQuantidade.svg";
-import car from "../assets/images/CarIconWhite.svg";
+import car from "../assets/images/CarIcon.svg";
 import { OrderContext } from "../OrderContext";
 import "../styles/components/SideBarProduct.css"
 
