@@ -207,30 +207,35 @@ const Pagamento = ({}) => {
         try {
             const nomeUsuario = user.nome ?? form.nome_completo;
             const cpfUsuario = user.cpf ?? '';
-            const response = await fetch(
-                `http://localhost:8080/pdf/extrato?nome=${nomeUsuario}&cpf=${cpfUsuario}&valor=${totalPay}`,
-                {
-                    method: "GET",
-                    headers: { "Content-Type": "application/pdf" },
+                const downloadFile = async (formato) => {
+                const response = await fetch(
+                    `http://localhost:8080/extrato/baixar?nome=${nomeUsuario}&cpf=${cpfUsuario}&valor=${totalPay}&formato=${formato}`,
+                    {
+                        method: "GET",
+                        headers: { "Content-Type": formato === "pdf" ? "application/pdf" : "text/plain" },
+                    }
+                );
+    
+                if (!response.ok) {
+                    throw new Error(`Erro ao gerar o arquivo ${formato}`);
                 }
-            );
-        
-            if (!response.ok) {
-                throw new Error("Erro ao gerar o PDF");
-            }
-        
-            const blob = await response.blob();
-            const url = window.URL.createObjectURL(blob);
-            const link = document.createElement("a");
-            link.href = url;
-            link.setAttribute("download", "comprovante_chibi.pdf");
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+    
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const link = document.createElement("a");
+                link.href = url;
+                link.setAttribute("download", `comprovante_chibi.${formato}`);
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            };
+                await Promise.all([downloadFile("pdf"), downloadFile("txt")]);
+    
         } catch (error) {
             console.error("Erro ao baixar extrato:", error);
         }
     };
+    
 
     const [errors, setErrors] = useState({
         rua: '',
@@ -251,7 +256,6 @@ const Pagamento = ({}) => {
             rua: '',
             estado: '',
             cep: '',    
-            cep: '',
             numero_cartao: '',
             cod_seguranca: '',
             tipo_pagamento: ''
