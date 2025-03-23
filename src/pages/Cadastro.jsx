@@ -8,6 +8,7 @@ import '../styles/Cadastro.css';
 const Cadastro = () => {
     const navigate = useNavigate();
     const [form, setForm] = useState({
+        adm: false,
         nome: '',
         email: '',
         senha: '',
@@ -78,6 +79,7 @@ const Cadastro = () => {
         e.preventDefault();
         if (validateForm()) {
             try {
+                console.log(form)
                 const response = await axios.post('http://localhost:8080/cliente', form);
                 console.log('Formulário enviado:', response.data);
                 addUser(response.data)
