@@ -19,7 +19,8 @@ export const OrderProvider = ({ children }) => {
     if (user) {
       const updatedUser = { ...user, carrinho: newOrders };
       addUser(updatedUser);
-      await updateUser(updatedUser);
+      const response = await updateUser(updatedUser);
+      return response
     }
   };
 
@@ -45,14 +46,15 @@ export const OrderProvider = ({ children }) => {
 
   const removeIntersection = () => {
     const ordersPay = JSON.parse(localStorage.getItem("ordersPay")) || [];
+    let newOrders
   
     ordersPay.forEach((prevOrder) => {
-      if (orders.some(o => JSON.stringify(o) === JSON.stringify(prevOrder))) {
-        deleteOrder(prevOrder);
-      }
+      newOrders = orders.filter((cat) => JSON.stringify(cat) !== JSON.stringify(prevOrder))
     });
-  
+
     localStorage.setItem("ordersPay", JSON.stringify([]));
+    setOrders(newOrders)
+    return newOrders
   };
   
 
