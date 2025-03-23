@@ -495,8 +495,11 @@ const Pagamento = ({}) => {
         {showExtratoPopup && (
             <div className="success-popup">
                 <div className="success-popup-content">
-                    <Button text="BAIXAR EXTRATO" onClick={closePopupExtrato}/>
-                    <Button text="OK" onClick={() => {setShowExtratoPopup(false); navigate("/shop")}}/>
+                    <p>Baixar Extrato</p>
+                    <div className="extrato-popup">
+                        <Button text="Voltar" onClick={() => {setShowExtratoPopup(false); navigate("/shop")}}/>
+                        <Button text="Baixar" onClick={() => {baixarExtrato(); navigate("/shop")}}/>
+                    </div>
                 </div>
             </div>
         )}

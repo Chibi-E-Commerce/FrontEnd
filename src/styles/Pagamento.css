@@ -116,22 +116,22 @@
     text-transform: capitalize;
 }
 
-.btn-extrato {
-    background-color: #B62929;
-    border: none;
-    border-radius: 10px;
-    padding: 10px 20px;
+.extrato-popup Button{
+    border-style: none;
+    border-radius: 11px;
+    margin: 0px 20px 0px 20px;
     font-family: 'Poppins', sans-serif;
     font-weight: bold;
-    font-size: 120%;
-    color: white;
-    cursor: pointer;
-    transition: 0.3s;
-    display: block;
-    margin-left: 30px;
+    font-size: 145%;
     text-align: center;
+    color: white;
+    padding: 10px;
 }
 
-.btn-extrato:hover {
-    background-color: #882222;
+.extrato-popup Button:first-child {
+    background-color: #B62929;
+}
+
+.extrato-popup Button:last-child {
+    background-color: #2E7D32;
 }
