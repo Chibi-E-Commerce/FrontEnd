@@ -98,7 +98,9 @@ const Pagamento = ({}) => {
 
     const handleChange = (e) => {
         const elements = document.getElementsByClassName("cartao-checked")
-        elements[0].classList.remove("cartao-checked")
+        if (elements[0]) {
+            elements[0].classList.remove("cartao-checked")
+        }
 
         const { name, value } = e.target;
         setForm({
