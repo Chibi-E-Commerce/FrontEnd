@@ -16,12 +16,12 @@ section{
     grid-template-rows: auto;
     row-gap: 20px;
     width: 75%;
-    background-color: #FFEBDF;
+    background-color: #FDF7F7;
     padding-top: 30px;
 }
 
 section .product{
-    background-color: #F7BF88;
+    background-color: #F6C492;
     width: 80%;
     height: 300px;
     border-radius: 11px;
@@ -108,7 +108,7 @@ section .product .btn-desconto{
 #filtro{
     display: block;
     width: 25%;
-    background-color: #E4E0E1;
+    background-color: #FFEBDF;
 }
 
 #filtro form{
@@ -121,13 +121,15 @@ section .product .btn-desconto{
 
 
     button{
-        width: 80%;
+        width: 100%;
         height: 40px;
-        margin: 0  0 20px 30px;
+        margin: 0  0 20px 0;
         background-color: #9c6a46;
         border: none;
         border-radius: 6px;
+        border: 2px solid #9c6a46;
         box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        transition: all 0.3s ease;
 
         h3{
             color: white;
@@ -156,12 +158,12 @@ section .product .btn-desconto{
 #filtro form #search-filtro input{
     width: 100%;
     height: 45px;
-    border-radius: 6px 0 0 6px;
+    border-radius: 10px 0 0 10px;
     border: none;
     outline: none;
     margin: 0 0 30px 0;
     padding: 0 15px 0;
-    background-color: #B1C29E;
+    background-color: #D5B487;
 }
 
 #filtro form #search-filtro input::placeholder{
@@ -184,11 +186,10 @@ section .product .btn-desconto{
 }
 
 #filtro form #search-filtro div{
-    background-color: #B1C29E;
+    background-color: #D5B487;
     height: 45px;
     width: auto;
-    border-radius: 0 6px 6px 0;
-    padding: auto;
+    border-radius: 0 10px 10px 0;
 }
 
 #filtro form #search-filtro div img{
@@ -197,23 +198,14 @@ section .product .btn-desconto{
     margin: 7px 10px 0 0;
 }
 
-#filtro form div{
-    border: 6px solid #493628;
-    border-radius: 6px;
-    background-color: #DCD3CF;
-    div{
-        border: none;
-    }
-}
-
 #filtro form #header-filtro{
     display: flex;
     justify-content: space-between;
     width: 90%;
     align-items: center;
-    background-color: #C1B6B1;
+    background-color: #D5B487;
     padding: 0 5% 0 5%;
-    border-radius: 0;
+    border-radius: 10px;
 
     h3{
         font-size: 26px;
@@ -234,8 +226,15 @@ section .product .btn-desconto{
 #filtro form ul{
     width: 100%;
     min-height: 300px;
+    width: 80%;
     list-style: none;
     padding-left: 20px;
+    padding-bottom: 20px;
+    margin: 0 auto 20px auto;
+    border: 5px solid transparent;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    background-color: #EFD6BD;
 }
 
 #categorias{
@@ -260,7 +259,7 @@ section .product .btn-desconto{
 
 #filtro form ul li{
     display: flex;
-    width: 80%;
+    width: 90%;
     height: 35px;
     align-items: center;
     margin: 10px 0 2px 0;
@@ -270,6 +269,8 @@ section .product .btn-desconto{
         background-color: #1E1E1E;
         width: 35px;
         height: 100%;
+        border-top-left-radius: 10px;
+        border-bottom-left-radius: 10px;
         img{
             width: 80%;
             height: auto;
@@ -280,11 +281,11 @@ section .product .btn-desconto{
 
 #filtro form ul li .div-filter{
     display: flex;
-    width: 80%;
+    width: 90%;
     height: 100%;
     align-items: center;
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
 
     p, label{
         margin: 0 0 0 10px;

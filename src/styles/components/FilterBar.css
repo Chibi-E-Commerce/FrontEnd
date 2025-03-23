@@ -1,14 +1,14 @@
 #filter-bar{
     position: fixed;
-    left: 400px;
-    top: 175px;
+    left: 420px;
+    top: 195px;
     min-width: 150px;
     display: flex;
     flex-flow: column wrap;
     gap: 5px;
     padding: 10px 8px 10px 5px;
     border-radius: 6px;
-    background-color: #DCD3CF;
+    background-color: #EFD6BD;
     z-index: 100;
 }
 

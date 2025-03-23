@@ -10,7 +10,7 @@
     top: 70px;
     right: 0;
     border-radius: 0;
-    background-color: #E6AD76;
+    background-color: #D5B487;
     z-index: 100;
 
     #image-sidebar-product{
@@ -21,7 +21,7 @@
         margin: 20px auto 0 auto;
 
         img{
-            width: 100%;
+            width: 90%;
             height: auto;
         }
     }
@@ -60,7 +60,7 @@
             background-color: #FFDEBB;
 
             img{
-                width: 50%;
+                width: 40%;
                 height: auto;
             }
         }

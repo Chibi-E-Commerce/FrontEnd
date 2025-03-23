@@ -4,12 +4,13 @@
     right: 0;
     width: 45%;
     height: 100vh;
-    background-color: #D6C0B3;
+    background-color: #EFD6BD;
 
     #header-car-side{
-        height: calc(70px - 2.5%);
+        height: calc(70px - 2.6%);
+        max-height: 70px;
         width: 100%;
-        padding-top: 2.6%;
+        padding-top: 2.3%;
     
         h3{
             color: #FFFFFF;
@@ -21,8 +22,9 @@
     
         #carrinho-icon{
             position: absolute;
-            top: 10px;
+            top: 7px;
             right: 20px;
+            margin: 0 5px 0 0;
         }
     }
 
@@ -39,7 +41,7 @@
             grid-template-columns: 0.5fr 1.5fr 1fr 1fr 0.5fr 1fr 0.5fr;
             align-items: center;
             text-align: center;
-            background-color: #AB886D;
+            background-color: #D5B487;
             width: 90%;
             padding: 10px;
             margin: auto;
