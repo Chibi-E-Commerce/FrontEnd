@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import Cartoes from '../components/Cartao';
-import { Checkbox, CheckboxManual, Imagem } from '../components/Utils';
+import { Button, Imagem } from '../components/Utils';
 import "../styles/Pagamento.css";
 import Gato from '../assets/images/cafe_fofura_felicidade.svg'
 import { UserContext } from '../UserContext';
@@ -41,8 +41,9 @@ const Pagamento = ({}) => {
         "Tocantins": "TO"
     }
 
+    const navigate = useNavigate()
     const { user } = useContext(UserContext);
-    const { ordersPay } = useContext(OrderContext)
+    const { removeIntersection } = useContext(OrderContext)
     const [errorMessage, setErrorMessage] = useState('');
     const [showErrorPopup, setShowErrorPopup] = useState(false);
     const [showSuccessPopup, setShowSuccessPopup] = useState(false);
@@ -57,23 +58,27 @@ const Pagamento = ({}) => {
         bandeira: '',
         cartao_validade: '',
         nome_completo: '',
+        tipo_pagamento: '',
         cadastrar_cartao: false,
     });
   
     useEffect(() => {
-        setForm((prevForm) => ({
-            ...prevForm,
-            rua: user.endereco.rua,
-            estado: user.endereco.estado,
-            cep: user.endereco.cep,
-        }))
+        if (user.endereco) {
+            setForm((prevForm) => ({
+                ...prevForm,
+                rua: user.endereco.rua,
+                estado: user.endereco.estado,
+                cep: user.endereco.cep,
+            }))
+        }
     }, [])
 
     const sumOrders = () => {
         let sum = 0
         let qntd = 0
+        const ordersPay = JSON.parse(localStorage.getItem("ordersPay"))
         ordersPay.map((orderPay) => {
-            sum += Number(orderPay.produto.preco) * Number(orderPay.quantidade)
+            sum += Number(((orderPay.produto.preco * ((100 - orderPay.produto.desconto)/100)))) * Number(orderPay.quantidade)
             qntd += Number(orderPay.quantidade)
         })
         return [sum.toFixed(2), qntd]
@@ -86,7 +91,8 @@ const Pagamento = ({}) => {
             cod_seguranca: cartao.cvv,
             bandeira: cartao.bandeira,
             nome_completo: cartao.titular,
-            cartao_validade:"20" + cartao.validade.ano + "-" + cartao.validade.mes
+            cartao_validade: cartao.validade.ano + "-" + cartao.validade.mes,
+            tipo_pagamento: cartao.tipoPagamento
         }))
     }
 
@@ -95,19 +101,15 @@ const Pagamento = ({}) => {
         elements[0].classList.remove("cartao-checked")
 
         const { name, value } = e.target;
-        console.log(value)
         setForm({
             ...form,
             [name]: value
         });
     };
 
-    useEffect(() => {
-        console.log(user)
-    })
-
     const enviarFormulario = (e) => {
         e.preventDefault();
+        let continueProcess = true
         if (validateForm()) {
             try {
                 if (user.endereco === null) {
@@ -237,6 +239,7 @@ const Pagamento = ({}) => {
         bandeira: '',
         cartao_validade: '',
         nome_completo: '',
+        tipo_pagamento: ''
     });
 
     
@@ -248,7 +251,8 @@ const Pagamento = ({}) => {
             cep: '',    
             cep: '',
             numero_cartao: '',
-            cod_seguranca: ''
+            cod_seguranca: '',
+            tipo_pagamento: ''
         };
 
         if (!form.rua) {
@@ -276,6 +280,11 @@ const Pagamento = ({}) => {
             valid = false;
         }
 
+        if (!form.tipo_pagamento) {
+            newErrors.tipo_pagamento = 'Forma de pagamento é obrigatória';
+            valid = false;
+        }
+
 
         
 
@@ -299,6 +308,17 @@ const Pagamento = ({}) => {
         return valid;
     };
 
+
+    const showPopupExtrato = () => {
+        setShowSuccessPopup(false)
+        setShowExtratoPopup(true)
+    }
+
+    const closePopupExtrato = () => {
+        setShowExtratoPopup(false)
+        baixarExtrato()
+        navigate("/shop")
+    }
 
     return (
         <>
@@ -407,7 +427,7 @@ const Pagamento = ({}) => {
                                 </div>
                             </div>
                             <div className='cod-seguranca-row'>
-                                <div className="pagamento-input-group">
+                                <div className="pagamento-input-group cvv-div">
                                     <label htmlFor="cod_seguranca">Cód. Segurança</label>
                                     <input
                                         type="text"
@@ -450,7 +470,6 @@ const Pagamento = ({}) => {
                         </div>
                         
                         <div className='form-enviar'>
-                            <CheckboxManual name={"87"}/>
                             <div className='btn-pagar-row'>
                                 <div className="info-pagamento">
                                     <span id='valor-total'>R$ { sumOrders()[0] }</span>

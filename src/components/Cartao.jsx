@@ -24,23 +24,12 @@ const Cartao = ({ cartao, onClick }) => {
         }
     }
 
-
-    const formaterNum = () => {
-        let num = ""
-        for (let i = 0; i < cartao.numero.length; i++){
-            if (i % 4 == 0){
-                num+=" "
-            }
-            num += cartao.numero[i]
-        }
-        return num
-    }
-
     const checkButton = (e) => {
         e.preventDefault()
 
         const button = e.target.closest("button")
         if (!checked) {
+            document.querySelectorAll('.cartao-checked').forEach(el => el.classList.remove("cartao-checked"));
             button.classList.add("cartao-checked")
         }else{
             button.classList.remove("cartao-checked")
@@ -56,7 +45,7 @@ const Cartao = ({ cartao, onClick }) => {
             <div className='cartao-row'>
                 <div>
                     <p>NÚMERO DO CARTÃO</p>
-                    <h5>{formaterNum()}</h5>
+                    <h5>{cartao.numero}</h5>
                 </div>
                 <Imagem src={showBandeira()} alt={cartao.bandeira}/>
             </div>
@@ -69,9 +58,9 @@ const Cartoes = ({ cartoes, onClick }) => {
         <div className='cartao-box'>
             <h2 className='pagamento-title'>Cartões</h2>
             <div className='cartao-container'>
-                {cartoes.map(
+                {cartoes.length > 0 ? cartoes.map(
                     (cartao, i) => <Cartao key={i} cartao={cartao} onClick={onClick}></Cartao>
-                )}
+                ) : (<></>)}
             </div>
         </div>
     )

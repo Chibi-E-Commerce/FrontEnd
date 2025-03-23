@@ -115,6 +115,9 @@ function Shopping({ productsBase }) {
 
 
     const sendFilter = async () => {
+        if (openModal === "filterBar"){
+            close()
+        }
         const filterSanitizeModel = {
             pesquisa : "",
             precoMin : 0,

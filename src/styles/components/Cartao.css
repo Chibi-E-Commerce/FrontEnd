@@ -6,9 +6,27 @@
     gap: 1.3em;
     padding: 2.25%;
     border-radius: 20px;
-    flex-wrap: wrap;
     min-width: 95%;
     align-items: center;
+    overflow-x: scroll;
+}
+
+.cartao-container::-webkit-scrollbar {
+    width: 10px;
+}
+
+.cartao-container::-webkit-scrollbar-track {
+    background: #c1aa9c;
+    border-radius: 15px;
+}
+
+.cartao-container::-webkit-scrollbar-thumb {
+    background: #926c54; 
+    border-radius: 4px;
+}
+
+.cartao-container::-webkit-scrollbar-thumb:hover {
+    background: rgb(199, 152, 125);
 }
 
 .cartao {

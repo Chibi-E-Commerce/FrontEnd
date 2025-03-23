@@ -57,10 +57,27 @@ function CheckboxManual({ name, checked, onChange }) {
     );
 }
 
+function PopupSucess({ sucessMessage, setShowSucessPopup }) {
+    return (
+        <div className="success-popup">
+            <div className="success-popup-content">
+                <p>{sucessMessage}</p>
+                <Button text="OK" onClick={setShowSucessPopup}/>
+            </div>
+        </div>
+    )
+}
 
-/*
-    É necessário criar os Pop-ups de Sucess e Failed
-*/
+function PopupFailed({ errorMessage, setShowErrorPopup }) {
+    return (
+        <div className="error-popup">
+            <div className="error-popup-content">
+                <p>{errorMessage}</p>
+                <Button text="FECHAR" onClick={setShowErrorPopup}/>
+            </div>
+        </div>
+    )
+}
 
 
-export {Imagem, Link, Button, Checkbox, CheckboxManual};
+export {Imagem, Link, Button, Checkbox, CheckboxManual, PopupFailed, PopupSucess};

@@ -5,6 +5,7 @@ import axios from 'axios';
 import { getUser } from '../api';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from "../UserContext"
+import { PopupFailed } from '../components/Utils';
 
 const Login = () => {
     const [form, setForm] = useState({ email: '', senha: '' });
@@ -107,12 +108,7 @@ const Login = () => {
                     </div>
 
                     {showErrorPopup && (
-                        <div className="error-popup">
-                            <div className="error-popup-content">
-                                <p>{errorMessage}</p>
-                                <button onClick={() => setShowErrorPopup(false)}>Fechar</button>
-                            </div>
-                        </div>
+                        <PopupFailed errorMessage={errorMessage} setShowErrorPopup={() => setShowErrorPopup(false)}/>
                     )}
 
                     <button type="submit" className="submit-btn-login">ENTRAR</button>
