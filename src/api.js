@@ -51,5 +51,15 @@ export const updateUser = async (user) => {
     }
 }
 
+export const createOrder = async (order) => {
+    try {
+        const response = await api.post('/pedido',order);
+        return response.data;
+    } catch (error) {
+        console.error('Erro ao criar pedido', error);
+        return null;
+    }
+}
+
 
 export default api;

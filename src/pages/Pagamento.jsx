@@ -5,7 +5,7 @@ import "../styles/Pagamento.css";
 import Gato from '../assets/images/cafe_fofura_felicidade.svg'
 import { UserContext } from '../UserContext';
 import { OrderContext } from '../OrderContext';
-import { updateUser } from '../api';
+import { updateUser, createOrder } from '../api';
 import { PopupSucess, PopupFailed } from '../components/Utils';
 import { useNavigate } from 'react-router-dom';
 
@@ -97,6 +97,9 @@ const Pagamento = ({}) => {
     }
 
     const handleChange = (e) => {
+        const elements = document.getElementsByClassName("cartao-checked")
+        elements[0].classList.remove("cartao-checked")
+
         const { name, value } = e.target;
         setForm({
             ...form,
@@ -109,6 +112,13 @@ const Pagamento = ({}) => {
         let continueProcess = true
         if (validateForm()) {
             try {
+                if (user.endereco === null) {
+                    user.endereco = {
+                        rua: "",
+                        estado: "",
+                        cep: ""
+                    }
+                }
                 user.endereco.rua = form.rua.trim();
                 user.endereco.estado = form.estado.trim();
                 user.endereco.cep = form.cep.trim();
@@ -158,9 +168,21 @@ const Pagamento = ({}) => {
                 }
                 if ( continueProcess ) {
                     setTotalPay(sumOrders()[0])
-                    removeIntersection()
-                    console.log(user)
+                    const order = {
+                        total: sumOrders()[0],
+                        data: new Date().toISOString().split('T')[0],
+                        itens: JSON.parse(localStorage.getItem("ordersPay")),
+                        client: {
+                            id: user.id,
+                            nome: user.nome,
+                            cpf: user.cpf,
+                            email: user.email,
+                            endereco: user.endereco
+                        }
+                    }
+                    user.carrinho = removeIntersection()
                     updateUser(user)
+                    createOrder(order)
                     setShowSuccessPopup(true);
                 }else{
                     setErrorMessage('Saldo Insuficiente');
@@ -323,9 +345,9 @@ const Pagamento = ({}) => {
                                 <label htmlFor="estado">Estado</label>
                                 <select name="estado" id="estado" onChange={handleChange} required>
                                     { form.estado === "" ? (
-                                                <option value="Hidden" hidden>XX</option>
+                                                <option value="Hidden" hidden={true}>XX</option>
                                             ) : (
-                                                <option value={form.estado} hidden>{form.estado}</option>
+                                                <option value={form.estado} hidden={true}>{form.estado}</option>
                                             )
                                         }
                                     {Object.entries(estados).map(([key, value]) => (
@@ -336,7 +358,7 @@ const Pagamento = ({}) => {
                                     type="text"
                                     id="estado"
                                     name="estado"
-                                    hidden="true"
+                                    hidden={true}
                                     value={form.estado}
                                     required
                                     onChange={handleChange}
@@ -390,9 +412,9 @@ const Pagamento = ({}) => {
                                     <label htmlFor="bandeira">Bandeira</label>
                                     <select name="bandeira" id="bandeira" value={form.bandeira} onChange={handleChange} required>
                                         { form.bandeira === "" ? (
-                                                <option value="Hidden" hidden>Selecione uma opção</option>
+                                                <option value="Hidden" hidden={true}>Selecione uma opção</option>
                                             ) : (
-                                                <option value={form.bandeira} hidden>{form.bandeira}</option>
+                                                <option value={form.bandeira} hidden={true}>{form.bandeira}</option>
                                             )
                                         }
                                         <option value="MasterCard">MasterCard</option>
@@ -422,9 +444,9 @@ const Pagamento = ({}) => {
                                     <label htmlFor="tipo_pagamento">Forma de Pagamento</label>
                                     <select name="tipo_pagamento" id="tipo_pagamento" value={form.tipo_pagamento} onChange={handleChange} required>
                                         { form.tipo_pagamento === "" ? (
-                                                <option value="Hidden" hidden>Selecione uma opção</option>
+                                                <option value="Hidden" hidden={true}>Selecione uma opção</option>
                                             ) : (
-                                                <option value={form.tipo_pagamento} hidden>{form.tipo_pagamento}</option>
+                                                <option value={form.tipo_pagamento} hidden={true}>{form.tipo_pagamento}</option>
                                             )
                                         }
                                         <option value="Débito">Débito</option>
@@ -471,8 +493,8 @@ const Pagamento = ({}) => {
         {showExtratoPopup && (
             <div className="success-popup">
                 <div className="success-popup-content">
-                    <Button text="OK" onClick={() => {setShowExtratoPopup(false); navigate("/shop")}}/>
                     <Button text="BAIXAR EXTRATO" onClick={closePopupExtrato}/>
+                    <Button text="OK" onClick={() => {setShowExtratoPopup(false); navigate("/shop")}}/>
                 </div>
             </div>
         )}
