@@ -21,13 +21,13 @@ export default function Dash({}) {
     const [dashData, setDashData] = useState({
         totalSales: 0,
         totalItems: 0,
+        totalClients: 0,
         chartData: []
     })
     
     const getPedidosAsync = async () => {
         try {
             const pedidos = await getPedidos();
-            console.log(pedidos);
             if (pedidos) {
                 setPedidos(pedidos);
             } else {
@@ -50,7 +50,6 @@ export default function Dash({}) {
         
       // Calculate total items sold
       const totalItems = pedidos.reduce((acc, pedido) => {
-          console.log(pedido.itens);
           return acc + pedido.itens?.reduce((itemAcc, item) => itemAcc + (item.quantidade || 0), 0);
       }, 0);
 
@@ -61,8 +60,10 @@ export default function Dash({}) {
           total: pedido.total,
           items: pedido.itens?.reduce((acc, item) => acc + (item.quantidade || 0), 0)
       }));
+
+      const totalClients = [...new Set(pedidos.map(pedido => pedido.client.nome).filter(x => x))].length;
       
-      setDashData({ totalSales, totalItems, chartData });
+      setDashData({ totalSales, totalItems, totalClients, chartData });
     }
       
     useEffect(() => {
@@ -125,7 +126,7 @@ export default function Dash({}) {
               </div>
               <div className="stat-info">
                 <h3>Clientes</h3>
-                <p className="stat-value">{new Set(pedidos.map(order => order.client._id)).size}</p>
+                <p className="stat-value">{dashData.totalClients}</p>
               </div>
             </div>
           </div>
