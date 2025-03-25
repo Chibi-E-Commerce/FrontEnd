@@ -97,8 +97,9 @@ const Pagamento = ({}) => {
     }
 
     const handleChange = (e) => {
+        const camposCartao = ["numero_cartao", "bandeira", "cod_seguranca", "nome_completo", "cartao_validade", "tipo_pagamento"]
         const elements = document.getElementsByClassName("cartao-checked")
-        if (elements[0]) {
+        if (elements[0] && camposCartao.includes(e.target.name)) {
             elements[0].classList.remove("cartao-checked")
         }
 

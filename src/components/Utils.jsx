@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {Link as Rota} from 'react-router-dom';
 import "../styles/components/Utils.css"
 import errorImage from '../../src/assets/images/error.svg';
@@ -87,8 +87,68 @@ function PopupFailed({ errorMessage, setShowErrorPopup }) {
     )
 }
 
+function Table({ object, keys, openModal, ind }) {
+    const [keySecrets, setKeysSecrets] = useState(["cpf", "senha", "cartao", "nome", "urlImagem", "id"]);
+    const keysFiltered = keys.filter((key) => !keySecrets.includes(key));
+    const cabecalhos = {
+        adm: "Tipo de Conta",
+        email: "E-mail",
+        dataNascimento: "Data de nascimento",
+        endereco: "Endereço",
+        carrinho: "Carrinho",
+        preco: "Preço",
+        marca: "Marca",
+        categoria: "Categorias",
+        desconto: "Desconto",
+        descricao: "Descrição"
+    }
+    
+    return (
+        <table>
+            <thead>
+                <tr>
+                    {keysFiltered.map((key, index) => (
+                        <th key={index}>{cabecalhos[key]}</th>
+                    ))}
+                </tr>
+            </thead>
 
+            <tbody>
+                <tr>
+                    {keysFiltered.map((key, index) => (
+                        <td key={index} id={key}>
+                            {key === "endereco" || key === "carrinho" ? (
+                                <div onClick={() => openModal(key, ind)}>
+                                    {key}
+                                </div>
+                            ) : 
+                             key === "adm" ? 
+                             object[key] ? ("Administrador") : ("Comum")
+                             :
+                             key === "dataNascimento" ?
+                             (
+                                <input type="date" name={key} value={object[key]} readOnly/>
+                             )
+                             :
+                             key === "categoria" ?
+                             object[key].join(", ")
+                             :
+                             key === "preco" ?
+                             "R$ " + object[key].toFixed(2)
+                             :
+                             key === "desconto" ?
+                             object[key] === 0 ?
+                             "Sem Desconto" :
+                             object[key] + "%"
+                             :  
+                             object[key]
+                            }
+                        </td>
+                    ))}
+                </tr>
+            </tbody>
+        </table>
+    );
+}
 
-
-
-export {Imagem, Link, Button, Checkbox, CheckboxManual, PopupFailed, PopupSucess};
+export {Imagem, Link, Button, Checkbox, CheckboxManual, PopupFailed, PopupSucess, Table};

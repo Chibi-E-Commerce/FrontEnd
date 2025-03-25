@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
-import { getDados } from './api';
+import { getProducts } from './api';
 import HomePage from './pages/Cadastro';
 import NavBar from './components/Navbar';
 import Shopping from './pages/Shopping';
@@ -18,7 +18,7 @@ function App() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const data = await getDados();
+        const data = await getProducts();
         setDados(data);
       } catch (error) {
         console.error("Erro ao buscar dados:", error);
@@ -45,7 +45,7 @@ function AppContent({ dados }) {
 
   return (
     <div>
-      <NavBar carrinho={location.pathname === "/shop"} />
+      <NavBar carrinho={location.pathname === "/shop"} area={location.pathname === "/shop"} />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/shop" element={
@@ -59,7 +59,7 @@ function AppContent({ dados }) {
             <Pagamento/>
         } />
         <Route path="/area" element={
-            <Area/>
+            <Area />
         } />
         <Route path='/dash' element={
           <Dash>{}</Dash>

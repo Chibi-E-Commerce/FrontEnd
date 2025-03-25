@@ -9,7 +9,7 @@ import { UserContext } from "../UserContext"
 import { useContext } from "react"
 import { useNavigate } from "react-router-dom"
 
-const NavBar = ({ carrinho }) => {
+const NavBar = ({ carrinho, area}) => {
   const { open, close, openModal } = useModal()
   const { user } = useContext(UserContext)
   const navigate = useNavigate()
@@ -33,7 +33,7 @@ const NavBar = ({ carrinho }) => {
       </div>
       <div className="header-div">
           {
-            user?.adm ? (
+            user?.adm && area ? (
               <div id="area-icon" onClick={openArea}>
                 <Imagem src={cadeado} alt="Area-Restrita" />
               </div>

@@ -10,7 +10,7 @@ import FilterBar from "../components/FilterBar";
 import SideBarProduct from "../components/SideBarProduct";
 import { useModal } from "../ModalContext";
 import { OrderContext } from "../OrderContext";
-import { getDataFiltered, getDados } from "../api";
+import { getDataFiltered, getProducts } from "../api";
 import { UserContext } from "../UserContext"
  
 function Shopping({ productsBase }) {
@@ -135,7 +135,7 @@ function Shopping({ productsBase }) {
         })
 
         const newProducts = JSON.stringify(filterSanitizeModel) === JSON.stringify(filterSanitize)
-        ? await getDados()
+        ? await getProducts()
         : await getDataFiltered(filterSanitize);
         
         setProducts(newProducts || []);

@@ -1,7 +1,12 @@
+#cadastro{
+    height: calc(100vh - 70px);
+}
+
 .cadastro-card {
     width: 100%;
+    height: auto;
     max-width: 400px;
-    margin: 50px auto;
+    margin: 20px auto;
     padding: 20px;
     background-color: #D6C0B3;
     border-radius: 10px;

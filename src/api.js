@@ -6,7 +6,7 @@ const api = axios.create({
     baseURL: API_URL
 });
 
-export const getDados = async () => {
+export const getProducts = async () => {
     try {
         const response = await api.get('/produto/list');
         return response.data;
@@ -15,6 +15,17 @@ export const getDados = async () => {
         return null;
     }
 };
+
+export const getUsers = async () => {
+    try {
+        const response = await api.get('/cliente/list');
+        return response.data;
+    } catch (error) {
+        console.error('Erro ao buscar dados', error);
+        return null;
+    }
+};
+
 
 export const getDataFiltered = async (filter) => {
     try {
@@ -54,6 +65,16 @@ export const updateUser = async (user) => {
 export const createOrder = async (order) => {
     try {
         const response = await api.post('/pedido',order);
+        return response.data;
+    } catch (error) {
+        console.error('Erro ao criar pedido', error);
+        return null;
+    }
+}
+
+export const deleteProduct = async (nome) => {
+    try {
+        const response = await api.delete('/produto',nome);
         return response.data;
     } catch (error) {
         console.error('Erro ao criar pedido', error);
