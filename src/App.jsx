@@ -10,6 +10,7 @@ import { OrderProvider } from './OrderContext';
 import { ModalProvider } from './ModalContext';
 import { UserProvider } from './UserContext';
 import Login from './pages/Login';
+import Dash from './components/Dash';
 
 function App() {
   const [dados, setDados] = useState([]);
@@ -60,6 +61,10 @@ function AppContent({ dados }) {
         <Route path="/area" element={
             <Area />
         } />
+        <Route path='/dash' element={
+          <Dash>{}</Dash>
+        }/>
+        
       </Routes>
     </div>
   );

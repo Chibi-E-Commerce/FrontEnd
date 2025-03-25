@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import {Link as Rota} from 'react-router-dom';
 import "../styles/components/Utils.css"
+import errorImage from '../../src/assets/images/error.svg';
+import sucessfulImage from '../../src/assets/images/sucesso.svg';
 
 /*
     Esse arquivo serve para criar componentes pequenos e muito usados.
@@ -62,8 +64,11 @@ function PopupSucess({ sucessMessage, setShowSucessPopup }) {
         <div className="success-popup">
             <div className="success-popup-content">
                 <p>{sucessMessage}</p>
-                <Button text="OK" onClick={setShowSucessPopup}/>
+                <img src={sucessfulImage} alt="Sucessful" />
             </div>
+            <button className="success-popup-button" onClick={setShowSucessPopup}>
+                    OK
+            </button>
         </div>
     )
 }
@@ -73,8 +78,11 @@ function PopupFailed({ errorMessage, setShowErrorPopup }) {
         <div className="error-popup">
             <div className="error-popup-content">
                 <p>{errorMessage}</p>
-                <Button text="FECHAR" onClick={setShowErrorPopup}/>
+                <img src={errorImage} alt="Error" />
             </div>
+            <button className="error-popup-button" onClick={setShowErrorPopup}>
+                VOLTAR
+            </button>
         </div>
     )
 }
@@ -94,7 +102,7 @@ function Table({ object, keys, openModal, ind }) {
         desconto: "Desconto",
         descricao: "Descrição"
     }
-
+    
     return (
         <table>
             <thead>
