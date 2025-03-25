@@ -69,7 +69,7 @@ const Login = () => {
     };
 
     return (
-        <>
+        <main id='login'>
             <div className="bottom-left-image"></div>
             <div className="top-right-image"></div>
             <div className="login-card-login">
@@ -117,7 +117,7 @@ const Login = () => {
                     </div>
                 </form>
             </div>
-        </>
+        </main>
     );
 };
 

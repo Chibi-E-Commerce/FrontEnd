@@ -1,6 +1,6 @@
 #area-restrita{
     width: 100%;
-    height: calc(70px - 100vh);
+    height: calc(100vh - 70px);
     display: flex;
 
     section{
@@ -163,7 +163,7 @@
     #dados{
         width: 95%;
         margin: auto;
-        max-height: 65vh;
+        max-height: 60vh;
         overflow-y: scroll;
         list-style: none;
         padding: 5px;
@@ -238,26 +238,27 @@
                     }
                 }
 
-                #descricao{
+
+                #descricao, #email, #email{
                     white-space: nowrap;
                     overflow-x: auto;
                 }
 
-                #descricao::-webkit-scrollbar {
+                #descricao, #email::-webkit-scrollbar {
                     height: 8px;
                 }
                 
-                #descricao::-webkit-scrollbar-track {
+                #descricao, #email::-webkit-scrollbar-track {
                     background: #EBC7A2;
                     border-radius: 15px;
                 }
                 
-                #descricao::-webkit-scrollbar-thumb {
+                #descricao, #email::-webkit-scrollbar-thumb {
                     background: #926c54; 
                     border-radius: 4px;
                 }
                 
-                #descricao::-webkit-scrollbar-thumb:hover {
+                #descricao, #email::-webkit-scrollbar-thumb:hover {
                     background: rgb(199, 152, 125);
                 }
             }

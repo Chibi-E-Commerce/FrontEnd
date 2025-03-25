@@ -7,7 +7,7 @@ import remove from "../assets/images/Trash.svg"
 import filtroSearch from "../assets/images/filtroSearch.svg";
 import "../styles/Area.css"
 import { useNavigate } from "react-router-dom";
-import { getUsers, getProducts } from "../api"
+import { getUsers, getProducts, deleteProduct } from "../api"
 import { useModal } from "../ModalContext"
 
 

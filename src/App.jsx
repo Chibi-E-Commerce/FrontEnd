@@ -44,7 +44,7 @@ function AppContent({ dados }) {
 
   return (
     <div>
-      <NavBar carrinho={location.pathname === "/shop"} area={location.pathname !== "/area"} />
+      <NavBar carrinho={location.pathname === "/shop"} area={location.pathname === "/shop"} />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/shop" element={

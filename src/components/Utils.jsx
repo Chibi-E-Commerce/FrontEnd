@@ -108,7 +108,7 @@ function Table({ object, keys, openModal, ind }) {
             <tbody>
                 <tr>
                     {keysFiltered.map((key, index) => (
-                        <td key={index} id={key === "descricao" ? "descricao" : ""}>
+                        <td key={index} id={key}>
                             {key === "endereco" || key === "carrinho" ? (
                                 <div onClick={() => openModal(key, ind)}>
                                     {key}

@@ -72,5 +72,15 @@ export const createOrder = async (order) => {
     }
 }
 
+export const deleteProduct = async (nome) => {
+    try {
+        const response = await api.delete('/produto',nome);
+        return response.data;
+    } catch (error) {
+        console.error('Erro ao criar pedido', error);
+        return null;
+    }
+}
+
 
 export default api;

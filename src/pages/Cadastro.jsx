@@ -103,7 +103,7 @@ const Cadastro = () => {
     };
 
     return (
-        <>
+        <main id='cadastro'>
             <div className="top-left-image"></div>
             <div className="bottom-right-image"></div>
             <div className="cadastro-card">
@@ -191,7 +191,7 @@ const Cadastro = () => {
                     <PopupSucess sucessMessage="Cadastro realizado com sucesso!" setShowSucessPopup={handleSuccessPopupClose}/>
                 )}
             </div>
-        </>
+        </main>
     );
 };
 
