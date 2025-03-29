@@ -106,7 +106,6 @@ const Login = () => {
                         </div>
                         {errors.senha && <span className="error-login">{errors.senha}</span>}
                     </div>
-
                     {showErrorPopup && (
                         <PopupFailed errorMessage={errorMessage} setShowErrorPopup={() => setShowErrorPopup(false)}/>
                     )}
