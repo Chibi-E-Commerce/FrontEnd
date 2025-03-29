@@ -93,7 +93,7 @@
         display: flex;
         width: 40%;
         margin-left: 50px;
-        margin-top: 60px;
+        margin-top: 50px;
         border: none;
         background-color: transparent;
 
@@ -140,7 +140,7 @@
             margin: 7px 10px 0 0;
         }
 
-        #ordenar{
+        #ordenar, #add{
             display: flex;
             align-items: center;
             justify-content: center;
@@ -163,7 +163,7 @@
     #dados{
         width: 95%;
         margin: auto;
-        max-height: 60vh;
+        max-height: 63.5vh;
         overflow-y: scroll;
         list-style: none;
         padding: 5px;
@@ -194,7 +194,6 @@
                 }
 
                 .icon{
-                    opacity: 0;
                     background-color: #AB886D;
                     border-radius: 10px;
                     width: 35px;
@@ -203,6 +202,7 @@
                     align-items: center;
                     justify-content: center;
                     margin: 2px;
+                    z-index: 100;
 
                     img{
                         width: 70%;
@@ -210,17 +210,29 @@
                     }
                 }
 
+                .icon:hover{
+                    background-color: #D5B487;
+                }
+
                 div{
                     display: flex;
                     align-items: center;
                 }
+
+                #modal-delete{
+                    position: absolute;
+                    bottom: 0;
+                    left: 0;
+                    width: 100%;
+                    height: auto;
+                }
             }
 
             table {
-                width: 90%;
+                width: 98%;
                 height: 50%;
                 border-collapse: collapse;
-                margin: auto auto 20px auto;
+                margin: 0 0 20px 2%;
                 text-align: left;
             
                 th, td {
@@ -238,27 +250,36 @@
                     }
                 }
 
-
-                #descricao, #email, #email{
-                    white-space: nowrap;
-                    overflow-x: auto;
+                #adm{
+                    width: 15%;
                 }
 
-                #descricao, #email::-webkit-scrollbar {
+                #dataNascimento{
+                    width: 20%;
+                }
+
+
+                #descricao, #email{
+                    white-space: nowrap;
+                    overflow-x: auto;
+                    width: 25%;
+                }
+
+                #descricao::-webkit-scrollbar, #email::-webkit-scrollbar {
                     height: 8px;
                 }
                 
-                #descricao, #email::-webkit-scrollbar-track {
+                #descricao::-webkit-scrollbar-track, #email::-webkit-scrollbar-track {
                     background: #EBC7A2;
                     border-radius: 15px;
                 }
                 
-                #descricao, #email::-webkit-scrollbar-thumb {
+                #descricao::-webkit-scrollbar-thumb, #email::-webkit-scrollbar-thumb {
                     background: #926c54; 
                     border-radius: 4px;
                 }
                 
-                #descricao, #email::-webkit-scrollbar-thumb:hover {
+                #descricao::-webkit-scrollbar-thumb:hover, #email::-webkit-scrollbar-thumb:hover {
                     background: rgb(199, 152, 125);
                 }
             }
@@ -281,7 +302,7 @@
     
     #dados::-webkit-scrollbar-track {
         background: #EBC7A2;
-        border-radius: 15px;
+        border-radius: 55px;
     }
     
     #dados::-webkit-scrollbar-thumb {
