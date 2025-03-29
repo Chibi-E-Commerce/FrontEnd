@@ -87,8 +87,8 @@ function PopupFailed({ errorMessage, setShowErrorPopup }) {
     )
 }
 
-function Table({ object, keys, openModal, ind }) {
-    const [keySecrets, setKeysSecrets] = useState(["cpf", "senha", "cartao", "nome", "urlImagem", "id"]);
+function Table({ object, keys, ind }) {
+    const [keySecrets, setKeysSecrets] = useState(["cpf", "senha", "cartao", "nome", "urlImagem", "id", "endereco"]);
     const keysFiltered = keys.filter((key) => !keySecrets.includes(key));
     const cabecalhos = {
         adm: "Tipo de Conta",
@@ -117,11 +117,8 @@ function Table({ object, keys, openModal, ind }) {
                 <tr>
                     {keysFiltered.map((key, index) => (
                         <td key={index} id={key}>
-                            {key === "endereco" || key === "carrinho" ? (
-                                <div onClick={() => openModal(key, ind)}>
-                                    {key}
-                                </div>
-                            ) : 
+                            {
+                            key === "carrinho" ? object[key]?.length === 0 || object[key] === null ? "Vazio" : object[key].length + " produto(s)": 
                              key === "adm" ? 
                              object[key] ? ("Administrador") : ("Comum")
                              :

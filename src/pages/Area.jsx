@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Imagem, Table } from "../components/Utils";
+import { Button, Imagem, Table } from "../components/Utils";
 import voltar from "../assets/images/Voltar.svg"
 import ordenar from "../assets/images/Ordenar.svg"
 import edit from "../assets/images/Edit.svg"
@@ -7,93 +7,61 @@ import remove from "../assets/images/Trash.svg"
 import filtroSearch from "../assets/images/filtroSearch.svg";
 import "../styles/Area.css"
 import { useNavigate } from "react-router-dom";
-import { getUsers, getProducts, deleteProduct } from "../api"
-import { useModal } from "../ModalContext"
-
-
-const Endereco = ({ endereco }) => {
-    console.log("chegou")
-
-    return (
-        <div id="modal-endereco" className='modal'>
-            <div className='campo'>
-                <h3>Rua</h3>
-                <div className='valor'>
-                    <h3>{endereco.rua}</h3>
-                </div>
-            </div>
-            <div className='campo'>
-                <h3>Estado</h3>
-                <div className='valor'>
-                        <h3>{endereco.estado}</h3>
-                    </div>
-                </div>
-            <div className='campo'>
-                <h3>CEP</h3>
-                <div className='valor'>
-                        <h3>{endereco.cep}</h3>
-                    </div>
-                </div>
-        </div>
-    )
-}
-
-const Carrinho = ({ carrinho }) => {
-
-    return (
-        <div id="modal-carrinho" className='modal'>
-            {
-                carrinho.map((product, ind) => (
-                    <div key={ind} className='product'>
-                        <div className='row-campo'>
-                            <div className='campo'>
-                                <h3>Nome</h3>
-                                <div className='valor'>
-                                    <h3>{product.produto.nome}</h3>
-                                </div>
-                            </div>
-                            <div className='campo'>
-                                <h3>Preço Unitário</h3>
-                                <div className='valor'>
-                                        <h3>{"R$ " + (product.produto.preco * ((100 - product.produto.desconto)/100)).toFixed(2)}</h3>
-                                </div>
-                            </div>
-                        </div>
-                        <div className='row-campo'>
-                            <div className='campo'>
-                                <h3>Quantidade</h3>
-                                <div className='valor'>
-                                    <h3>{product.quantidade}</h3>
-                                </div>
-                                <div className='campo'>
-                                <h3>Total</h3>
-                                <div className='valor'>
-                                    <h3>{"R$ " + ((product.produto.preco * ((100 - product.produto.desconto)/100)) * product.quantidade).toFixed(2)}</h3>
-                                </div>
-                            </div>
-                            </div>
-                        </div>
-                    </div>
-                ))
-            }
-        </div>
-    )
-}
+import { getUsers, getProducts, deleteProduct, deleteClient, getDataFilteredRestricted, getClientFiltered, getClientSorted, getDataSorted } from "../api"
 
 function Area({}) {
     const navigate = useNavigate()
     const [dados, setDados] = useState(["nada"])
-    const [ showDado, setShowDado] = useState(null)
-    const { open, close, openModal } = useModal()
+    const [tipoDados, setTipoDados] = useState("")
+    const [showDelete, setShowDelete] = useState(-1)
 
     const getDados = async (num) => {
         setDados(num === 1 ? await getUsers() : await getProducts())
+        setShowDelete(-1)
+        setTipoDados(num === 1 ? "Usuário" : "Produto")
     }
 
-    const openModalDados = (tipo, ind) => {
-        setShowDado(ind)
-        open(tipo)
+    const deleteDado = async (valor) => {
+        if (tipoDados === "Produto") {
+            await deleteProduct(valor)
+        }else{
+            await deleteClient(valor)
+        }
+        await getDados(tipoDados === "Produto" ? 2 : 1)
     }
+
+    const search = async (e) => {
+        const valor = e.target.value.trim()
+        if (!valor) {
+            await getDados(tipoDados === "Produto" ? 2 : 1)
+            return;
+        }
+        const filter = tipoDados === "Produto"
+            ? {
+                "pesquisa": valor,
+                "precoMin": 0,
+                "precoMax": 0,
+                "inDesconto": 0,
+                "categoria": [valor],
+                "marca": valor
+            }
+            : {
+                "nome": valor,
+                "email": valor,
+                "cpf": valor
+            };
+        setDados(tipoDados === "Produto"
+            ? await getDataFilteredRestricted(filter)
+            : await getClientFiltered(filter))
+    };
+
+    const sorted = async () => {
+        setDados(tipoDados === "Produto"
+            ? await getDataSorted()
+            : await getClientSorted()
+        )
+    }
+    
 
     return(
         <main id="area-restrita">
@@ -127,19 +95,23 @@ function Area({}) {
                         <>
                             <div id="search-dados">
                                 <input
-                                type="text"
-                                name="pesquisa"
-                                placeholder="Pesquisar produto"
-                                autoComplete="off"
-                                autoCorrect="off"
-                                autoCapitalize="off"
-                                spellCheck="false"
+                                    type="text"
+                                    name="pesquisa"
+                                    placeholder="Pesquisar produto"
+                                    autoComplete="off"
+                                    autoCorrect="off"
+                                    autoCapitalize="off"
+                                    spellCheck="false"
+                                    onChange={search} // Aqui passa a função corretamente
                                 />
                                 <div>
                                     <Imagem src={filtroSearch} alt="Procura produto" />
                                 </div>
-                                <div id='ordenar'>
-                                    <Imagem src={ordenar} alt="Ordenar"/>
+                                <div id='ordenar' onClick={() => sorted()}>
+                                    <Imagem src={ordenar} alt="Ordenar" />
+                                </div>
+                                <div id='add'>
+                                    <h1>+</h1>
                                 </div>
                             </div>
                             
@@ -153,18 +125,27 @@ function Area({}) {
                                                     <h3>{dado.nome}</h3>
                                                 </div>
                                                 <div>
-                                                    <div className='icon'>
+                                                    <div className={"icon " + ind}>
                                                         <Imagem src={edit} alt="Editar"/>
                                                     </div>
                                                     <div className='icon'>
-                                                        <Imagem src={remove} alt={"Deletar"}/>
+                                                        <Imagem src={remove} alt={"Deletar"} onClick={() => {setShowDelete(ind)}}/>
+                                                        {showDelete === ind && (
+                                                            <div id='modal-delete'>
+                                                                <h3>Deseja apagar esse {tipoDados}?</h3>
+                                                                <div className='buttons'>
+                                                                    <Button text={"Cancelar"} onClick={() => {
+                                                                        setShowDelete(-1)
+                                                                    }}/>
+                                                                    <Button text={"Deletar"} onClick={() => deleteDado(tipoDados === "Produto" ? dado.nome : dado.email)}/>
+                                                                </div>
+                                                            </div>
+                                                        )}
                                                     </div>
                                                 </div>
                                             </div> 
 
-                                            <Table object={dado} keys={Object.keys(dado)} ind={ind} openModal={openModalDados} />
-                                            {showDado === ind && openModal === "endereco" && (<Endereco endereco={dado.endereco}/>)}
-                                            {showDado === ind && openModal === "carrinho" && (<Carrinho carrinho={dado.carrinho}/>)}
+                                            <Table object={dado} keys={Object.keys(dado)} ind={ind}/>
                                         </li>
                                     ))
                                 }
