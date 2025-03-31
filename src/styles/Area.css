@@ -34,6 +34,12 @@
             border-radius: 10px;
             margin: 0 0 40px 30px;
             transition: all 0.3s ease-out;
+            font-size: 15px;
+
+            img{
+                width: 20%;
+                height: auto;
+            }
         }
 
         #voltar:hover{
@@ -146,6 +152,8 @@
             justify-content: center;
             margin:  0 0 0 20px;
             border-radius: 10px;
+            font-size: 50px;
+            font-weight: 500;
 
             height: 45px;
             min-width: 45px;
@@ -203,6 +211,7 @@
                     justify-content: center;
                     margin: 2px;
                     z-index: 100;
+                    opacity: 0;
 
                     img{
                         width: 70%;
@@ -312,5 +321,30 @@
     
     #dados::-webkit-scrollbar-thumb:hover {
         background: rgb(199, 152, 125);
+    }
+
+    #add-dado{
+        z-index: 1000;
+        position: absolute;
+        top: 10vh;
+        left: 0;
+        width: 100%;
+        height: 80vh;
+        padding-bottom: 10vh;
+
+        .cadastro-card{
+            background-color: #AB886D;
+            max-height: 70vh;
+            overflow-y: scroll;
+
+            .input-desc{
+                display: flex;
+                flex-flow: column;
+            }
+
+            .input-cat select{
+                height: 100px;
+            }
+        }
     }
 }

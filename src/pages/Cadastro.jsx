@@ -80,9 +80,7 @@ const Cadastro = () => {
         e.preventDefault();
         if (validateForm()) {
             try {
-                console.log(form)
                 const response = await axios.post('http://localhost:8080/cliente', form);
-                console.log('Formulário enviado:', response.data);
                 addUser(response.data)
                 setShowSuccessPopup(true);
             } catch (error) {
