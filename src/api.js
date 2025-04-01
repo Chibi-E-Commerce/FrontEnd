@@ -113,9 +113,9 @@ export const createOrder = async (order) => {
     }
 }
 
-export const deleteProduct = async (nome) => {
+export const deleteProduct = async (id) => {
     try {
-        const response = await api.delete('/produto', {params: {nome: nome}});
+        const response = await api.delete('/produto', {params: {id: id}});
         return response.data;
     } catch (error) {
         console.error('Erro ao deletar produto', error);
@@ -130,6 +130,26 @@ export const deleteClient = async (email) => {
     } catch (error) {
         console.error('Erro ao deletar cliente', error);
         return null;
+    }
+}
+
+export const createUser = async (user) => {
+    try{
+    const response = await axios.post('http://localhost:8080/cliente', user);
+    return response.data
+    }catch(error){
+        console.error("Erro ao criar usuário", error)
+        return null
+    }
+}
+
+export const createProduct = async (product) => {
+    try{
+    const response = await axios.post('http://localhost:8080/produto', product);
+    return response.data
+    }catch(error){
+        console.error("Erro ao criar produto", error)
+        return null
     }
 }
 
