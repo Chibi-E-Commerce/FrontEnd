@@ -502,22 +502,22 @@ function Area({}) {
                                                     </div>
                                                     <div className='icon'>
                                                         <Imagem src={remove} alt={"Deletar"} onClick={() => {setShowDelete(ind)}}/>
-                                                        {showDelete === ind && (
-                                                            <div id='modal-delete'>
-                                                                <h3>Deseja apagar esse {tipoDados}?</h3>
-                                                                <div className='buttons'>
-                                                                    <Button text={"Cancelar"} onClick={() => {
-                                                                        setShowDelete(-1)
-                                                                    }}/>
-                                                                    <Button text={"Deletar"} onClick={() => deleteDado(tipoDados === "Produto" ? dado.id : dado.email)}/>
-                                                                </div>
-                                                            </div>
-                                                        )}
                                                     </div>
                                                 </div>
                                             </div> 
 
                                             <Table object={dado} keys={Object.keys(dado)} ind={ind}/>
+                                            {showDelete === ind && (
+                                                <div id='modal-delete'>
+                                                    <h3>Deseja apagar esse {tipoDados}?</h3>
+                                                    <div className='buttons'>
+                                                        <Button text={"Cancelar"} onClick={() => {
+                                                            setShowDelete(-1)
+                                                        }}/>
+                                                        <Button text={"Deletar"} onClick={() => deleteDado(tipoDados === "Produto" ? dado.id : dado.email)}/>
+                                                    </div>
+                                                </div>
+                                            )}
                                         </li>
                                     ))
                                 }
@@ -528,7 +528,6 @@ function Area({}) {
                 {openModal === "add" && (
                     <Add tipoDados={tipoDados} close={() => close()}/>
                 )}
-
             </section>
         </main>
     )
