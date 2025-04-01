@@ -61,6 +61,8 @@ const Pagamento = ({}) => {
         tipo_pagamento: '',
         cadastrar_cartao: false,
     });
+
+    const [pedidoId, setPedidoId] = useState('');
   
     useEffect(() => {
         if (user.endereco) {
@@ -109,6 +111,12 @@ const Pagamento = ({}) => {
             [name]: value
         });
     };
+
+    const sendForm = async (order) => {
+        let k = await createOrder(order)
+        console.log(k)
+        setPedidoId(k)
+    }
 
     const enviarFormulario = (e) => {
         e.preventDefault();
@@ -185,9 +193,9 @@ const Pagamento = ({}) => {
                     }
                     user.carrinho = removeIntersection()
                     updateUser(user)
-                    createOrder(order)
+                    sendForm(order)
                     setShowSuccessPopup(true);
-                }else{
+                } else {
                     setErrorMessage('Saldo Insuficiente');
                     setShowErrorPopup(true);
                 }
@@ -210,7 +218,7 @@ const Pagamento = ({}) => {
             const cpfUsuario = user.cpf ?? '';
                 const downloadFile = async (formato) => {
                 const response = await fetch(
-                    `http://localhost:8080/extrato/baixar?nome=${nomeUsuario}&cpf=${cpfUsuario}&valor=${totalPay}&formato=${formato}`,
+                    `http://localhost:8080/extrato/baixar?pedidoId=${pedidoId}&formato=${formato}`,
                     {
                         method: "GET",
                         headers: { "Content-Type": formato === "pdf" ? "application/pdf" : "text/plain" },

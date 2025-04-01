@@ -106,6 +106,7 @@ export const updateUser = async (user) => {
 export const createOrder = async (order) => {
     try {
         const response = await api.post('/pedido',order);
+        console.log(response);
         return response.data;
     } catch (error) {
         console.error('Erro ao criar pedido', error);
