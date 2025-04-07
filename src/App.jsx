@@ -11,6 +11,9 @@ import { ModalProvider } from './ModalContext';
 import { UserProvider } from './UserContext';
 import Login from './pages/Login';
 import Dash from './components/Dash';
+import EsqueciSenha from './pages/EsqueciSenha';
+import ValidarCodigo from './pages/ValidarCodigo';
+import AlterarSenha from './pages/AlterarSenha';
 
 function App() {
   const [dados, setDados] = useState([]);
@@ -64,6 +67,15 @@ function AppContent({ dados }) {
         <Route path='/dash' element={
           <Dash>{}</Dash>
         }/>
+        <Route path="/esqueci-senha" element={
+          <EsqueciSenha />
+        } />
+        <Route path="/validar-codigo" element={
+          <ValidarCodigo />
+        } />
+        <Route path="/alterar-senha" element={
+          <AlterarSenha />
+        } />
         
       </Routes>
     </div>

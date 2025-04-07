@@ -114,6 +114,9 @@ const Login = () => {
                     <div className="login-link-login">
                         <a href="/">Ainda não tem uma conta?</a>
                     </div>
+                    <div>
+                        <a href="/esqueci-senha">Esqueceu a senha?</a>
+                    </div>
                 </form>
             </div>
         </main>
