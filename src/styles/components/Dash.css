@@ -12,7 +12,7 @@
 
     .basic-info-row {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         gap: 20px;
         margin-bottom: 30px;
     }
@@ -137,7 +137,7 @@
 /* Responsive adjustments */
 @media (min-width: 768px) {
     .basic-info-row {
-        flex-direction: row;
+        flex-direction: column;
     }
     
     .overview {
