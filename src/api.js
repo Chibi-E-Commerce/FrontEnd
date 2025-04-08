@@ -60,7 +60,6 @@ export const getClientFiltered = async (filter) => {
 export const getDataSorted = async () => {
     try {
         const response = await api.get('/produto/sort');
-        console.log(response.data)
         return response.data;
     } catch (error) {
         console.error('Erro ao buscar dados', error);
@@ -106,7 +105,6 @@ export const updateUser = async (user) => {
 export const createOrder = async (order) => {
     try {
         const response = await api.post('/pedido',order);
-        console.log(response);
         return response.data;
     } catch (error) {
         console.error('Erro ao criar pedido', error);

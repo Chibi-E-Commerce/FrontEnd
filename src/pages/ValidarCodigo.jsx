@@ -23,20 +23,22 @@ function ValidarCodigo() {
   };
 
   return (
-    <div>
+    <div className='center-container'>
       <h2>Validar Código</h2>
-      <input
-        type="email"
-        placeholder="Digite seu e-mail"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <input
-        type="text"
-        placeholder="Código"
-        value={codigo}
-        onChange={(e) => setCodigo(e.target.value)}
-      />
+      <div className='inputs'>
+        <input
+          type="email"
+          placeholder="Digite seu e-mail"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="Código"
+          value={codigo}
+          onChange={(e) => setCodigo(e.target.value)}
+        />
+      </div>
       <button onClick={handleValidarCodigo}>Validar</button>
       <p>{mensagem}</p>
     </div>

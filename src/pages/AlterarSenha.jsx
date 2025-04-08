@@ -8,8 +8,6 @@ function AlterarSenha() {
 
   const email = location.state?.email || '';
 
-  console.log("Email recebido para troca de senha:", email);
-
   const [novaSenha, setNovaSenha] = useState('');
   const [mensagem, setMensagem] = useState('');
 

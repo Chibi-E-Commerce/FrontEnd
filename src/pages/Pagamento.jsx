@@ -114,7 +114,6 @@ const Pagamento = ({}) => {
 
     const sendForm = async (order) => {
         let k = await createOrder(order)
-        console.log(k)
         setPedidoId(k)
     }
 
@@ -144,7 +143,6 @@ const Pagamento = ({}) => {
                     }else{
                         saldo = (1000 - sumOrders()[0]).toFixed(2)
                     }
-                    console.log(user.cartao)
                     if (limite >= 0 || saldo >= 0){
                         user.cartao.push({
                             numero: form.numero_cartao,
@@ -204,7 +202,7 @@ const Pagamento = ({}) => {
                     setErrorMessage(error.response.data);
                     setShowErrorPopup(true);
                 } else {
-                    console.log(error)
+                    console.error(error)
                     setErrorMessage('Erro ao conectar com o servidor');
                     setShowErrorPopup(true);
                 }
