@@ -104,23 +104,24 @@
     width: 48%;
 }
 
-.submit-btn {
+.submit-btn, .btn {
     margin: 10px auto;
     padding: 10px;
     letter-spacing: 1px;
     background-color: #B62929;
     width: 180px;
     color: white;
-    border: none;
+    border: 3px solid #B62929;
     border-radius: 10px;
     cursor: pointer;
     font-size: medium;
     font-weight: 800;
-    transition: background-color 0.3s;
+    transition: all 0.3s ease-in;
 }
 
-.submit-btn:hover {
+.submit-btn:hover, .btn:hover {
     background-color: #882222;
+    border-color: #882222;
 }
 
 .nav ul {
