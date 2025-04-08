@@ -1,0 +1,42 @@
+
+.senha-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: antiquewhite;
+    max-width: 90%;
+    min-width: 40%;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    margin-left: 30%;
+    margin-right: 30%;
+    gap: 20px;
+}
+
+.btn-send {
+    background-color: #B62929;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: medium;
+    font-weight: 800;
+    transition: background-color 0.3s;
+    padding: 10px 20px;
+    margin-top: 10px;
+}
+
+.btn-send:hover {
+    background-color: #882222;
+}
+
+.senha-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}

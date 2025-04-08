@@ -152,7 +152,6 @@ function Add({ tipoDados, close }) {
         e.preventDefault();
         if (validateForm()) {
             try {
-                consol.log(form)
                 tipoDados === "Produto" ? await createProduct(form) : await createUser(form);
                 setShowSuccessPopup(true);
             } catch (error) {
