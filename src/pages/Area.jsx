@@ -11,18 +11,16 @@ import { getUsers, getProducts, deleteProduct, deleteClient, getDataFilteredRest
 import { useModal } from "../ModalContext";
 import AddModal from "../components/AddModal";
 
-function Area({}) {
+function Area() {
     const navigate = useNavigate()
-    const [dados, setDados] = useState(["nada"])
-    const [tipoDados, setTipoDados] = useState("")
+    const [dados, setDados] = useState([""])
+    const [tipoDados, setTipoDados] = useState("Usuário")
     const [showDelete, setShowDelete] = useState(-1)
     const [showUpdate, setShowUpdate] = useState(-1)
     const { open, close, openModal}  = useModal()
 
     useEffect(() => {
-        if (localStorage.getItem("tipoDados") != ""){
-            getDados(localStorage.getItem("tipoDados") === "Usuário" ? 1 : 2)
-        }
+        getDados(localStorage.getItem("tipoDados") === "Usuário" ? 1 : 2)
     }, [])
 
     const getDados = async (num) => {
@@ -97,76 +95,66 @@ function Area({}) {
             </section>
         
             <section>
-                {
-                    dados[0] === "nada" ? (
-                        <h1>
-                            Bem-Vindo a Area de Administradores
-                        </h1>
-                    ) : (
-                        <>
-                            <div id="search-dados">
-                                <input
-                                    type="text"
-                                    name="pesquisa"
-                                    placeholder="Pesquisar produto"
-                                    autoComplete="off"
-                                    autoCorrect="off"
-                                    autoCapitalize="off"
-                                    spellCheck="false"
-                                    onChange={search}
-                                />
-                                <div>
-                                    <Imagem src={filtroSearch} alt="Procura produto" />
-                                </div>
-                                <div id='ordenar' onClick={() => sorted()}>
-                                    <Imagem src={ordenar} alt="Ordenar" />
-                                </div>
-                                <div id='add' onClick={() => open("add")}>
-                                    <p>+</p>
-                                </div>
-                            </div>
-                            
-                            <ul id="dados">
-                                {
-                                    dados.map((dado, ind) => (
-                                        <li key={ind} className='dado'>
-                                            <div className='dado-header'>
-                                                <div id='image-product-header'>
-                                                    { dado.urlImagem && <Imagem src={dado.urlImagem} alt={dado.nome}/>}
-                                                    <h3>{dado.nome}</h3>
-                                                </div>
-                                                <div>
-                                                    <div className={"icon " + ind} onClick={() => {open("update"); setShowUpdate(ind)}}>
-                                                        <Imagem src={edit} alt="Editar"/>
-                                                    </div>
-                                                    <div className='icon'>
-                                                        <Imagem src={remove} alt={"Deletar"} onClick={() => {setShowDelete(ind)}}/>
-                                                    </div>
-                                                </div>
-                                            </div> 
+                <div id="search-dados">
+                    <input
+                        type="text"
+                        name="pesquisa"
+                        placeholder="Pesquisar dados"
+                        autoComplete="off"
+                        autoCorrect="off"
+                        autoCapitalize="off"
+                        spellCheck="false"
+                        onChange={search}
+                    />
+                    <div>
+                        <Imagem src={filtroSearch} alt="Procura produto" />
+                    </div>
+                    <div id='ordenar' onClick={() => sorted()}>
+                        <Imagem src={ordenar} alt="Ordenar" />
+                    </div>
+                    <div id='add' onClick={() => open("add")}>
+                        <p>+</p>
+                    </div>
+                </div>
+                
+                <ul id="dados">
+                    {
+                        dados.map((dado, ind) => (
+                            <li key={ind} className='dado'>
+                                <div className='dado-header'>
+                                    <div id='image-product-header'>
+                                        { dado.urlImagem && <Imagem src={dado.urlImagem} alt={dado.nome}/>}
+                                        <h3>{dado.nome}</h3>
+                                    </div>
+                                    <div>
+                                        <div className={"icon " + ind} onClick={() => {open("update"); setShowUpdate(ind)}}>
+                                            <Imagem src={edit} alt="Editar"/>
+                                        </div>
+                                        <div className='icon'>
+                                            <Imagem src={remove} alt={"Deletar"} onClick={() => {setShowDelete(ind)}}/>
+                                        </div>
+                                    </div>
+                                </div> 
 
-                                            <Table object={dado} keys={Object.keys(dado)} ind={ind}/>
-                                            {showDelete === ind && (
-                                                <div id='modal-delete'>
-                                                    <h3>Deseja apagar esse {tipoDados}?</h3>
-                                                    <div className='buttons'>
-                                                        <Button text={"Cancelar"} onClick={() => {
-                                                            setShowDelete(-1)
-                                                        }}/>
-                                                        <Button text={"Deletar"} onClick={() => deleteDado(tipoDados === "Produto" ? dado.id : dado.email)}/>
-                                                    </div>
-                                                </div>
-                                            )}
-                                            {openModal === "update" && showUpdate === ind && (
-                                                <AddModal tipoDados={tipoDados} close={() => close()} update={true} dado={dado}/>
-                                            )}
-                                        </li>
-                                    ))
-                                }
-                            </ul>
-                        </>
-                    )
-                }
+                                <Table object={dado} keys={Object.keys(dado)} ind={ind}/>
+                                {showDelete === ind && (
+                                    <div id='modal-delete'>
+                                        <h3>Deseja apagar esse {tipoDados}?</h3>
+                                        <div className='buttons'>
+                                            <Button text={"Cancelar"} onClick={() => {
+                                                setShowDelete(-1)
+                                            }}/>
+                                            <Button text={"Deletar"} onClick={() => deleteDado(tipoDados === "Produto" ? dado.id : dado.email)}/>
+                                        </div>
+                                    </div>
+                                )}
+                                {openModal === "update" && showUpdate === ind && (
+                                    <AddModal tipoDados={tipoDados} close={() => close()} update={true} dado={dado}/>
+                                )}
+                            </li>
+                        ))
+                    }
+                </ul>
                 {openModal === "add" && (
                     <AddModal tipoDados={tipoDados} close={() => close()}/>
                 )}

@@ -70,12 +70,17 @@ function Add({ tipoDados, close, update, dado }) {
     };
 
     const formatterDate = (date, type) => {
-        if (type === "in"){
-            return date.split("/").reverse().join("-")
-        }else{
-            return date.split("-").reverse().join("/")
+        if (date) {
+           if (type === "in"){
+               return date.split("/").reverse().join("-")
+           }else{
+               return date.split("-").reverse().join("/")
+           }
         }
     }
+
+    let dateFormartter = formatterDate(form.dataNascimento, "in")
+    console.log(dateFormartter)
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -411,7 +416,7 @@ function Add({ tipoDados, close, update, dado }) {
                                             type="date"
                                             id="dataNascimento"
                                             name="dataNascimento"
-                                            value={formatterDate(form.dataNascimento, "in")}
+                                            value={dateFormartter}
                                             onChange={handleChange}
                                         />
                                         {errors.dataNascimento && <span className="error">{errors.dataNascimento}</span>}

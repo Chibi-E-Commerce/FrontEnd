@@ -36,8 +36,9 @@ export const OrderProvider = ({ children }) => {
   };
 
   const deleteOrder = (order) => {
-    const updatedOrders = orders.filter(o => JSON.stringify(o.produto) !== JSON.stringify(order.produto));
-    syncOrders(updatedOrders);
+    let newOrders = [...orders]
+    newOrders = newOrders.filter(o => o.produto.id !== order.produto.id);
+    syncOrders(newOrders);
   };
 
   const addOrdersPay = (orders) => {
@@ -46,16 +47,21 @@ export const OrderProvider = ({ children }) => {
 
   const removeIntersection = () => {
     const ordersPay = JSON.parse(localStorage.getItem("ordersPay")) || [];
-    let newOrders
+    let newOrders = [...orders];
   
     ordersPay.forEach((prevOrder) => {
-      newOrders = orders.filter((cat) => JSON.stringify(cat) !== JSON.stringify(prevOrder))
+      newOrders = newOrders.filter(
+        (order) => order.produto.id !== prevOrder.produto.id
+      );
     });
-
+  
     localStorage.setItem("ordersPay", JSON.stringify([]));
-    setOrders(newOrders)
-    return newOrders
+    setOrders(newOrders);
+    syncOrders(newOrders)
+  
+    return newOrders;
   };
+  
   
 
   return (

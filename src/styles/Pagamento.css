@@ -16,6 +16,26 @@
     background-color: #D6C0B3;
     padding: 20px;
     border-radius: 20px;
+    overflow-y: scroll;
+}
+
+.pagamento-side::-webkit-scrollbar {
+    width: 20px;
+}
+
+.pagamento-side::-webkit-scrollbar-track {
+    background: #D6C0B3;
+    border-radius: 7px;
+}
+
+.pagamento-side::-webkit-scrollbar-thumb {
+    background: #8b6f55; 
+    border-radius: 8px;
+}
+
+.pagamento-side::-webkit-scrollbar-thumb:hover {
+    background: #6a4f36;
+    transition: all 0.5s ease-in;
 }
 
 .pagamento-title {

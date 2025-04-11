@@ -19,7 +19,7 @@ function SideBarProduct({ product, closeSideBar }) {
   };
 
   const addProduct = (order) => {
-    alert("Adicionou")
+    alert("Produto Adicionado no carrinho.")
     addOrder(order)
     closeSideBar()
   }

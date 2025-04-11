@@ -61,7 +61,7 @@ function CarSide({ closeShowSide }) {
             closeShowSide()
             nagivate('/pay')
         }else{
-            window.alert("É preciso ter algo no carrinho.")
+            window.alert("É preciso ter algum produto selecionado no carrinho.")
         }
     }
 
