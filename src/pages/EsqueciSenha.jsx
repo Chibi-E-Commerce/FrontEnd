@@ -23,7 +23,10 @@ function EsqueciSenha() {
   };
 
   return (
+    
     <div className="senha-container">
+      <div className="bottom-left-image"></div>
+      <div className="top-right-image"></div>
       <h2>Esqueci minha senha</h2>
       <input
         className='senha-input'

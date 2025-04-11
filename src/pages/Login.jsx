@@ -109,13 +109,13 @@ const Login = () => {
                     {showErrorPopup && (
                         <PopupFailed errorMessage={errorMessage} setShowErrorPopup={() => setShowErrorPopup(false)}/>
                     )}
+                    <div className="login-link-senha">
+                        <a href="/esqueci-senha">Esqueceu a senha?</a>
+                    </div>
 
                     <button type="submit" className="submit-btn-login">ENTRAR</button>
                     <div className="login-link-login">
                         <a href="/">Ainda não tem uma conta?</a>
-                    </div>
-                    <div>
-                        <a href="/esqueci-senha">Esqueceu a senha?</a>
                     </div>
                 </form>
             </div>

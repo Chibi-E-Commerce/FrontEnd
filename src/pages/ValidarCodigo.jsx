@@ -25,6 +25,8 @@ function ValidarCodigo() {
 
   return (
     <div className='senha-container'>
+      <div className="bottom-left-image"></div>
+      <div className="top-right-image"></div>
       <h2>Validar Código</h2>
       <input
         type="email"
