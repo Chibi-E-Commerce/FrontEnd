@@ -87,7 +87,7 @@ function PopupFailed({ errorMessage, setShowErrorPopup }) {
     )
 }
 
-function Table({ object, keys, ind }) {
+function Table({ object, keys, ind}) {
     const [keySecrets, setKeysSecrets] = useState(["cpf", "senha", "cartao", "nome", "urlImagem", "id", "endereco"]);
     const keysFiltered = keys.filter((key) => !keySecrets.includes(key));
     const cabecalhos = {

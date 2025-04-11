@@ -9,7 +9,7 @@ import { updateUser, createOrder } from '../api';
 import { PopupSucess, PopupFailed } from '../components/Utils';
 import { useNavigate } from 'react-router-dom';
 
-const Pagamento = ({}) => {
+const Pagamento = () => {
 
     const estados = {
         "Acre": "AC",
@@ -48,10 +48,9 @@ const Pagamento = ({}) => {
     const [showErrorPopup, setShowErrorPopup] = useState(false);
     const [showSuccessPopup, setShowSuccessPopup] = useState(false);
     const [showExtratoPopup, setShowExtratoPopup] = useState(false);
-    const [totalPay, setTotalPay] = useState(0)
     const [form, setForm] = useState({
         rua: '',
-        estado: '',
+        estado: '', 
         cep: '',
         numero_cartao: '',
         cod_seguranca: '',
@@ -79,7 +78,7 @@ const Pagamento = ({}) => {
         let sum = 0
         let qntd = 0
         const ordersPay = JSON.parse(localStorage.getItem("ordersPay"))
-        ordersPay.map((orderPay) => {
+        ordersPay.forEach((orderPay) => {
             sum += Number(((orderPay.produto.preco * ((100 - orderPay.produto.desconto)/100)))) * Number(orderPay.quantidade)
             qntd += Number(orderPay.quantidade)
         })
@@ -176,7 +175,6 @@ const Pagamento = ({}) => {
                     })
                 }
                 if ( continueProcess ) {
-                    setTotalPay(sumOrders()[0])
                     const order = {
                         total: sumOrders()[0],
                         data: new Date().toISOString().split('T')[0],
@@ -190,6 +188,7 @@ const Pagamento = ({}) => {
                         }
                     }
                     user.carrinho = removeIntersection()
+                    console.log(user.carrinho)
                     updateUser(user)
                     sendForm(order)
                     setShowSuccessPopup(true);
@@ -212,8 +211,6 @@ const Pagamento = ({}) => {
 
     const baixarExtrato = async () => {
         try {
-            const nomeUsuario = user.nome ?? form.nome_completo;
-            const cpfUsuario = user.cpf ?? '';
                 const downloadFile = async (formato) => {
                 const response = await fetch(
                     `http://localhost:8080/extrato/baixar?pedidoId=${pedidoId}&formato=${formato}`,
@@ -325,12 +322,6 @@ const Pagamento = ({}) => {
     const showPopupExtrato = () => {
         setShowSuccessPopup(false)
         setShowExtratoPopup(true)
-    }
-
-    const closePopupExtrato = () => {
-        setShowExtratoPopup(false)
-        baixarExtrato()
-        navigate("/shop")
     }
 
     return (

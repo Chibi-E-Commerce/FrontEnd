@@ -93,11 +93,21 @@ export const getUser = async (email) => {
 
 export const updateUser = async (user) => {
     try {
-        const response = await api.put('/cliente',user);
+        const response = await api.put('/cliente',user, {params: {id: user.id}});
         localStorage.setItem("user", JSON.stringify(response.data))
         return response.data;
     } catch (error) {
         console.error('Erro ao Atualizar cliente', error);
+        return null;
+    }
+}
+
+export const updateProduct = async (product) => {
+    try {
+        const response = await api.put('/produto', product, {params: {id: product.id}});
+        return response.data;
+    } catch (error) {
+        console.error('Erro ao Atualizar produto', error);
         return null;
     }
 }

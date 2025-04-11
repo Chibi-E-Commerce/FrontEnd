@@ -227,13 +227,32 @@
                     display: flex;
                     align-items: center;
                 }
+            }
 
-                #modal-delete{
-                    position: absolute;
-                    bottom: 0;
-                    left: 0;
-                    width: 100%;
-                    height: auto;
+            #modal-delete{
+                display: flex;
+                justify-content: space-around;
+                background-color: #f53030;
+                position: relative;
+                bottom: 50px;
+                left: 0;
+                width: 100%;
+                height: auto;
+                border-radius: 0 0 20px 20px;
+                padding: 5px 0 3px 0;
+
+                h3{
+                    margin: 0;
+                    font-weight: 600;
+                    color: white;
+                }
+
+                button{
+                    border-radius: 8px;
+                    border-color: transparent;
+                    background-color: white;
+                    color: #000;
+                    margin: 3px;
                 }
             }
 
@@ -326,11 +345,11 @@
     #add-dado{
         z-index: 1000;
         position: absolute;
-        top: 10vh;
+        top: 13vh;
         left: 0;
         width: 100%;
         height: 80vh;
-        padding-bottom: 10vh;
+        padding-bottom: 7vh;
 
         .cadastro-card{
             background-color: #AB886D;
@@ -340,11 +359,97 @@
             .input-desc{
                 display: flex;
                 flex-flow: column;
+
+                textarea{
+                    background-color: #D9D9D9;
+                    border-radius: 10px;
+                    outline: none;
+                    border: none;
+                    resize: none;
+                    padding-left: 6px;
+                    padding-right: 6px;
+                }
             }
 
-            .input-cat select{
-                height: 100px;
+            h3{
+                margin: 5px 0 5px 0;
+                font-size: 0.9rem;
+                font-weight: 600;
+                width: 100%;
+                text-align: start;
             }
+            .input-cat{
+                display: flex;
+                height: 100px;
+                flex-direction: column;
+                flex-wrap: wrap;
+                width: 60%;
+                margin-left: 20px;
+
+                label{
+                    display: flex;
+                    width: 50px;
+                    flex-flow: row;
+                    margin: 3px 0 3px 0;
+                    
+                    p{
+                        margin: 0 0 0 10px;
+                    }
+
+                    input{
+                        margin: 0;
+                    }
+                }
+            }
+
+            .cpf-dob-container{
+                margin-bottom: 10px;
+            }
+
+            input[type="number"]::-webkit-inner-spin-button,
+            input[type="number"]::-webkit-outer-spin-button {
+                -webkit-appearance: none;
+            }
+
+            button{
+                width: 30%;
+                margin: 5px;
+            }
+
+            .cancel{
+                background-color: transparent;
+                border: 3px solid #bc1313;
+                transition: all 0.3s ease-in;
+            }
+
+            .cancel:hover{
+                background-color: #882222;
+                border-color: #882222;
+            }
+
+            .header-update{
+                width: 100%;
+                text-align: start;
+                font-size: 18px;
+            }
+        }
+
+        .cadastro-card::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        .cadastro-card::-webkit-scrollbar-track {
+            background: #AB886D;
+            border-radius: 0 4px 0 4px;
+        }
+        
+        .cadastro-card::-webkit-scrollbar-thumb {
+            background: #926c54; 
+            border-radius: 10px;
+        }
+        
+        .cadastro-card::-webkit-scrollbar-thumb:hover {
+            background: #AB886D;
         }
     }
 }
