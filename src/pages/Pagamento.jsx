@@ -201,6 +201,7 @@ const Pagamento = () => {
                     setErrorMessage(error.response.data);
                     setShowErrorPopup(true);
                 } else {
+                    console.error(error)
                     setErrorMessage('Erro ao conectar com o servidor');
                     setShowErrorPopup(true);
                 }

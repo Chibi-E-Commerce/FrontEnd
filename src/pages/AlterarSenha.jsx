@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import '../styles/Senha.css';
 
 function AlterarSenha() {
   const location = useLocation();
   const navigate = useNavigate();
 
   const email = location.state?.email || '';
-
-  console.log("Email recebido para troca de senha:", email);
 
   const [novaSenha, setNovaSenha] = useState('');
   const [mensagem, setMensagem] = useState('');
@@ -29,15 +28,18 @@ function AlterarSenha() {
   };
 
   return (
-    <div>
+    <div className='senha-container'> 
       <h2>Alterar Senha</h2>
       <input
+        className='senha-input'
         type="password"
         placeholder="Nova senha"
         value={novaSenha}
         onChange={(e) => setNovaSenha(e.target.value)}
       />
-      <button onClick={handleAlterarSenha}>Alterar Senha</button>
+      <button 
+      className='btn-send'
+      onClick={handleAlterarSenha}>Alterar Senha</button>
       <p>{mensagem}</p>
     </div>
   );
