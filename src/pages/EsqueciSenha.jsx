@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import '../styles/Senha.css';
 
 function EsqueciSenha() {
   const [email, setEmail] = useState('');
@@ -22,16 +23,19 @@ function EsqueciSenha() {
   };
 
   return (
-    <div className="esqueci-senha-container">
+    <div className="senha-container">
       <h2>Esqueci minha senha</h2>
       <input
+        className='senha-input'
         type="email"
         placeholder="Digite seu e-mail"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
       <br />
-      <button onClick={handleEnviarCodigo}>
+      <button
+      className='btn-send'
+       onClick={handleEnviarCodigo}>
         Enviar código
       </button>
       {mensagem && <p className="mensagem-sucesso">{mensagem}</p>}

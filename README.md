@@ -21,3 +21,5 @@ O Chibi é uma e-commerce de cafeteria feita em um projeto de DAD por alunos da 
   - Gerenciar produtos
   - Visualizar vendas
 
+## Limitações
+- E-mail de cadastro DEVE ser `@gmail.com` senão `esquecer a senha` não funciona.

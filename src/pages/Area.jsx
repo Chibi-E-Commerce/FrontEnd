@@ -61,7 +61,6 @@ function Add({ tipoDados, close }) {
         const { name, value } = e.target;
         if (name === "categoria"){
             let categorias = form.categoria
-            console.log(categorias)
             if (categorias.includes(value)){
                 categorias = categorias.filter((cat) => cat !== value)
             }else{
@@ -153,7 +152,6 @@ function Add({ tipoDados, close }) {
         e.preventDefault();
         if (validateForm()) {
             try {
-                console.log(form)
                 tipoDados === "Produto" ? await createProduct(form) : await createUser(form);
                 setShowSuccessPopup(true);
             } catch (error) {

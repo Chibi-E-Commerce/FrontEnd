@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import '../styles/Senha.css';
 
 function ValidarCodigo() {
   const [email, setEmail] = useState('');
@@ -23,21 +24,25 @@ function ValidarCodigo() {
   };
 
   return (
-    <div>
+    <div className='senha-container'>
       <h2>Validar Código</h2>
       <input
         type="email"
+        className='senha-input'
         placeholder="Digite seu e-mail"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
       <input
+        className='senha-input'
         type="text"
         placeholder="Código"
         value={codigo}
         onChange={(e) => setCodigo(e.target.value)}
       />
-      <button onClick={handleValidarCodigo}>Validar</button>
+      <button 
+      className='btn-send'
+      onClick={handleValidarCodigo}>Validar</button>
       <p>{mensagem}</p>
     </div>
   );
