@@ -179,3 +179,30 @@
 .error-popup-content button:hover {
     background-color: #882222;
 }
+
+.login-link-login {
+    text-align: center;
+}
+
+.login-link-login a {
+    color: #1B4D3E;
+    font-size: 0.9rem;
+}
+
+.login-link-login a:hover {
+    color: #16392e;
+}
+
+.login-link-senha {
+    margin-left: 0.5% ;
+    text-align: left;
+}
+
+.login-link-senha a {
+    color: #1B4D3E;
+    font-size: 0.9rem;
+}
+
+.login-link-senha a:hover {
+    color: #16392e;
+}

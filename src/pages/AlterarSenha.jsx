@@ -29,6 +29,8 @@ function AlterarSenha() {
 
   return (
     <div className='senha-container'> 
+      <div className="bottom-left-image"></div>
+      <div className="top-right-image"></div>
       <h2>Alterar Senha</h2>
       <input
         className='senha-input'
