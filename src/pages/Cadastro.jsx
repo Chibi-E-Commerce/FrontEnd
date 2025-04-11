@@ -1,10 +1,10 @@
 import React, { useState, useContext } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from "../UserContext"
 import '../styles/Cadastro.css';
 import { PopupSucess, PopupFailed } from '../components/Utils';
+import { createUser } from "../api"
 
 const Cadastro = () => {
     const navigate = useNavigate();
@@ -80,7 +80,7 @@ const Cadastro = () => {
         e.preventDefault();
         if (validateForm()) {
             try {
-                const response = await axios.post('http://localhost:8080/cliente', form);
+                const response = await createUser(form);
                 addUser(response.data)
                 setShowSuccessPopup(true);
             } catch (error) {
