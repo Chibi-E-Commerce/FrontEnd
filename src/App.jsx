@@ -10,7 +10,7 @@ import { OrderProvider } from './OrderContext';
 import { ModalProvider } from './ModalContext';
 import { UserProvider } from './UserContext';
 import Login from './pages/Login';
-import Dash from './components/Dash';
+import Dash from './pages/Dash';
 import EsqueciSenha from './pages/EsqueciSenha';
 import ValidarCodigo from './pages/ValidarCodigo';
 import AlterarSenha from './pages/AlterarSenha';

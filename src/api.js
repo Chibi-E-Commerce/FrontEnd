@@ -77,6 +77,16 @@ export const getClientSorted = async () => {
     }
 }
 
+export const getOrders = async () => {
+    try {
+            const response = await api.get('/pedido/list');
+            return response.data;
+        } catch (error) {
+            console.error('Erro ao buscar dados', error);
+            return null;
+        }
+}
+
 export const getUser = async (email) => {
     try {
         const response = await api.get('/cliente/get-user', {
