@@ -3,20 +3,9 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsive
 import { Clock, User, ShoppingBag, DollarSign, Package } from 'lucide-react';
 import { OrderContext } from '../OrderContext';
 import '../styles/components/Dash.css';
-import api from '../api';
+import { getOrders } from '../api';
 
-
-const getPedidos = async () => {
-    try {
-        const response = await api.get('/pedido/list');
-        return response.data;
-    } catch (error) {
-        console.error('Erro ao buscar dados', error);
-        return null;
-    }
-};
-
-export default function Dash({}) {
+export default function Dash() {
     const [pedidos, setPedidos] = useState([])
     const [dashData, setDashData] = useState({
         totalSales: 0,
@@ -27,7 +16,7 @@ export default function Dash({}) {
     
     const getPedidosAsync = async () => {
         try {
-            const pedidos = await getPedidos();
+            const pedidos = await getOrders();
             if (pedidos) {
                 setPedidos(pedidos);
             } else {
@@ -74,16 +63,11 @@ export default function Dash({}) {
       getDashData();
     }, [pedidos])
 
-    /**
-     * Given a date string in ISO format, returns the date in the
-     * format 'dd/MM/yyyy' as a string.
-     * @param {string} dateString - The date string to format
-     * @returns {string} The formatted date string
-     */
 
     const formatDate = (dateString) => {
-        const date = new Date(dateString);
-        return date.toLocaleDateString('pt-BR');
+        const date = dateString.split("-").reverse().join("/");
+        console.log(date)
+        return date;
     };
 
     return (

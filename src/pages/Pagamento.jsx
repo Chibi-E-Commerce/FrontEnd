@@ -92,7 +92,7 @@ const Pagamento = () => {
             cod_seguranca: cartao.cvv,
             bandeira: cartao.bandeira,
             nome_completo: cartao.titular,
-            cartao_validade: cartao.validade.ano + "-" + cartao.validade.mes,
+            cartao_validade: cartao.validade.ano + "-0" + cartao.validade.mes,
             tipo_pagamento: cartao.tipoPagamento
         }))
     }
