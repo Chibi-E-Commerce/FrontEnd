@@ -23,7 +23,6 @@ function AlterarSenha() {
       navigate("/login");
     } catch (error) {
       setMensagem("Erro ao alterar a senha.");
-      console.error("Erro ao alterar senha:", error);
     }
   };
 

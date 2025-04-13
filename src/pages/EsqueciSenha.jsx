@@ -18,7 +18,6 @@ function EsqueciSenha() {
     } catch (error) {
       setErro('Erro ao enviar o código. Verifique o e-mail.');
       setMensagem('');
-      console.error(error);
     }
   };
 

@@ -20,11 +20,9 @@ export default function Dash() {
             if (pedidos) {
                 setPedidos(pedidos);
             } else {
-                console.warn('No orders received');
                 setPedidos([]);
             }
         } catch (error) {
-            console.error('Error fetching orders:', error);
             setPedidos([]);
         }
     }
@@ -65,9 +63,7 @@ export default function Dash() {
 
 
     const formatDate = (dateString) => {
-        const date = dateString.split("-").reverse().join("/");
-        console.log(date)
-        return date;
+        return dateString.split("-").reverse().join("/");
     };
 
     return (
