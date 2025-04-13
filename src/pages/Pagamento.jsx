@@ -188,7 +188,6 @@ const Pagamento = () => {
                         }
                     }
                     user.carrinho = removeIntersection()
-                    console.log(user.carrinho)
                     updateUser(user)
                     sendForm(order)
                     setShowSuccessPopup(true);
@@ -201,7 +200,6 @@ const Pagamento = () => {
                     setErrorMessage(error.response.data);
                     setShowErrorPopup(true);
                 } else {
-                    console.error(error)
                     setErrorMessage('Erro ao conectar com o servidor');
                     setShowErrorPopup(true);
                 }
@@ -236,7 +234,8 @@ const Pagamento = () => {
                 await Promise.all([downloadFile("pdf"), downloadFile("txt")]);
     
         } catch (error) {
-            console.error("Erro ao baixar extrato:", error);
+            setErrorMessage('Erro ao abaixar o extrato');
+            setShowErrorPopup(true);
         }
     };
     
